@@ -61,7 +61,7 @@
     font-weight: 300;
     grid-row-gap: inherit;
     gap: 5em;
-    letter-spacing: 0.6rem;
+    letter-spacing: 0.2rem;
 }
 .crowfont {
     font-family: Antaro, sans-serif;

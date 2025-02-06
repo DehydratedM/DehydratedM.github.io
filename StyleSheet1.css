@@ -1,0 +1,260 @@
+﻿* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Antaro, sans-serif;
+}
+
+.li,a, button{
+    font-weight: 500;
+    font-size:16px;
+    text-decoration: none;
+
+}
+
+.HE {
+    display: flex;
+    padding: 30px, 10px,35px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8rem;
+    padding-inline: auto;
+    gap: 2em;
+}
+
+.pageName {
+    justify-content: center;
+    align-content: center;
+    padding-left: 50%;
+    padding-right: 50%;
+}
+
+.portflio {
+    justify-content: center;
+    align-content:center;
+
+}
+
+.experfirsttext{
+    justify-content:center;
+}
+
+.expertexttwo {
+    
+    columns: 100px;
+}
+.me {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 800;
+    margin: 0;
+    justify-content: center; 
+    align-items: center;
+    filter: brightness(0.9)
+}
+
+.Port {
+    font-family: 'Courier New',serif;
+    font-weight: 300;
+    grid-row-gap: inherit;
+    gap: 5em;
+    letter-spacing: 0.6rem;
+}
+.crowfont {
+    font-family: Antaro, sans-serif;
+    font-weight: 10;
+}
+.crow {
+    justify-content: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 800;
+    margin: 0;
+    justify-content: center;
+    align-items: center;
+    filter: brightness(0.9)
+}
+.lol {
+    cursor: default;
+    padding-left: 2em;
+    padding-top: 1em;
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-content: center;
+    justify-items: center;
+    padding-right: 2em;
+    gap: 20em;
+    justify-content: space-evenly;
+
+}
+
+.nav-links li{
+    display:inline-block;
+    padding: 0, 20px, 20px;
+ 
+}
+.nav-links li a {
+    transition: all 0.3s ease 0s;
+
+}
+
+.nav-links li a:hover {
+    color:#b930cf;
+
+}
+
+
+ 
+
+.container {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1; /* Pushes the footer to the bottom */
+}
+
+.llogo {
+    display: flex;
+    padding: 0 1em;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+.main {
+    padding: 0 1em;
+    max-width: 200px;
+
+}
+
+
+.Head {
+    padding: 10px, 5px, 15px;
+    display: flex;
+    justify-content: center;
+    gap: 2em;
+   
+    text-decoration-thickness: 3px;
+  
+}
+
+.websiteIntro {
+    padding-top: 5rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-block: auto;
+    text-align: center;
+    text-indent: 10px;
+    letter-spacing: 0.2rem;
+    line-height: 1.6;
+    word-spacing: 5px;
+}
+
+.Oo{
+    justify-items:center;
+
+}
+footer {
+    padding-top: 10rem;
+    
+}
+.footerContainer {
+    flex: 6; /* Pushes the footer down */
+}
+
+
+.footerContainer {
+    width: 100%;
+    padding: 20px, 10px, 10px;
+}
+.socialIcons{
+    display: flex;
+    justify-content:center;
+    padding-bottom: 2rem;
+    gap: 2em;
+
+}
+
+.socialIcons a:hover{
+    color: #1e2722;
+    transition: ease-in;
+}
+
+
+
+
+/* Fullscreen Video Container */
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Make video cover the entire screen and stay responsive */
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures video scales without stretching */
+    filter: brightness(0.3); /* Darken the video */
+}
+
+/* Dark overlay to make video darker */
+.video-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Dark overlay, adjust opacity to make darker */
+}
+
+/* Content (to be placed above video) */
+.content {
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    padding: 100px;
+    font-size: 24px;
+}
+
+/* Ensure responsive font size and padding for smaller screens */
+@media (max-width: 768px) {
+    .content {
+        font-size: 20px;
+        padding: 50px;
+    }
+}
+
+/* Style for centering */
+.trailercontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+    width: 800;
+    margin: 0;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+

@@ -60,7 +60,7 @@
     font-family: 'Courier New',serif;
     font-weight: 300;
     grid-row-gap: inherit;
-    gap: 5em;
+    gap: 2rem;
     letter-spacing: 0.2rem;
 }
 .crowfont {

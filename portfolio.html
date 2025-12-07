@@ -25,9 +25,9 @@
                     
                     <nav class="nav-links">
                         <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="portfolio.html" class="active">-Portfolio-</a></li>
-                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="index.html" id="home-link">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">-Portfolio-</a></li>
+                            <li><a href="shop.html" id="shop-link">Shop</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -56,13 +56,13 @@
                     <h3 style="color: wheat">Art</h3>
                     <p style="color: mintcream">
                         Photoshop — 7+ years || Asset making, illustrations, graphic design, photo editing/morphing, etc.
-                        <hr color="black" noshade/>
+                        <hr>
                         Traditional art — 8+ years (plus my whole life) || painting, color pencils, black & white, pen/markers, etc. -- Usual topics: Animals, architecture, Stills, objects, Flowers, etc.
-                        <hr color="black" noshade/>
+                        <hr>
                         Writing — 3+ years. || Short stories, thought pieces, Novels, Epic, Etc __ genres: Main: Fantasy, Side: horror, gorey, invoking, etc.
-                        <hr color="black" noshade>
+                        <hr>
                         Animating — 2+ years. || Short, Storytelling -- About: Thought pieces, Youtube Animation Trends -- medium: Photoshop, (no Screen) Graphic Tablet, Capcut or premiere.
-                        <hr color="black" noshade />
+                        <hr>
                         General Word to describe my Work -- Emotions.
                     </p>
                     
@@ -71,12 +71,12 @@
                         Premiere Pro — 4+ years. || trailers, playthroughs, self tapes, etc -- Longest Video Worked on: 10 - 14 hour.
                     </p>
                     
-                    <hr color="black" noshade/>
+                    <hr>
                     
                     <h3 style="color: wheat">Game Making</h3>
                     <p style="color: mintcream">
                         Unity & C# — 3 to 5+ months. || Current medium: 2D PC & Android -- Platformers, Endless-Runners
-                        <hr color="black" noshade/>
+                        <hr>
                         HTML, CSS — 1+ month.
                     </p>
                     
@@ -89,6 +89,9 @@
                     <p style="color: mintcream">
                         Human based works: anatomy, portraits etc, (other than sketches) -- limited understanding of Coding -- usually work solo.
                     </p>
+                    
+                    <!-- Empty element to fix last line spacing -->
+                    <div style="height: 0; margin: 0; padding: 0; clear: both;"></div>
                 </div>
 
                 <div class="video-container">
@@ -97,9 +100,6 @@
                         Your browser does not support the video tag.
                     </video>
                 </div>
-                
-                <h1 style="color: wheat; text-align: center; margin: 2rem 0;"> </h1>
-                <hr color="black" noshade style="margin: 2rem auto; max-width: 900px;">
             </main>
         </div>
     </div>
@@ -116,63 +116,4 @@
         </div>
         <div class="Oo">
             <p style="color: #D8A790; display: inline-block;">contact us:</p>
-            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
-            <div class="footerBottom">
-                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile Navigation Toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileToggle = document.querySelector('.mobile-toggle');
-            const navLinks = document.querySelector('.nav-links');
-            const navItems = document.querySelectorAll('.nav-links a');
-            
-            if (mobileToggle) {
-                mobileToggle.addEventListener('click', function() {
-                    navLinks.classList.toggle('active');
-                    mobileToggle.classList.toggle('active');
-                });
-            }
-            
-            // Close mobile menu when clicking on a link
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 768) {
-                        navLinks.classList.remove('active');
-                        mobileToggle.classList.remove('active');
-                    }
-                });
-            });
-            
-            // Prevent video from pausing on mobile when scrolling
-            const video = document.querySelector('video');
-            if (video) {
-                video.play().catch(function(error) {
-                    document.addEventListener('touchstart', function() {
-                        video.play();
-                    }, { once: true });
-                });
-            }
-            
-            // Add lazy loading to images
-            document.querySelectorAll('img').forEach(img => {
-                if (!img.hasAttribute('loading')) {
-                    img.setAttribute('loading', 'lazy');
-                }
-            });
-            
-            // Fix for HR elements on mobile
-            const hrElements = document.querySelectorAll('hr');
-            hrElements.forEach(hr => {
-                hr.style.margin = '1.5rem 0';
-                hr.style.border = 'none';
-                hr.style.height = '1px';
-                hr.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
-            });
-        });
-    </script>
-</body>
-</html>
+            <a style="color: #D8A790" href="mailto:

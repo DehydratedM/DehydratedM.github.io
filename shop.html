@@ -1,121 +1,124 @@
-﻿<!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="en" xmlns="https://dehydratedm.github.io/SiteTest/shop.html">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="styleSheet" href="styleSheet.css">
-    <title>DimDesk Studios</title>
-    <link rel="Icon" type="image/.ico" href="Icon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="DimDesk Studios Shop - Coming Soon">
+    <link rel="stylesheet" href="styleSheet.css">
+    <title>DimDesk Studios - Shop</title>
+    <link rel="icon" type="image/.ico" href="Icon.ico" />
 </head>
 <body>
-
-
-    <div class="Container"
-        <div class="content"
-             
+    <div class="Container">
+        <div class="content">
             <header>
                 <div class="HE">
                     <div class="lol">
                         <h1 style="color:lightcoral"><img alt="cat" src="cat.png" width="90" /></h1>
                     </div>
-                   
+                    
+                    <button class="mobile-toggle" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    
                     <nav class="nav-links">
                         <ul>
-                            <li><a style="color:antiquewhite" href="index.html"> Home </a></li>
-                            <li><a style="color:antiquewhite" href="portfolio.html"> Portfolio </a></li>
-                            <li><a style="color:antiquewhite" href="shop.html"> Shop- </a></li>
-                             </ul>
-            </nav>
-                            
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="portfolio.html">Portfolio</a></li>
+                            <li><a href="shop.html" class="active">Shop-</a></li>
+                        </ul>
+                    </nav>
                 </div>
-                
-               
             </header>
 
             <div class="llogo">
                 <h1 style="color:lightcoral">Soon To Come!</h1>
             </div>
 
-             
-        
-
-    
             <main>
-
                 <div class="websiteIntro">
-                    <p style=" color: wheat">
-
-                        ^^ please Understand the slow process!
+                    <p style="color: wheat">
+                        ^^ please Understand the slow process!<br>
                         In the meantime, talk to this fella!
-
                     </p>
-
                 </div>
 
                 <div class="crow">
-                    <h1 class="crowfont" style=" color: wheat"></h1>
                     <img alt="crow" src="crow.png" />
-
                 </div>
-
-
 
                 <div class="video-container">
-                    <video autoplay muted loop>
+                    <video autoplay muted loop playsinline>
                         <source src="D.mp4" type="video/mp4">
-
+                        Your browser does not support the video tag.
                     </video>
                 </div>
-
-                <!--<div class="trailercontainer">
-        <iframe width="700" height="315" src="https://www.youtube.com/embed/b2lC7cbFmXE?si=0QF0uBmAqdCE5Rj1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-    </div> -->
-
-
-
-
-
             </main>
-
-
-
-
-
-
-
-
-
         </div>
     </div>
-    <footer style=" background-color: black">
+    
+    <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
-
-                <a href="https://bsky.app/profile/fubiem.bsky.social"><img alt="bluesky-fillW" src="bluesky-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.youtube.com/@fubiereal"><img alt="youtube-fillW" src="youtube-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.patreon.com/c/DIMDESK"><img alt="pathronW" src="pathronW.png" width="30" height="30" /></a>
-                <a href="https://dimdesk.itch.io"><img alt="itchioW" src="itchioW.png" width="30" height="30" /></a>
-                <a href="https://cara.app/fubie/all"><img alt="caraW" src="caraW.png" width="30" height="30" /></a>
-
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer"><img alt="bluesky-fillW" src="bluesky-fillW.png" width="30" height="30" /></a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer"><img alt="youtube-fillW" src="youtube-fillW.png" width="30" height="30" /></a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer"><img alt="pathronW" src="pathronW.png" width="30" height="30" /></a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer"><img alt="itchioW" src="itchioW.png" width="30" height="30" /></a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer"><img alt="caraW" src="caraW.png" width="30" height="30" /></a>
             </div>
         </div>
         <div class="Oo">
-            <p2 style="color: #D8A790">contact us:</p2>
+            <p style="color: #D8A790; display: inline-block;">contact us:</p>
             <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
-
-
             <div class="footerBottom">
-                <p style=" color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
             </div>
         </div>
     </footer>
 
-
-
-
-
-
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navItems = document.querySelectorAll('.nav-links a');
+            
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    mobileToggle.classList.toggle('active');
+                });
+            }
+            
+            // Close mobile menu when clicking on a link
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        mobileToggle.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Prevent video from pausing on mobile when scrolling
+            const video = document.querySelector('video');
+            if (video) {
+                video.play().catch(function(error) {
+                    document.addEventListener('touchstart', function() {
+                        video.play();
+                    }, { once: true });
+                });
+            }
+            
+            // Add lazy loading to images
+            document.querySelectorAll('img').forEach(img => {
+                if (!img.hasAttribute('loading')) {
+                    img.setAttribute('loading', 'lazy');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

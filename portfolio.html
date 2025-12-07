@@ -116,4 +116,82 @@
         </div>
         <div class="Oo">
             <p style="color: #D8A790; display: inline-block;">contact us:</p>
-            <a style="color: #D8A790" href="mailto:
+            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
+            <div class="footerBottom">
+                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navItems = document.querySelectorAll('.nav-links a');
+            
+            if (mobileToggle) {
+                mobileToggle.addEventListener('click', function() {
+                    navLinks.classList.toggle('active');
+                    mobileToggle.classList.toggle('active');
+                });
+            }
+            
+            // Close mobile menu when clicking on a link
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        navLinks.classList.remove('active');
+                        mobileToggle.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Highlight current page
+            function highlightCurrentPage() {
+                const homeLink = document.getElementById('home-link');
+                const portfolioLink = document.getElementById('portfolio-link');
+                const shopLink = document.getElementById('shop-link');
+                
+                // Remove current-page class from all links
+                if (homeLink) homeLink.classList.remove('current-page');
+                if (portfolioLink) portfolioLink.classList.remove('current-page');
+                if (shopLink) shopLink.classList.remove('current-page');
+                
+                // Add current-page class to portfolio link
+                if (portfolioLink) {
+                    portfolioLink.classList.add('current-page');
+                    portfolioLink.innerHTML = '-Portfolio-';
+                }
+                
+                // Set other links text
+                if (homeLink) homeLink.innerHTML = 'Home';
+                if (shopLink) shopLink.innerHTML = 'Shop';
+            }
+            
+            // Call the function on page load
+            highlightCurrentPage();
+            
+            // Prevent video from pausing on mobile when scrolling
+            const video = document.querySelector('video');
+            if (video) {
+                video.play().catch(function(error) {
+                    document.addEventListener('touchstart', function() {
+                        video.play();
+                    }, { once: true });
+                });
+            }
+            
+            // Fix for HR elements
+            const hrElements = document.querySelectorAll('hr');
+            hrElements.forEach(hr => {
+                hr.style.margin = '1.5rem 0';
+                hr.style.border = 'none';
+                hr.style.height = '1px';
+                hr.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                hr.style.width = '100%';
+            });
+        });
+    </script>
+</body>
+</html>

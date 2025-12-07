@@ -14,7 +14,9 @@
             <header>
                 <div class="HE">
                     <div class="lol">
-                        <h1 style="color:lightcoral"><img alt="cat" src="cat.png" width="90" /></h1>
+                        <a href="index.html" title="Return to Home">
+                            <h1 style="color:lightcoral"><img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" /></h1>
+                        </a>
                     </div>
                     
                     <button class="mobile-toggle" aria-label="Toggle navigation menu">
@@ -25,7 +27,7 @@
                     
                     <nav class="nav-links">
                         <ul>
-                            <li><a href="index.html" id="home-link">Home-</a></li>
+                            <li><a href="index.html" id="home-link" class="current-page">Home-</a></li>
                             <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
                             <li><a href="shop.html" id="shop-link">Shop</a></li>
                         </ul>
@@ -34,7 +36,9 @@
             </header>
 
             <div class="llogo">
-                <h1 style="color:lightcoral"><img alt="logo2" src="logo2.png" /></h1>
+                <h1 style="color:lightcoral">
+                    <img alt="DimDesk Studios Main Logo" src="logo2.png" class="main-logo" />
+                </h1>
             </div>
 
             <main>
@@ -76,11 +80,21 @@
     <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
-                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer"><img alt="bluesky-fillW" src="bluesky-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer"><img alt="youtube-fillW" src="youtube-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer"><img alt="pathronW" src="pathronW.png" width="30" height="30" /></a>
-                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer"><img alt="itchioW" src="itchioW.png" width="30" height="30" /></a>
-                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer"><img alt="caraW" src="caraW.png" width="30" height="30" /></a>
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" />
+                </a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" />
+                </a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" />
+                </a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" />
+                </a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
+                    <img alt="Cara" src="caraW.png" width="30" height="30" />
+                </a>
             </div>
         </div>
         <div class="Oo">
@@ -99,8 +113,10 @@
             const navLinks = document.querySelector('.nav-links');
             const navItems = document.querySelectorAll('.nav-links a');
             
+            // Mobile menu functionality
             if (mobileToggle) {
-                mobileToggle.addEventListener('click', function() {
+                mobileToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     navLinks.classList.toggle('active');
                     mobileToggle.classList.toggle('active');
                 });
@@ -146,22 +162,40 @@
                         homeLink.classList.add('current-page');
                         homeLink.innerHTML = 'Home-';
                     }
-                    if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
-                    if (shopLink) shopLink.innerHTML = 'Shop';
+                    if (portfolioLink) {
+                        portfolioLink.innerHTML = 'Portfolio';
+                        portfolioLink.classList.remove('current-page');
+                    }
+                    if (shopLink) {
+                        shopLink.innerHTML = 'Shop';
+                        shopLink.classList.remove('current-page');
+                    }
                 } else if (currentPage === 'portfolio.html') {
                     if (portfolioLink) {
                         portfolioLink.classList.add('current-page');
                         portfolioLink.innerHTML = '-Portfolio-';
                     }
-                    if (homeLink) homeLink.innerHTML = 'Home';
-                    if (shopLink) shopLink.innerHTML = 'Shop';
+                    if (homeLink) {
+                        homeLink.innerHTML = 'Home';
+                        homeLink.classList.remove('current-page');
+                    }
+                    if (shopLink) {
+                        shopLink.innerHTML = 'Shop';
+                        shopLink.classList.remove('current-page');
+                    }
                 } else if (currentPage === 'shop.html') {
                     if (shopLink) {
                         shopLink.classList.add('current-page');
                         shopLink.innerHTML = 'Shop-';
                     }
-                    if (homeLink) homeLink.innerHTML = 'Home';
-                    if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
+                    if (homeLink) {
+                        homeLink.innerHTML = 'Home';
+                        homeLink.classList.remove('current-page');
+                    }
+                    if (portfolioLink) {
+                        portfolioLink.innerHTML = 'Portfolio';
+                        portfolioLink.classList.remove('current-page');
+                    }
                 }
             }
             
@@ -200,6 +234,19 @@
                 }
             });
             
+            // Ensure logo2.png loads properly
+            const mainLogo = document.querySelector('.main-logo');
+            if (mainLogo && !mainLogo.complete) {
+                mainLogo.addEventListener('error', function() {
+                    console.log('Logo failed to load, using fallback text');
+                    this.style.display = 'none';
+                    const parent = this.parentElement;
+                    if (parent && parent.tagName === 'H1') {
+                        parent.innerHTML = 'DimDesk.Studios';
+                    }
+                });
+            }
+            
             // Prevent video from pausing on mobile when scrolling
             const video = document.querySelector('video');
             if (video) {
@@ -208,6 +255,32 @@
                     document.addEventListener('touchstart', function() {
                         video.play();
                     }, { once: true });
+                });
+            }
+            
+            // Add logo click animation
+            const logoLink = document.querySelector('.lol a');
+            if (logoLink) {
+                logoLink.addEventListener('click', function(e) {
+                    // Add click animation
+                    const logoImg = this.querySelector('img');
+                    if (logoImg) {
+                        logoImg.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            logoImg.style.transform = '';
+                        }, 200);
+                    }
+                });
+            }
+            
+            // Add main logo click animation
+            const mainLogoImg = document.querySelector('.llogo img');
+            if (mainLogoImg) {
+                mainLogoImg.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
                 });
             }
         });

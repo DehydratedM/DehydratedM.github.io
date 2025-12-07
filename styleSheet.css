@@ -62,6 +62,9 @@ img {
     gap: 2em;
     flex-wrap: wrap;
     position: relative;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .lol {
@@ -69,6 +72,7 @@ img {
     padding-left: 1em;
     padding-top: 1em;
     z-index: 100;
+    flex-shrink: 0;
 }
 
 .lol img {
@@ -81,7 +85,7 @@ img {
     transform: scale(1.05);
 }
 
-/* Mobile Menu Toggle Button */
+/* Mobile Menu Toggle Button - HIDDEN ON DESKTOP */
 .mobile-toggle {
     display: none;
     background: none;
@@ -101,10 +105,10 @@ img {
     border-radius: 2px;
 }
 
-/* Navigation Links */
+/* Navigation Links - VISIBLE ON ALL SCREENS */
 .nav-links {
     list-style: none;
-    display: flex;
+    display: flex !important; /* Force display on all screens */
     align-items: center;
     padding-right: 2em;
     gap: 3em;
@@ -112,9 +116,11 @@ img {
 }
 
 .nav-links ul {
-    display: flex;
+    display: flex !important; /* Force display */
     gap: 3em;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links li {
@@ -128,6 +134,7 @@ img {
     transition: all 0.3s ease;
     position: relative;
     white-space: nowrap;
+    font-size: 18px;
 }
 
 .nav-links li a:hover {
@@ -136,18 +143,25 @@ img {
 }
 
 /* Active state indicators */
-.nav-links li a[href="index.html"]:after,
-.nav-links li a[href="portfolio.html"]:after,
-.nav-links li a[href="shop.html"]:after {
-    content: '-';
-    position: absolute;
-    right: -5px;
+.nav-links li a.active {
     color: lightcoral;
-    opacity: 0;
-    transition: opacity 0.3s ease;
 }
 
-.nav-links li a.active:after {
+.nav-links li a[href="index.html"].active:after,
+.nav-links li a[href="portfolio.html"].active:after,
+.nav-links li a[href="shop.html"].active:after {
+    content: '-';
+    position: absolute;
+    right: -8px;
+    color: lightcoral;
+}
+
+/* For desktop, show dash indicators in navigation */
+.nav-links li a[href="index.html"]:after {
+    content: '-';
+    position: absolute;
+    right: -8px;
+    color: lightcoral;
     opacity: 1;
 }
 
@@ -199,6 +213,13 @@ main {
     color: wheat;
     font-size: 1.1rem;
     margin-bottom: 1rem;
+}
+
+.websiteIntro h1 {
+    color: wheat;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 /* ==========================================================================
@@ -266,12 +287,20 @@ main {
 }
 
 /* ==========================================================================
-   Portfolio Page Specific
+   Portfolio Page Specific - FIXED ALIGNMENT
    ========================================================================== */
 .portflio {
     justify-content: center;
-    align-content: center;
+    align-items: center;
+    text-align: center;
     margin: 2rem 0;
+}
+
+.portflio h2 {
+    color: wheat;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
 }
 
 .Port {
@@ -284,445 +313,8 @@ main {
     padding: 2rem;
     background: rgba(0, 0, 0, 0.6);
     border-radius: 12px;
+    text-align: left;
 }
 
 .Port h3 {
-    color: wheat;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-size: 1.4rem;
-}
-
-.Port p {
-    color: mintcream;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-}
-
-.Port hr {
-    border: none;
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.2);
-    margin: 1.5rem 0;
-}
-
-/* ==========================================================================
-   Shop Page Specific
-   ========================================================================== */
-.crow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 3rem 1rem;
-    margin: 2rem auto;
-    max-width: 800px;
-    filter: brightness(0.9);
-    position: relative;
-    z-index: 3;
-}
-
-.crow img {
-    max-width: 500px;
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-}
-
-.crowfont {
-    font-family: Antaro, sans-serif;
-    font-weight: 10;
-}
-
-/* ==========================================================================
-   Footer
-   ========================================================================== */
-footer {
-    background-color: black;
-    padding: 3rem 1rem 1.5rem;
-    margin-top: auto;
-    position: relative;
-    z-index: 3;
-}
-
-.footerContainer {
-    width: 100%;
-    padding: 20px 10px;
-}
-
-.socialIcons {
-    display: flex;
-    justify-content: center;
-    padding-bottom: 2rem;
-    gap: 1.5em;
-    flex-wrap: wrap;
-}
-
-.socialIcons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.socialIcons a:hover {
-    background: rgba(185, 48, 207, 0.3);
-    transform: translateY(-3px);
-}
-
-.socialIcons img {
-    width: 30px;
-    height: 30px;
-    transition: filter 0.3s ease;
-}
-
-.socialIcons a:hover img {
-    filter: brightness(1.2);
-}
-
-.Oo {
-    text-align: center;
-    padding-top: 1rem;
-}
-
-.Oo p, .Oo a {
-    display: inline-block;
-    margin: 0 5px;
-    font-size: 1rem;
-}
-
-.footerBottom {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.footerBottom p {
-    color: moccasin;
-    font-size: 0.9rem;
-}
-
-.designer {
-    color: lightcoral;
-    font-weight: 600;
-}
-
-/* ==========================================================================
-   RESPONSIVE BREAKPOINTS
-   ========================================================================== */
-
-/* Desktop Large (1200px and above) */
-@media screen and (min-width: 1200px) {
-    .nav-links {
-        gap: 4em;
-    }
-    
-    .websiteIntro {
-        max-width: 1000px;
-        padding: 4rem 3rem;
-    }
-    
-    .Port {
-        max-width: 1000px;
-    }
-}
-
-/* Desktop / Tablet (769px - 1199px) */
-@media screen and (max-width: 1199px) and (min-width: 769px) {
-    .nav-links {
-        gap: 2em;
-    }
-    
-    .nav-links ul {
-        gap: 2em;
-    }
-    
-    .websiteIntro {
-        padding: 2.5rem 1.5rem;
-        margin: 1.5rem;
-    }
-    
-    .llogo img {
-        max-width: 500px;
-    }
-}
-
-/* Tablet (768px) */
-@media screen and (max-width: 768px) {
-    html {
-        font-size: 15px;
-    }
-    
-    .HE {
-        padding: 15px;
-        gap: 1em;
-    }
-    
-    .lol {
-        padding-left: 0.5em;
-        padding-top: 0.5em;
-    }
-    
-    .lol img {
-        width: 70px;
-    }
-    
-    /* Mobile Menu Toggle */
-    .mobile-toggle {
-        display: block;
-        order: 2;
-    }
-    
-    /* Navigation for Mobile */
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 280px;
-        height: 100vh;
-        background: rgba(10, 10, 10, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        justify-content: center;
-        padding: 80px 20px 20px;
-        gap: 0;
-        z-index: 999;
-        transition: right 0.4s ease;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .nav-links.active {
-        right: 0;
-    }
-    
-    .nav-links ul {
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-    }
-    
-    .nav-links li {
-        width: 100%;
-    }
-    
-    .nav-links li a {
-        display: block;
-        padding: 15px 20px;
-        font-size: 1.1rem;
-        border-radius: 6px;
-        text-align: center;
-    }
-    
-    .nav-links li a:hover {
-        background: rgba(185, 48, 207, 0.1);
-    }
-    
-    /* Mobile Toggle Animation */
-    .mobile-toggle.active span:nth-child(1) {
-        transform: rotate(45deg) translate(6px, 6px);
-    }
-    
-    .mobile-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-    
-    .mobile-toggle.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
-    }
-    
-    /* Main Content Adjustments */
-    .llogo {
-        padding: 1.5em 1em;
-    }
-    
-    .llogo img {
-        max-width: 350px;
-    }
-    
-    .websiteIntro {
-        padding: 1.5rem 1rem;
-        margin: 1rem 0.5rem;
-        letter-spacing: 0.15rem;
-        line-height: 1.7;
-    }
-    
-    .websiteIntro p {
-        font-size: 1rem;
-    }
-    
-    /* Portfolio Adjustments */
-    .Port {
-        padding: 1.5rem 1rem;
-        margin: 1rem 0.5rem;
-        letter-spacing: 0.15rem;
-    }
-    
-    /* Shop Adjustments */
-    .crow {
-        padding: 2rem 1rem;
-        margin: 1rem auto;
-    }
-    
-    .crow img {
-        max-width: 400px;
-    }
-    
-    /* Trailer Adjustments */
-    .trailercontainer {
-        padding: 2rem 0.5rem;
-        margin: 1rem auto;
-    }
-    
-    .trailercontainer .video-wrapper {
-        padding: 0.5rem;
-    }
-    
-    /* Footer Adjustments */
-    .socialIcons {
-        gap: 1rem;
-    }
-    
-    .socialIcons a {
-        width: 45px;
-        height: 45px;
-    }
-    
-    .socialIcons img {
-        width: 25px;
-        height: 25px;
-    }
-    
-    footer {
-        padding: 2rem 0.5rem 1rem;
-    }
-    
-    .Oo p, .Oo a {
-        display: block;
-        margin: 5px 0;
-        font-size: 0.95rem;
-    }
-}
-
-/* Mobile (480px and below) */
-@media screen and (max-width: 480px) {
-    html {
-        font-size: 14px;
-    }
-    
-    .lol img {
-        width: 60px;
-    }
-    
-    .nav-links {
-        width: 250px;
-    }
-    
-    .llogo img {
-        max-width: 280px;
-    }
-    
-    .websiteIntro {
-        padding: 1.2rem 0.8rem;
-        letter-spacing: 0.1rem;
-        line-height: 1.6;
-    }
-    
-    .websiteIntro p {
-        font-size: 0.95rem;
-    }
-    
-    .crow img {
-        max-width: 300px;
-    }
-    
-    .socialIcons {
-        gap: 0.8rem;
-    }
-    
-    .socialIcons a {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .socialIcons img {
-        width: 22px;
-        height: 22px;
-    }
-    
-    .Port h3 {
-        font-size: 1.2rem;
-    }
-}
-
-/* Landscape Mobile */
-@media screen and (max-height: 600px) and (orientation: landscape) {
-    .nav-links {
-        padding-top: 60px;
-        overflow-y: auto;
-    }
-    
-    .nav-links ul {
-        gap: 0.5rem;
-    }
-    
-    .nav-links li a {
-        padding: 10px 15px;
-        font-size: 0.95rem;
-    }
-    
-    .websiteIntro {
-        padding: 1.2rem 0.8rem;
-    }
-    
-    .crow {
-        padding: 1.5rem 0.5rem;
-    }
-}
-
-/* Touch Device Optimizations */
-@media (hover: none) and (pointer: coarse) {
-    .nav-links li a {
-        padding: 12px 20px;
-        min-height: 44px;
-    }
-    
-    .socialIcons a {
-        min-width: 44px;
-        min-height: 44px;
-    }
-    
-    button {
-        min-height: 44px;
-        min-width: 44px;
-    }
-}
-
-/* Print Styles */
-@media print {
-    .video-container,
-    .mobile-toggle,
-    .socialIcons {
-        display: none !important;
-    }
-    
-    body {
-        background: white !important;
-        color: black !important;
-    }
-    
-    .websiteIntro, .Port {
-        background: white !important;
-        color: black !important;
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-    
-    a {
-        color: blue !important;
-        text-decoration: underline !important;
-    }
-}
+    color: wheat

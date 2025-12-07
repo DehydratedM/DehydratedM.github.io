@@ -25,9 +25,9 @@
                     
                     <nav class="nav-links">
                         <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="portfolio.html">Portfolio</a></li>
-                            <li><a href="shop.html" class="active">Shop-</a></li>
+                            <li><a href="index.html" id="home-link">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link">Shop-</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -102,6 +102,31 @@
                 });
             });
             
+            // Highlight current page
+            function highlightCurrentPage() {
+                const homeLink = document.getElementById('home-link');
+                const portfolioLink = document.getElementById('portfolio-link');
+                const shopLink = document.getElementById('shop-link');
+                
+                // Remove current-page class from all links
+                if (homeLink) homeLink.classList.remove('current-page');
+                if (portfolioLink) portfolioLink.classList.remove('current-page');
+                if (shopLink) shopLink.classList.remove('current-page');
+                
+                // Add current-page class to shop link
+                if (shopLink) {
+                    shopLink.classList.add('current-page');
+                    shopLink.innerHTML = 'Shop-';
+                }
+                
+                // Set other links text
+                if (homeLink) homeLink.innerHTML = 'Home';
+                if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
+            }
+            
+            // Call the function on page load
+            highlightCurrentPage();
+            
             // Prevent video from pausing on mobile when scrolling
             const video = document.querySelector('video');
             if (video) {
@@ -111,13 +136,6 @@
                     }, { once: true });
                 });
             }
-            
-            // Add lazy loading to images
-            document.querySelectorAll('img').forEach(img => {
-                if (!img.hasAttribute('loading')) {
-                    img.setAttribute('loading', 'lazy');
-                }
-            });
         });
     </script>
 </body>

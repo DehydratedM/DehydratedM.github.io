@@ -25,9 +25,9 @@
                     
                     <nav class="nav-links">
                         <ul>
-                            <li><a href="index.html" class="active">Home-</a></li>
-                            <li><a href="portfolio.html">Portfolio</a></li>
-                            <li><a href="shop.html">Shop</a></li>
+                            <li><a href="index.html" id="home-link">Home-</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link">Shop</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -128,6 +128,46 @@
                 }
             });
             
+            // Highlight current page in navigation
+            function highlightCurrentPage() {
+                const currentPage = window.location.pathname.split('/').pop();
+                const homeLink = document.getElementById('home-link');
+                const portfolioLink = document.getElementById('portfolio-link');
+                const shopLink = document.getElementById('shop-link');
+                
+                // Remove current-page class from all links
+                if (homeLink) homeLink.classList.remove('current-page');
+                if (portfolioLink) portfolioLink.classList.remove('current-page');
+                if (shopLink) shopLink.classList.remove('current-page');
+                
+                // Add current-page class to the active link
+                if (currentPage === 'index.html' || currentPage === '') {
+                    if (homeLink) {
+                        homeLink.classList.add('current-page');
+                        homeLink.innerHTML = 'Home-';
+                    }
+                    if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
+                    if (shopLink) shopLink.innerHTML = 'Shop';
+                } else if (currentPage === 'portfolio.html') {
+                    if (portfolioLink) {
+                        portfolioLink.classList.add('current-page');
+                        portfolioLink.innerHTML = '-Portfolio-';
+                    }
+                    if (homeLink) homeLink.innerHTML = 'Home';
+                    if (shopLink) shopLink.innerHTML = 'Shop';
+                } else if (currentPage === 'shop.html') {
+                    if (shopLink) {
+                        shopLink.classList.add('current-page');
+                        shopLink.innerHTML = 'Shop-';
+                    }
+                    if (homeLink) homeLink.innerHTML = 'Home';
+                    if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
+                }
+            }
+            
+            // Call the function on page load
+            highlightCurrentPage();
+            
             // Make YouTube iframes responsive
             function makeIframesResponsive() {
                 const iframes = document.querySelectorAll('iframe');
@@ -160,23 +200,7 @@
                 }
             });
             
-            // Highlight active page in navigation
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinksAll = document.querySelectorAll('.nav-links a');
-            
-            navLinksAll.forEach(link => {
-                link.classList.remove('active');
-                const linkHref = link.getAttribute('href');
-                if (linkHref === currentPage || 
-                    (currentPage === '' && linkHref === 'index.html') ||
-                    (currentPage === 'index.html' && linkHref === 'index.html')) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Prevent video from pausing on mobile when scrolling
-        document.addEventListener('DOMContentLoaded', function() {
+            // Prevent video from pausing on mobile when scrolling
             const video = document.querySelector('video');
             if (video) {
                 video.play().catch(function(error) {

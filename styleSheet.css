@@ -1,203 +1,209 @@
-﻿* {
+/* ==========================================================================
+   CSS Reset & Base Styles - ALL DEVICES
+   ========================================================================== */
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     font-family: Antaro, sans-serif;
 }
 
-.li,a, button{
-    font-weight: 500;
-    font-size:16px;
-    text-decoration: none;
-
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
 }
 
-.HE {
-    display: flex;
-    padding: 30px, 10px,35px;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8rem;
-    padding-inline: auto;
-    gap: 2em;
-}
-
-.pageName {
-    justify-content: center;
-    align-content: center;
-    padding-left: 50%;
-    padding-right: 50%;
-}
-
-.portflio {
-    justify-content: center;
-    align-content:center;
-
-}
-
-.experfirsttext{
-    justify-content:center;
-}
-
-.expertexttwo {
-    
-    columns: 100px;
-}
-.me {
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 800;
-    margin: 0;
-    justify-content: center; 
-    align-items: center;
-    filter: brightness(0.9)
-}
-
-.Port {
-    font-family: 'Courier New',serif;
-    font-weight: 300;
-    grid-row-gap: inherit;
-    gap: 2rem;
-    letter-spacing: 0.2rem;
-}
-.crowfont {
-    font-family: Antaro, sans-serif;
-    font-weight: 10;
-}
-.crow {
-    justify-content: center;
-    align-self: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 800;
-    margin: 0;
-    justify-content: center;
-    align-items: center;
-    filter: brightness(0.9)
-}
-.lol {
-    cursor: default;
-    padding-left: 2em;
-    padding-top: 1em;
-}
-.nav-links {
-    list-style: none;
-    display: flex;
-    align-content: center;
-    justify-items: center;
-    padding-right: 2em;
-    gap: 20em;
-    justify-content: space-evenly;
-
-}
-
-.nav-links li{
-    display:inline-block;
-    padding: 0, 20px, 20px;
- 
-}
-.nav-links li a {
-    transition: all 0.3s ease 0s;
-
-}
-
-.nav-links li a:hover {
-    color:#b930cf;
-
-}
-
-
- 
-
-.container {
-    display: grid;
-    grid-template-rows: 1fr auto;
+body {
+    background-color: #0a0a0a;
+    color: wheat;
+    line-height: 1.6;
+    overflow-x: hidden;
     min-height: 100vh;
+    position: relative;
 }
 
-.content {
-    flex: 1; /* Pushes the footer to the bottom */
-}
-
-.llogo {
-    display: flex;
-    padding: 0 1em;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+a, button {
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+    color: inherit;
 }
 
 img {
     display: block;
     max-width: 100%;
-}
-.main {
-    padding: 0 1em;
-    max-width: 200px;
-
+    height: auto;
 }
 
-
-.Head {
-    padding: 10px, 5px, 15px;
+/* ==========================================================================
+   Layout & Container
+   ========================================================================== */
+.Container {
+    min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.content {
+    flex: 1;
+    position: relative;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   Header & Navigation - RESPONSIVE
+   ========================================================================== */
+.HE {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    gap: 2em;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.lol {
+    cursor: default;
+    padding-left: 1em;
+    padding-top: 1em;
+    z-index: 100;
+}
+
+.lol img {
+    width: 90px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.lol img:hover {
+    transform: scale(1.05);
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.mobile-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: antiquewhite;
+    margin: 4px 0;
+    transition: 0.3s;
+    border-radius: 2px;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    padding-right: 2em;
+    gap: 3em;
+    transition: all 0.3s ease;
+}
+
+.nav-links ul {
+    display: flex;
+    gap: 3em;
+    list-style: none;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links li a {
+    color: antiquewhite;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap;
+}
+
+.nav-links li a:hover {
+    color: #b930cf;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Active state indicators */
+.nav-links li a[href="index.html"]:after,
+.nav-links li a[href="portfolio.html"]:after,
+.nav-links li a[href="shop.html"]:after {
+    content: '-';
+    position: absolute;
+    right: -5px;
+    color: lightcoral;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links li a.active:after {
+    opacity: 1;
+}
+
+/* ==========================================================================
+   Main Logo
+   ========================================================================== */
+.llogo {
+    display: flex;
+    padding: 2em 1em;
     justify-content: center;
-    gap: 2em;
-   
-    text-decoration-thickness: 3px;
-  
-}
-
-.websiteIntro {
-    padding-top: 5rem;
-    padding-left: 5rem;
-    padding-right: 5rem;
-    padding-block: auto;
+    align-items: center;
     text-align: center;
-    text-indent: 10px;
-    letter-spacing: 0.2rem;
-    line-height: 1.6;
-    word-spacing: 5px;
 }
 
-.Oo{
-    justify-items:center;
-
-}
-footer {
-    padding-top: 10rem;
-    
-}
-.footerContainer {
-    flex: 6; /* Pushes the footer down */
-}
-
-
-.footerContainer {
+.llogo img {
+    max-width: 600px;
     width: 100%;
-    padding: 20px, 10px, 10px;
-}
-.socialIcons{
-    display: flex;
-    justify-content:center;
-    padding-bottom: 2rem;
-    gap: 2em;
-
+    height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
 }
 
-.socialIcons a:hover{
-    color: #1e2722;
-    transition: ease-in;
+/* ==========================================================================
+   Main Content
+   ========================================================================== */
+main {
+    padding: 0 1em;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 3;
 }
 
+/* Website Introduction */
+.websiteIntro {
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    max-width: 900px;
+    text-align: center;
+    letter-spacing: 0.2rem;
+    line-height: 1.8;
+    word-spacing: 3px;
+}
 
+.websiteIntro p {
+    color: wheat;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
 
-
-/* Fullscreen Video Container */
+/* ==========================================================================
+   Video Background - FIXED FOR ALL SCREENS
+   ========================================================================== */
 .video-container {
     position: fixed;
     top: 0;
@@ -208,15 +214,14 @@ footer {
     overflow: hidden;
 }
 
-/* Make video cover the entire screen and stay responsive */
 .video-container video {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures video scales without stretching */
-    filter: brightness(0.3); /* Darken the video */
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.3);
 }
 
-/* Dark overlay to make video darker */
 .video-container::after {
     content: "";
     position: absolute;
@@ -224,37 +229,500 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7); /* Dark overlay, adjust opacity to make darker */
+    background: rgba(0, 0, 0, 0.7);
 }
 
-/* Content (to be placed above video) */
-.content {
-    position: relative;
-    z-index: 1;
-    color: white;
-    text-align: center;
-    padding: 100px;
-    font-size: 24px;
-}
-
-/* Ensure responsive font size and padding for smaller screens */
-@media (max-width: 768px) {
-    .content {
-        font-size: 20px;
-        padding: 50px;
-    }
-}
-
-/* Style for centering */
+/* ==========================================================================
+   Trailer Container - RESPONSIVE YOUTUBE
+   ========================================================================== */
 .trailercontainer {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    
-    width: 800;
-    margin: 0;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    padding: 4rem 1rem;
+    margin: 2rem auto;
+    max-width: 900px;
+    position: relative;
+    z-index: 3;
 }
 
+.trailercontainer .video-wrapper {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem;
+}
+
+.trailercontainer iframe {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9;
+    border-radius: 8px;
+    display: block;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   Portfolio Page Specific
+   ========================================================================== */
+.portflio {
+    justify-content: center;
+    align-content: center;
+    margin: 2rem 0;
+}
+
+.Port {
+    font-family: 'Courier New', serif;
+    font-weight: 300;
+    letter-spacing: 0.2rem;
+    line-height: 1.8;
+    margin: 2rem auto;
+    max-width: 900px;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+}
+
+.Port h3 {
+    color: wheat;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.Port p {
+    color: mintcream;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.Port hr {
+    border: none;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 1.5rem 0;
+}
+
+/* ==========================================================================
+   Shop Page Specific
+   ========================================================================== */
+.crow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 1rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    filter: brightness(0.9);
+    position: relative;
+    z-index: 3;
+}
+
+.crow img {
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.crowfont {
+    font-family: Antaro, sans-serif;
+    font-weight: 10;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+footer {
+    background-color: black;
+    padding: 3rem 1rem 1.5rem;
+    margin-top: auto;
+    position: relative;
+    z-index: 3;
+}
+
+.footerContainer {
+    width: 100%;
+    padding: 20px 10px;
+}
+
+.socialIcons {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
+    gap: 1.5em;
+    flex-wrap: wrap;
+}
+
+.socialIcons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.socialIcons a:hover {
+    background: rgba(185, 48, 207, 0.3);
+    transform: translateY(-3px);
+}
+
+.socialIcons img {
+    width: 30px;
+    height: 30px;
+    transition: filter 0.3s ease;
+}
+
+.socialIcons a:hover img {
+    filter: brightness(1.2);
+}
+
+.Oo {
+    text-align: center;
+    padding-top: 1rem;
+}
+
+.Oo p, .Oo a {
+    display: inline-block;
+    margin: 0 5px;
+    font-size: 1rem;
+}
+
+.footerBottom {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footerBottom p {
+    color: moccasin;
+    font-size: 0.9rem;
+}
+
+.designer {
+    color: lightcoral;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Desktop Large (1200px and above) */
+@media screen and (min-width: 1200px) {
+    .nav-links {
+        gap: 4em;
+    }
+    
+    .websiteIntro {
+        max-width: 1000px;
+        padding: 4rem 3rem;
+    }
+    
+    .Port {
+        max-width: 1000px;
+    }
+}
+
+/* Desktop / Tablet (769px - 1199px) */
+@media screen and (max-width: 1199px) and (min-width: 769px) {
+    .nav-links {
+        gap: 2em;
+    }
+    
+    .nav-links ul {
+        gap: 2em;
+    }
+    
+    .websiteIntro {
+        padding: 2.5rem 1.5rem;
+        margin: 1.5rem;
+    }
+    
+    .llogo img {
+        max-width: 500px;
+    }
+}
+
+/* Tablet (768px) */
+@media screen and (max-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+    
+    .HE {
+        padding: 15px;
+        gap: 1em;
+    }
+    
+    .lol {
+        padding-left: 0.5em;
+        padding-top: 0.5em;
+    }
+    
+    .lol img {
+        width: 70px;
+    }
+    
+    /* Mobile Menu Toggle */
+    .mobile-toggle {
+        display: block;
+        order: 2;
+    }
+    
+    /* Navigation for Mobile */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        padding: 80px 20px 20px;
+        gap: 0;
+        z-index: 999;
+        transition: right 0.4s ease;
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links ul {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+    
+    .nav-links li {
+        width: 100%;
+    }
+    
+    .nav-links li a {
+        display: block;
+        padding: 15px 20px;
+        font-size: 1.1rem;
+        border-radius: 6px;
+        text-align: center;
+    }
+    
+    .nav-links li a:hover {
+        background: rgba(185, 48, 207, 0.1);
+    }
+    
+    /* Mobile Toggle Animation */
+    .mobile-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(6px, 6px);
+    }
+    
+    .mobile-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+    }
+    
+    /* Main Content Adjustments */
+    .llogo {
+        padding: 1.5em 1em;
+    }
+    
+    .llogo img {
+        max-width: 350px;
+    }
+    
+    .websiteIntro {
+        padding: 1.5rem 1rem;
+        margin: 1rem 0.5rem;
+        letter-spacing: 0.15rem;
+        line-height: 1.7;
+    }
+    
+    .websiteIntro p {
+        font-size: 1rem;
+    }
+    
+    /* Portfolio Adjustments */
+    .Port {
+        padding: 1.5rem 1rem;
+        margin: 1rem 0.5rem;
+        letter-spacing: 0.15rem;
+    }
+    
+    /* Shop Adjustments */
+    .crow {
+        padding: 2rem 1rem;
+        margin: 1rem auto;
+    }
+    
+    .crow img {
+        max-width: 400px;
+    }
+    
+    /* Trailer Adjustments */
+    .trailercontainer {
+        padding: 2rem 0.5rem;
+        margin: 1rem auto;
+    }
+    
+    .trailercontainer .video-wrapper {
+        padding: 0.5rem;
+    }
+    
+    /* Footer Adjustments */
+    .socialIcons {
+        gap: 1rem;
+    }
+    
+    .socialIcons a {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .socialIcons img {
+        width: 25px;
+        height: 25px;
+    }
+    
+    footer {
+        padding: 2rem 0.5rem 1rem;
+    }
+    
+    .Oo p, .Oo a {
+        display: block;
+        margin: 5px 0;
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile (480px and below) */
+@media screen and (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .lol img {
+        width: 60px;
+    }
+    
+    .nav-links {
+        width: 250px;
+    }
+    
+    .llogo img {
+        max-width: 280px;
+    }
+    
+    .websiteIntro {
+        padding: 1.2rem 0.8rem;
+        letter-spacing: 0.1rem;
+        line-height: 1.6;
+    }
+    
+    .websiteIntro p {
+        font-size: 0.95rem;
+    }
+    
+    .crow img {
+        max-width: 300px;
+    }
+    
+    .socialIcons {
+        gap: 0.8rem;
+    }
+    
+    .socialIcons a {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .socialIcons img {
+        width: 22px;
+        height: 22px;
+    }
+    
+    .Port h3 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Landscape Mobile */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+    .nav-links {
+        padding-top: 60px;
+        overflow-y: auto;
+    }
+    
+    .nav-links ul {
+        gap: 0.5rem;
+    }
+    
+    .nav-links li a {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .websiteIntro {
+        padding: 1.2rem 0.8rem;
+    }
+    
+    .crow {
+        padding: 1.5rem 0.5rem;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+    .nav-links li a {
+        padding: 12px 20px;
+        min-height: 44px;
+    }
+    
+    .socialIcons a {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .video-container,
+    .mobile-toggle,
+    .socialIcons {
+        display: none !important;
+    }
+    
+    body {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .websiteIntro, .Port {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    a {
+        color: blue !important;
+        text-decoration: underline !important;
+    }
+}

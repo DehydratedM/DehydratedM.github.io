@@ -1032,6 +1032,24 @@ function initScrollAnimations() {
     });
 }
 
+// Add this to your code if you want simple password protection
+const ADMIN_PASSWORD = "dimdesk2024"; // Change this to your actual password
+
+function checkPassword() {
+    const password = prompt("Enter admin password:");
+    if (password === ADMIN_PASSWORD) {
+        showNotification("Access granted!", "success");
+        // Enable admin features here
+        return true;
+    } else {
+        showNotification("Incorrect password", "error");
+        return false;
+    }
+}
+
+// Call this when needed
+// checkPassword();
+
 // ==========================================================================
 // EXPORT FUNCTIONS FOR GLOBAL USE
 // ==========================================================================

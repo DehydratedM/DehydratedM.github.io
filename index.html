@@ -9,34 +9,39 @@
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <link rel="preload" as="image" href="logo2.png">
     <link rel="preload" as="image" href="cat.png">
+    <style>
+        /* Admin access in footer */
+        .admin-footer-access {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .admin-footer-access a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(240, 128, 128, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-footer-access a:hover {
+            color: lightcoral;
+            background: rgba(240, 128, 128, 0.1);
+        }
+    </style>
 </head>
 <body>
-    <!-- Admin Panel Access Button (Fixed Position) -->
-    <button id="admin-access" class="admin-access-btn" title="Admin Access">⚙️</button>
-
-    <!-- Admin Login Modal -->
-    <div id="admin-login-modal" class="admin-login-modal">
-        <div class="admin-login-content">
-            <h2>Admin Access</h2>
-            <form id="admin-login-form">
-                <div class="form-group">
-                    <label for="admin-username">Username:</label>
-                    <input type="text" id="admin-username" required>
-                </div>
-                <div class="form-group">
-                    <label for="admin-password">Password:</label>
-                    <input type="password" id="admin-password" required>
-                </div>
-                <button type="submit" class="admin-login-btn">Login</button>
-                <button type="button" class="admin-cancel-btn">Cancel</button>
-            </form>
-            <div class="admin-instructions">
-                <p><strong>Default Credentials:</strong></p>
-                <p>Username: admin</p>
-                <p>Password: dimdesk2025</p>
-                <p><small>Change these in admin.js after first login</small></p>
-            </div>
-        </div>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
     </div>
 
     <div class="Container">
@@ -76,6 +81,7 @@
                 </div>
             </header>
 
+            <!-- Main Logo -->
             <div class="llogo">
                 <h1 style="color:lightcoral">
                     <img alt="DimDesk Studios Main Logo" src="logo2.png" class="main-logo" 
@@ -84,7 +90,7 @@
                 </h1>
             </div>
 
-            <!-- YouTube Trailer Section (Replacing D.mp4) -->
+            <!-- YouTube Video Below Logo -->
             <div class="trailer-main">
                 <div class="video-wrapper">
                     <iframe src="https://www.youtube.com/embed/b2lC7cbFmXE?si=0QF0uBmAqdCE5Rj1" 
@@ -98,7 +104,7 @@
 
             <main>
                 <div class="websiteIntro">
-                    <p style="color: wheat">
+                    <p style="color: wheat" id="intro-text">
                         Hi, I'm M, the heart and soul behind this one-person indie studio. Games and art have been my passions for as long as I can remember, and they've shaped not just my creative journey but also the vision for this studio.
 
                         My dream is to craft meaningful experiences through games that blend creativity, storytelling, and artistry. It's a challenging road, but I'm committed to pouring my heart into every project, no matter how small or ambitious.
@@ -119,11 +125,9 @@
                             <div class="featured-image" id="latest-release">
                                 <img src="https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=LATEST+RELEASE" 
                                      alt="Latest Release" 
-                                     data-editable="true"
-                                     data-content-type="image"
-                                     data-target="latest-release-image">
+                                     id="latest-release-image">
                             </div>
-                            <p data-editable="true" data-content-type="text" data-target="latest-release-desc">
+                            <p id="latest-release-desc">
                                 Check out our most recent game release, available now on itch.io and other platforms!
                             </p>
                         </div>
@@ -133,11 +137,9 @@
                             <div class="featured-image" id="upcoming-project">
                                 <img src="https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=UPCOMING+PROJECT" 
                                      alt="Upcoming Project"
-                                     data-editable="true"
-                                     data-content-type="image"
-                                     data-target="upcoming-project-image">
+                                     id="upcoming-project-image">
                             </div>
-                            <p data-editable="true" data-content-type="text" data-target="upcoming-project-desc">
+                            <p id="upcoming-project-desc">
                                 An exciting new adventure is in development. Stay tuned for updates and announcements!
                             </p>
                         </div>
@@ -149,11 +151,11 @@
                     <h2 class="carousel-title">Released Games</h2>
                     <div class="carousel-container" id="released-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track" data-carousel-type="released">
+                        <div class="carousel-track" id="released-track">
                             <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
-                        <div class="carousel-dots"></div>
+                        <div class="carousel-dots" id="released-dots"></div>
                     </div>
                 </section>
 
@@ -162,22 +164,13 @@
                     <h2 class="carousel-title">Upcoming Projects</h2>
                     <div class="carousel-container" id="upcoming-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track" data-carousel-type="upcoming">
+                        <div class="carousel-track" id="upcoming-track">
                             <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
-                        <div class="carousel-dots"></div>
+                        <div class="carousel-dots" id="upcoming-dots"></div>
                     </div>
                 </section>
-
-                <!-- Background Video (Now used as actual background) -->
-                <div class="background-video">
-                    <video autoplay muted loop playsinline id="bg-video">
-                        <source src="D.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="video-overlay"></div>
-                </div>
             </main>
         </div>
     </div>
@@ -209,63 +202,6 @@
         </div>
     </div>
 
-    <!-- Admin Panel (Hidden by default) -->
-    <div class="admin-panel-overlay" id="admin-panel-overlay">
-        <div class="admin-panel">
-            <div class="admin-header">
-                <h1>Admin Panel</h1>
-                <button class="admin-logout" id="admin-logout">Logout</button>
-            </div>
-            <div class="admin-sections">
-                <!-- Content Management -->
-                <div class="admin-section">
-                    <h2>Content Management</h2>
-                    <div class="admin-control">
-                        <label>Homepage Introduction:</label>
-                        <textarea id="admin-intro-text" placeholder="Edit introduction text..."></textarea>
-                    </div>
-                    <div class="admin-control">
-                        <label>Featured Item 1 Image URL:</label>
-                        <input type="text" id="admin-featured-1-img" placeholder="Image URL">
-                    </div>
-                    <div class="admin-control">
-                        <label>Featured Item 1 Text:</label>
-                        <input type="text" id="admin-featured-1-text" placeholder="Description text">
-                    </div>
-                    <button class="admin-save-btn" onclick="saveContentChanges()">Save Content Changes</button>
-                </div>
-
-                <!-- Carousel Management -->
-                <div class="admin-section">
-                    <h2>Carousel Items</h2>
-                    <div id="carousel-items-list">
-                        <!-- Dynamic carousel items will be loaded here -->
-                    </div>
-                    <button class="admin-add-btn" onclick="addCarouselItem()">Add New Item</button>
-                </div>
-
-                <!-- Shop Management -->
-                <div class="admin-section">
-                    <h2>Shop Products</h2>
-                    <div id="shop-items-list">
-                        <!-- Dynamic shop items will be loaded here -->
-                    </div>
-                    <button class="admin-add-btn" onclick="addShopItem()">Add New Product</button>
-                </div>
-
-                <!-- Settings -->
-                <div class="admin-section">
-                    <h2>Settings</h2>
-                    <div class="admin-control">
-                        <label>Change Admin Password:</label>
-                        <input type="password" id="admin-new-password" placeholder="New password">
-                    </div>
-                    <button class="admin-save-btn" onclick="updateAdminPassword()">Update Password</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
@@ -292,10 +228,16 @@
             <div class="footerBottom">
                 <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
             </div>
+            <!-- Admin Access in Footer -->
+            <div class="admin-footer-access">
+                <a href="admin.html" title="Admin Panel">
+                    <span>⚙️</span>
+                    <span>Admin Access</span>
+                </a>
+            </div>
         </div>
     </footer>
 
     <script src="main.js"></script>
-    <script src="admin.js"></script>
 </body>
 </html>

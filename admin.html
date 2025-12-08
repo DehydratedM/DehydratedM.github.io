@@ -136,19 +136,6 @@
             margin-bottom: 3rem;
         }
         
-        .admin-section {
-            background: rgba(20, 20, 20, 0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 1px solid rgba(240, 128, 128, 0.2);
-        }
-        
-        .admin-section h2 {
-            color: lightcoral;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-        
         .admin-control {
             margin-bottom: 1.5rem;
         }
@@ -273,76 +260,93 @@
                 <button id="logout-btn" class="admin-logout">Logout</button>
             </div>
 
-            
             <div id="admin-message" class="admin-message"></div>
 
-            <!-- Add this to admin.html in the admin-panel section -->
-<div class="admin-section">
-    <h2>Security Settings</h2>
-    <div class="admin-control">
-        <label>Change Admin Password:</label>
-        <input type="password" id="new-password" placeholder="New Password">
-    </div>
-    <button class="admin-save-btn" onclick="changePassword()">Change Password</button>
-    <div class="admin-instructions">
-        <p><strong>Current Credentials:</strong></p>
-        <p>Username: <code>dimdesk_admin</code></p>
-        <p>To change password, enter new password above and click "Change Password"</p>
-        <p><strong>Important:</strong> Remember your new password as it will be required for future logins.</p>
-    </div>
-</div>
-
+            <!-- Tab Navigation -->
+            <div class="admin-tabs" id="admin-tabs">
+                <button class="admin-tab active" data-tab="home">🏠 Home</button>
+                <button class="admin-tab" data-tab="carousel">🎮 Games</button>
+                <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
+                <button class="admin-tab" data-tab="portfolio">📊 Portfolio</button>
+                <button class="admin-tab" data-tab="security">🔒 Security</button>
+                <button class="admin-tab" data-tab="data">💾 Data</button>
+            </div>
             
-            <div class="admin-sections">
-                <!-- Home Content -->
-                <div class="admin-section">
-                    <h2>Home Page Content</h2>
-                    <div class="admin-control">
-                        <label>Introduction Text:</label>
-                        <textarea id="intro-text" placeholder="Edit introduction text..."></textarea>
-                    </div>
-                    <div class="admin-control">
-                        <label>Latest Release Image URL:</label>
-                        <input type="text" id="latest-release-image" placeholder="Image URL">
-                    </div>
-                    <div class="admin-control">
-                        <label>Latest Release Text:</label>
-                        <input type="text" id="latest-release-desc" placeholder="Description">
-                    </div>
-                    <div class="admin-control">
-                        <label>Upcoming Project Image URL:</label>
-                        <input type="text" id="upcoming-project-image" placeholder="Image URL">
-                    </div>
-                    <div class="admin-control">
-                        <label>Upcoming Project Text:</label>
-                        <input type="text" id="upcoming-project-desc" placeholder="Description">
-                    </div>
-                    <button class="admin-save-btn" onclick="saveHomeContent()">Save Home Content</button>
+            <!-- Home Content Section -->
+            <div id="admin-section-home" class="admin-section active">
+                <h2>Home Page Content</h2>
+                <div class="admin-control">
+                    <label>Introduction Text:</label>
+                    <textarea id="intro-text" placeholder="Edit introduction text..."></textarea>
                 </div>
-                
-                <!-- Carousel Items -->
-                <div class="admin-section">
-                    <h2>Game Carousel</h2>
-                    <div id="carousel-items"></div>
-                    <button class="admin-add-btn" onclick="addCarouselItem()">Add Game</button>
+                <div class="admin-control">
+                    <label>Latest Release Image URL:</label>
+                    <input type="text" id="latest-release-image" placeholder="Image URL">
                 </div>
-                
-                <!-- Shop Items -->
-                <div class="admin-section">
-                    <h2>Shop Products</h2>
-                    <div id="shop-items"></div>
-                    <button class="admin-add-btn" onclick="addShopItem()">Add Product</button>
+                <div class="admin-control">
+                    <label>Latest Release Text:</label>
+                    <input type="text" id="latest-release-desc" placeholder="Description">
                 </div>
-                
-                <!-- Portfolio Skills -->
-                <div class="admin-section">
-                    <h2>Portfolio Skills</h2>
-                    <div id="portfolio-skills-list"></div>
-                    <button class="admin-add-btn" onclick="addSkillItem()">Add Skill</button>
+                <div class="admin-control">
+                    <label>Upcoming Project Image URL:</label>
+                    <input type="text" id="upcoming-project-image" placeholder="Image URL">
+                </div>
+                <div class="admin-control">
+                    <label>Upcoming Project Text:</label>
+                    <input type="text" id="upcoming-project-desc" placeholder="Description">
+                </div>
+                <button class="admin-save-btn" onclick="saveHomeContent()">Save Home Content</button>
+            </div>
+            
+            <!-- Carousel Items Section -->
+            <div id="admin-section-carousel" class="admin-section">
+                <h2>Game Carousel</h2>
+                <p>To change image URLs for carousel items, edit the "Image URL" field below.</p>
+                <div id="carousel-items"></div>
+                <button class="admin-add-btn" onclick="addCarouselItem()">Add Game</button>
+            </div>
+            
+            <!-- Shop Items Section -->
+            <div id="admin-section-shop" class="admin-section">
+                <h2>Shop Products</h2>
+                <p>To change image URLs for shop items, edit the "Image URL" field below.</p>
+                <div id="shop-items"></div>
+                <button class="admin-add-btn" onclick="addShopItem()">Add Product</button>
+            </div>
+            
+            <!-- Portfolio Skills Section -->
+            <div id="admin-section-portfolio" class="admin-section">
+                <h2>Portfolio Skills</h2>
+                <div id="portfolio-skills-list"></div>
+                <button class="admin-add-btn" onclick="addSkillItem()">Add Skill Category</button>
+            </div>
+            
+            <!-- Security Settings Section -->
+            <div id="admin-section-security" class="admin-section admin-security-section">
+                <h2>Security Settings</h2>
+                <div class="security-controls">
+                    <div class="admin-control">
+                        <label>Change Admin Password:</label>
+                        <input type="password" id="new-password" placeholder="New Password">
+                        <button class="admin-save-btn" onclick="changePassword()" style="margin-top: 0.5rem;">Change Password</button>
+                    </div>
+                    <div class="admin-control">
+                        <label>Notification Email:</label>
+                        <input type="email" id="admin-email" placeholder="admin@example.com">
+                        <button class="admin-save-btn" onclick="saveAdminEmail()" style="margin-top: 0.5rem;">Save Email</button>
+                    </div>
+                </div>
+                <div class="security-instructions">
+                    <h4>Security Information:</h4>
+                    <p><strong>Current Username:</strong> <code>dimdesk_admin</code></p>
+                    <p><strong>Important:</strong> Passwords must be at least 8 characters long.</p>
+                    <p>Change your password regularly for better security.</p>
+                    <p>Notification emails will be sent for important admin activities.</p>
                 </div>
             </div>
             
-            <div class="admin-section">
+            <!-- Data Management Section -->
+            <div id="admin-section-data" class="admin-section">
                 <h2>Data Management</h2>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <button class="admin-save-btn" onclick="exportData()">Export Data</button>

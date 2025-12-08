@@ -6,6 +6,105 @@
     <title>DimDesk Studios - My Wishlist</title>
     <link rel="stylesheet" href="styleSheet.css">
     <link rel="icon" type="image/ico" href="Icon.ico">
+    <style>
+        /* Additional inline styles for wishlist page */
+        .wishlist-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .wishlist-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .wishlist-clear-btn {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 2px solid #dc3545;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .wishlist-clear-btn:hover {
+            background: rgba(220, 53, 69, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .wishlist-shop-btn {
+            background: rgba(240, 128, 128, 0.2);
+            color: lightcoral;
+            border: 2px solid lightcoral;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .wishlist-shop-btn:hover {
+            background: rgba(240, 128, 128, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .wishlist-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .wishlist-filter-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: wheat;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .wishlist-filter-btn.active {
+            background: lightcoral;
+            color: #000;
+            border-color: lightcoral;
+        }
+        
+        .wishlist-filter-btn:hover {
+            background: rgba(240, 128, 128, 0.2);
+        }
+        
+        .wishlist-no-items {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            border: 2px dashed rgba(240, 128, 128, 0.3);
+        }
+        
+        .wishlist-no-items h3 {
+            color: lightcoral;
+            margin-bottom: 1rem;
+        }
+        
+        .wishlist-no-items p {
+            color: wheat;
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 <body class="wishlist-page">
     <!-- Background Video -->
@@ -36,7 +135,11 @@
                         <li><a href="index.html" id="home-link">Home</a></li>
                         <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
                         <li><a href="shop.html" id="shop-link">Shop</a></li>
-                        <li><a href="wishlist.html" id="wishlist-link" class="current-page">Wishlist</a></li>
+                        <li class="wishlist-nav-item">
+                            <a href="wishlist.html" id="wishlist-link" class="current-page">❤️ Wishlist 
+                                <span class="wishlist-badge" id="wishlist-badge">0</span>
+                            </a>
+                        </li>
                         <li class="cart-toggle">
                             <a href="#" class="cart-icon" title="View Cart">
                                 🛒
@@ -63,7 +166,7 @@
             <div class="wishlist-stats">
                 <div class="stat-card">
                     <div class="stat-number" id="wishlist-count">0</div>
-                    <div class="stat-label">Items in Wishlist</div>
+                    <div class="stat-label">Total Items</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="available-count">0</div>
@@ -76,12 +179,23 @@
             </div>
         </div>
 
-        <!-- Empty Wishlist State -->
-        <div class="empty-wishlist" id="empty-wishlist">
-            <div class="empty-wishlist-icon">📋</div>
-            <h3>Your wishlist is empty</h3>
-            <p>Browse our collection and add items you're interested in to track them here!</p>
-            <a href="shop.html" class="browse-shop-btn">Browse Shop</a>
+        <!-- Controls -->
+        <div class="wishlist-controls">
+            <div class="wishlist-filter">
+                <button class="wishlist-filter-btn active" onclick="filterWishlist('all')">All Items</button>
+                <button class="wishlist-filter-btn" onclick="filterWishlist('available')">Available</button>
+                <button class="wishlist-filter-btn" onclick="filterWishlist('upcoming')">Coming Soon</button>
+                <button class="wishlist-filter-btn" onclick="filterWishlist('has-links')">Has External Links</button>
+            </div>
+            
+            <div class="wishlist-actions">
+                <button class="wishlist-clear-btn" onclick="clearWishlist()">
+                    🗑️ Clear All
+                </button>
+                <a href="shop.html" class="wishlist-shop-btn">
+                    🛍️ Browse Shop
+                </a>
+            </div>
         </div>
 
         <!-- Wishlist Items Grid -->
@@ -89,25 +203,35 @@
             <!-- Dynamic content will be loaded here -->
         </div>
 
-        <!-- Notification Settings -->
-        <div class="notification-settings">
-            <h3>💌 Get Notified</h3>
-            <p style="color: wheat; margin-bottom: 1rem;">Enter your email to get notified when wishlisted items become available:</p>
-            <div class="notification-email-form">
-                <input type="email" id="notification-email" class="notification-email-input" placeholder="your@email.com" value="">
-                <button class="notification-email-btn" onclick="saveNotificationEmail()">Save Email</button>
-            </div>
-            <div id="notification-status" class="notification-status"></div>
+        <!-- Empty State -->
+        <div class="wishlist-no-items" id="empty-wishlist" style="display: none;">
+            <div class="empty-wishlist-icon">📋</div>
+            <h3>Your wishlist is empty</h3>
+            <p>Browse our collection and add items you're interested in to track them here!</p>
+            <a href="shop.html" class="browse-shop-btn">Browse Shop</a>
         </div>
 
-        <!-- Actions -->
-        <div style="text-align: center; margin: 3rem 0;">
-            <button onclick="clearWishlist()" style="background: #dc3545; color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 700; cursor: pointer; margin-right: 1rem; transition: all 0.3s ease;">
-                🗑️ Clear Wishlist
-            </button>
-            <a href="shop.html" style="display: inline-block; padding: 1rem 2rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 10px; font-weight: 700; transition: all 0.3s ease;">
-                🛍️ Continue Shopping
-            </a>
+        <!-- Tips Section -->
+        <div style="margin-top: 4rem; padding: 2rem; background: rgba(20, 20, 20, 0.8); border-radius: 15px; border: 2px solid rgba(240, 128, 128, 0.2);">
+            <h3 style="color: lightcoral; margin-bottom: 1rem;">💡 Wishlist Tips</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="color: wheat;">
+                    <strong>❤️ Add Items</strong>
+                    <p>Click the wishlist button (🤍) on any product to add it here</p>
+                </div>
+                <div style="color: wheat;">
+                    <strong>🔗 External Links</strong>
+                    <p>Items with platform icons have external store links</p>
+                </div>
+                <div style="color: wheat;">
+                    <strong>🛒 Quick Add</strong>
+                    <p>Click "Add to Cart" on available items for quick purchase</p>
+                </div>
+                <div style="color: wheat;">
+                    <strong>📱 Access Anywhere</strong>
+                    <p>Your wishlist is saved locally and works across all pages</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -177,19 +301,26 @@
     <script src="main.js"></script>
     <script>
         // Wishlist page specific functions
-        function updateWishlistStats() {
-            const wishlistCount = document.getElementById('wishlist-count');
-            const availableCount = document.getElementById('available-count');
-            const upcomingCount = document.getElementById('upcoming-count');
+        let currentFilter = 'all';
+        
+        function filterWishlist(filter) {
+            currentFilter = filter;
             
-            if (wishlistCount && wishlist) {
-                wishlistCount.textContent = wishlist.length;
-                
-                const available = wishlist.filter(item => item.status === 'released').length;
-                const upcoming = wishlist.filter(item => item.status === 'upcoming').length;
-                
-                if (availableCount) availableCount.textContent = available;
-                if (upcomingCount) upcomingCount.textContent = upcoming;
+            // Update filter buttons
+            document.querySelectorAll('.wishlist-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Reload wishlist with filter
+            loadWishlistContent();
+        }
+        
+        function updateWishlistBadge() {
+            const badge = document.getElementById('wishlist-badge');
+            if (badge && wishlist) {
+                badge.textContent = wishlist.length;
+                badge.style.display = wishlist.length > 0 ? 'flex' : 'none';
             }
         }
         
@@ -204,6 +335,34 @@
                     wishlistGrid.style.display = 'none';
                 }
                 updateWishlistStats();
+                updateWishlistBadge();
+                return;
+            }
+            
+            // Apply filter
+            let filteredItems = wishlist;
+            if (currentFilter === 'available') {
+                filteredItems = wishlist.filter(item => item.status === 'released');
+            } else if (currentFilter === 'upcoming') {
+                filteredItems = wishlist.filter(item => item.status === 'upcoming');
+            } else if (currentFilter === 'has-links') {
+                filteredItems = wishlist.filter(item => item.externalLinks && Object.keys(item.externalLinks).length > 0);
+            }
+            
+            if (filteredItems.length === 0) {
+                if (emptyWishlist) {
+                    emptyWishlist.innerHTML = `
+                        <div class="empty-wishlist-icon">🔍</div>
+                        <h3>No items match your filter</h3>
+                        <p>Try changing your filter to see more items</p>
+                        <button class="browse-shop-btn" onclick="filterWishlist('all')">Show All Items</button>
+                    `;
+                    emptyWishlist.style.display = 'block';
+                }
+                if (wishlistGrid) {
+                    wishlistGrid.innerHTML = '';
+                    wishlistGrid.style.display = 'none';
+                }
                 return;
             }
             
@@ -212,160 +371,81 @@
                 wishlistGrid.innerHTML = '';
                 wishlistGrid.style.display = 'grid';
                 
-                wishlist.forEach((item, index) => {
-                    // Find the full product info
-                    let product = null;
+                filteredItems.forEach((item) => {
+                    const isAvailable = item.status === 'released';
                     
-                    // Check in shop products
-                    if (websiteData.shop.products) {
-                        product = websiteData.shop.products.find(p => p.id === item.id);
-                    }
-                    
-                    // Check in carousel items
-                    if (!product && websiteData.carousels) {
-                        const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
-                        product = allCarouselItems.find(p => p.id === item.id);
-                    }
-                    
-                    if (product) {
-                        const isAvailable = product.status === 'released';
-                        const launchDate = product.launchDate || '2024-12-31';
-                        
-                        const wishlistItem = document.createElement('div');
-                        wishlistItem.className = 'wishlist-item';
-                        wishlistItem.innerHTML = `
-                            <div class="wishlist-item-header">
-                                <img src="${product.image}" alt="${product.title}" class="wishlist-item-image" loading="lazy">
-                                <span class="wishlist-status status-${product.status}">
-                                    ${isAvailable ? 'Available Now' : 'Coming Soon'}
-                                </span>
-                                ${!isAvailable ? `
-                                    <div class="countdown-timer" data-launch-date="${launchDate}">
-                                        Launch: ${launchDate}
-                                    </div>
-                                ` : ''}
-                            </div>
-                            <div class="wishlist-item-content">
-                                <h3 class="wishlist-item-title">${product.title}</h3>
-                                <p class="wishlist-item-description">${product.description}</p>
-                                <div class="wishlist-item-price">$${product.price.toFixed(2)}</div>
-                                <div class="wishlist-item-actions">
-                                    <button class="wishlist-btn-remove" onclick="removeFromWishlist(${item.id})">
-                                        ❌ Remove
+                    const wishlistItem = document.createElement('div');
+                    wishlistItem.className = 'wishlist-item';
+                    wishlistItem.innerHTML = `
+                        <div class="wishlist-item-header">
+                            <img src="${item.image}" alt="${item.title}" class="wishlist-item-image" loading="lazy">
+                            <span class="wishlist-status status-${item.status}">
+                                ${isAvailable ? 'Available Now' : 'Coming Soon'}
+                            </span>
+                        </div>
+                        <div class="wishlist-item-content">
+                            <h3 class="wishlist-item-title">${item.title}</h3>
+                            <p class="wishlist-item-description">${item.description || 'No description available.'}</p>
+                            <div class="wishlist-item-price">$${item.price.toFixed(2)}</div>
+                            ${item.externalLinks ? renderWishlistExternalLinks(item.externalLinks) : ''}
+                            <div class="wishlist-item-actions">
+                                <button class="wishlist-btn-remove" onclick="removeFromWishlist(${item.id})">
+                                    ❌ Remove
+                                </button>
+                                ${isAvailable ? `
+                                    <button class="wishlist-btn-cart" onclick="addToCartFromWishlist(${item.id})">
+                                        🛒 Add to Cart
                                     </button>
-                                    ${isAvailable ? `
-                                        <button class="wishlist-btn-cart" onclick="addToCartFromWishlist(${item.id})">
-                                            🛒 Add to Cart
-                                        </button>
-                                    ` : `
-                                        <button class="wishlist-btn-cart" disabled>
-                                            ⏳ Coming Soon
-                                        </button>
-                                    `}
-                                </div>
+                                ` : `
+                                    <button class="wishlist-btn-cart" disabled>
+                                        ⏳ Coming Soon
+                                    </button>
+                                `}
                             </div>
-                        `;
-                        
-                        wishlistGrid.appendChild(wishlistItem);
-                    }
+                        </div>
+                    `;
+                    
+                    wishlistGrid.appendChild(wishlistItem);
                 });
                 
-                // Initialize countdown timers
-                initializeCountdownTimers();
-            }
-            
-            updateWishlistStats();
-            
-            // Load saved email
-            const savedEmail = localStorage.getItem('dimdesk_notification_email');
-            if (savedEmail && document.getElementById('notification-email')) {
-                document.getElementById('notification-email').value = savedEmail;
+                updateWishlistStats();
+                updateWishlistBadge();
             }
         }
         
-        function removeFromWishlist(itemId) {
-            toggleWishlist(itemId);
-            loadWishlistContent();
+        function renderWishlistExternalLinks(links) {
+            if (!links || Object.keys(links).length === 0) return '';
+            
+            let html = '<div class="wishlist-external-links">';
+            for (const [platform, url] of Object.entries(links)) {
+                const icon = getPlatformIcon(platform);
+                html += `
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" class="wishlist-external-link" title="Buy on ${platform}">
+                        ${icon} ${platform}
+                    </a>
+                `;
+            }
+            html += '</div>';
+            return html;
         }
         
-        function addToCartFromWishlist(itemId) {
-            addToCart(itemId);
-        }
-        
-        function clearWishlist() {
-            if (wishlist.length === 0) {
-                showNotification('Wishlist is already empty', 'info');
-                return;
-            }
-            
-            if (confirm('Are you sure you want to clear your entire wishlist?')) {
-                wishlist = [];
-                localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
-                loadWishlistContent();
-                showNotification('Wishlist cleared');
-            }
-        }
-        
-        function saveNotificationEmail() {
-            const emailInput = document.getElementById('notification-email');
-            const statusDiv = document.getElementById('notification-status');
-            
-            if (!emailInput || !emailInput.value.includes('@')) {
-                if (statusDiv) {
-                    statusDiv.textContent = 'Please enter a valid email address';
-                    statusDiv.className = 'notification-status error';
-                }
-                return;
-            }
-            
-            localStorage.setItem('dimdesk_notification_email', emailInput.value);
-            
-            if (statusDiv) {
-                statusDiv.textContent = 'Email saved successfully! You will be notified when wishlisted items become available.';
-                statusDiv.className = 'notification-status success';
-            }
-            
-            showNotification('Notification email saved!');
-            
-            // Clear status after 5 seconds
-            setTimeout(() => {
-                if (statusDiv) {
-                    statusDiv.style.display = 'none';
-                }
-            }, 5000);
-        }
-        
-        function initializeCountdownTimers() {
-            document.querySelectorAll('.countdown-timer').forEach(timer => {
-                const launchDate = new Date(timer.dataset.launchDate);
-                updateCountdown(timer, launchDate);
-                
-                // Update every minute
-                setInterval(() => {
-                    updateCountdown(timer, launchDate);
-                }, 60000);
-            });
-        }
-        
-        function updateCountdown(element, launchDate) {
-            const now = new Date();
-            const diff = launchDate - now;
-            
-            if (diff <= 0) {
-                element.textContent = 'Available Now!';
-                return;
-            }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            
-            if (days > 0) {
-                element.textContent = `Launch in ${days} day${days !== 1 ? 's' : ''}`;
-            } else if (hours > 0) {
-                element.textContent = `Launch in ${hours} hour${hours !== 1 ? 's' : ''}`;
-            } else {
-                element.textContent = 'Launching today!';
-            }
+        function getPlatformIcon(platform) {
+            const icons = {
+                'steam': '🎮',
+                'itch.io': '🎯',
+                'gog': '📀',
+                'epic': '🏪',
+                'humble': '🎁',
+                'direct': '🌐',
+                'amazon': '📦',
+                'playstation': '🎮',
+                'xbox': '🟩',
+                'nintendo': '🔴',
+                'bandcamp': '🎵',
+                'spotify': '🎵',
+                'apple music': '🎵'
+            };
+            return icons[platform.toLowerCase()] || '🔗';
         }
         
         // Initialize wishlist page
@@ -375,6 +455,7 @@
             initCartSystem();
             initModalSystem();
             updateCartCount();
+            updateWishlistBadge();
         });
     </script>
 </body>

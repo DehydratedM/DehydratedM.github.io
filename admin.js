@@ -58,6 +58,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Add to admin.js
+function changePassword() {
+    const newPassword = document.getElementById('new-password').value;
+    
+    if (!newPassword || newPassword.length < 8) {
+        showMessage('Password must be at least 8 characters long', 'error');
+        return;
+    }
+    
+    // In a real application, this would be handled server-side
+    // For demo purposes, we'll update the client-side credentials
+    ADMIN_CREDENTIALS.password = newPassword;
+    
+    // Show the new password (in real app, you'd hash this)
+    showMessage(`Password changed successfully! New password: ${newPassword}`, 'success');
+    
+    // Clear the field
+    document.getElementById('new-password').value = '';
+    
+    // Note: In a production environment, you would:
+    // 1. Hash the password
+    // 2. Send to server for secure storage
+    // 3. Never show the password in plain text
+}
 // ==========================================================================
 // UI FUNCTIONS
 // ==========================================================================

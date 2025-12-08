@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DimDesk Studios - Wishlist</title>
+    <link rel="stylesheet" href="styleSheet.css">
+    <link rel="icon" type="image/ico" href="Icon.ico">
+    <style>
+        .wishlist-header {
+            text-align: center;
+            padding: 2rem;
+            color: lightcoral;
+        }
+        
+        .wishlist-count {
+            font-size: 1.2rem;
+            color: wheat;
+            margin-top: 0.5rem;
+        }
+        
+        .empty-wishlist {
+            text-align: center;
+            padding: 3rem;
+            color: wheat;
+            font-size: 1.2rem;
+        }
+        
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+            padding: 0 2rem;
+        }
+        
+        .wishlist-actions {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .wishlist-btn-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .wishlist-btn-remove:hover {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <div class="Container">
+        <div class="content">
+            <header>
+                <div class="HE">
+                    <div class="lol">
+                        <a href="index.html" title="Return to Home" id="logo-link">
+                            <h1 style="color:lightcoral">
+                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" 
+                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
+                            </h1>
+                        </a>
+                    </div>
+                    
+                    <nav class="nav-links">
+                        <ul>
+                            <li><a href="index.html" id="home-link">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link">Shop</a></li>
+                            <li><a href="wishlist.html" id="wishlist-link" class="current-page">Wishlist</a></li>
+                            <li class="cart-toggle">
+                                <a href="#" class="cart-icon" title="View Cart">
+                                    🛒
+                                    <span class="cart-count" id="cart-count">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <button class="mobile-toggle" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Wishlist Header -->
+            <div class="llogo">
+                <h1 style="color:lightcoral; font-size: 3rem;">My Wishlist</h1>
+                <p style="color: wheat; margin-top: 1rem; font-size: 1.2rem;">Save items you're interested in for later</p>
+            </div>
+
+            <main>
+                <!-- Empty Wishlist Message -->
+                <div class="empty-wishlist" id="empty-wishlist" style="display: none;">
+                    <h3>Your wishlist is empty</h3>
+                    <p>Browse our shop and add items you're interested in!</p>
+                    <a href="shop.html" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                        Browse Shop
+                    </a>
+                </div>
+
+                <!-- Wishlist Items Grid -->
+                <div class="wishlist-grid" id="wishlist-grid">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+
+                <!-- Wishlist Actions -->
+                <div class="wishlist-actions">
+                    <button onclick="clearWishlist()" style="background: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 1rem;">
+                        Clear Wishlist
+                    </button>
+                    <a href="shop.html" style="display: inline-block; padding: 0.75rem 1.5rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                        Continue Shopping
+                    </a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+        <div class="cart-total">
+            <span class="cart-total-label">Total:</span>
+            <span class="cart-total-price" id="cart-total">$0.00</span>
+        </div>
+        <div class="cart-actions">
+            <button class="cart-btn cart-btn-checkout" id="checkout-btn">Checkout</button>
+            <button class="cart-btn cart-btn-clear" id="clear-cart">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+    
+    <footer style="background-color: black">
+        <div class="footerContainer">
+            <div class="socialIcons">
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
+                    <img alt="Cara" src="caraW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+            </div>
+        </div>
+        <div class="Oo">
+            <p style="color: #D8A790; display: inline-block;">contact us:</p>
+            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
+            <div class="footerBottom">
+                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+            <!-- Admin Access in Footer -->
+            <div class="admin-footer-access">
+                <a href="admin.html" title="Admin Panel">
+                    <span>⚙️</span>
+                    <span>Admin Access</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        function clearWishlist() {
+            if (wishlist.length === 0) {
+                showNotification('Wishlist is already empty', 'info');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to clear your entire wishlist?')) {
+                wishlist = [];
+                localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
+                loadWishlistContent();
+                showNotification('Wishlist cleared');
+            }
+        }
+        
+        // Initialize wishlist page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadWishlistContent();
+        });
+    </script>
+</body>
+</html>

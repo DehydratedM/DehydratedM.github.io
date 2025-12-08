@@ -11,6 +11,34 @@
     <link rel="preload" as="image" href="cat.png">
 </head>
 <body>
+    <!-- Admin Panel Access Button (Fixed Position) -->
+    <button id="admin-access" class="admin-access-btn" title="Admin Access">⚙️</button>
+
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="admin-login-modal">
+        <div class="admin-login-content">
+            <h2>Admin Access</h2>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <label for="admin-username">Username:</label>
+                    <input type="text" id="admin-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password:</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="admin-login-btn">Login</button>
+                <button type="button" class="admin-cancel-btn">Cancel</button>
+            </form>
+            <div class="admin-instructions">
+                <p><strong>Default Credentials:</strong></p>
+                <p>Username: admin</p>
+                <p>Password: dimdesk2025</p>
+                <p><small>Change these in admin.js after first login</small></p>
+            </div>
+        </div>
+    </div>
+
     <div class="Container">
         <div class="content">
             <header>
@@ -31,6 +59,12 @@
                             <li><a href="index.html" id="home-link" class="current-page">Home</a></li>
                             <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
                             <li><a href="shop.html" id="shop-link">Shop</a></li>
+                            <li class="cart-toggle">
+                                <a href="#" class="cart-icon" title="View Cart">
+                                    🛒
+                                    <span class="cart-count" id="cart-count">0</span>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     
@@ -50,12 +84,16 @@
                 </h1>
             </div>
 
-            <!-- Video Background -->
-            <div class="video-container">
-                <video autoplay muted loop playsinline>
-                    <source src="D.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+            <!-- YouTube Trailer Section (Replacing D.mp4) -->
+            <div class="trailer-main">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/b2lC7cbFmXE?si=0QF0uBmAqdCE5Rj1" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen></iframe>
+                </div>
             </div>
 
             <main>
@@ -81,9 +119,13 @@
                             <div class="featured-image" id="latest-release">
                                 <img src="https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=LATEST+RELEASE" 
                                      alt="Latest Release" 
-                                     onerror="this.src='https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=Game'">
+                                     data-editable="true"
+                                     data-content-type="image"
+                                     data-target="latest-release-image">
                             </div>
-                            <p>Check out our most recent game release, available now on itch.io and other platforms!</p>
+                            <p data-editable="true" data-content-type="text" data-target="latest-release-desc">
+                                Check out our most recent game release, available now on itch.io and other platforms!
+                            </p>
                         </div>
                         
                         <div class="featured-card">
@@ -91,9 +133,13 @@
                             <div class="featured-image" id="upcoming-project">
                                 <img src="https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=UPCOMING+PROJECT" 
                                      alt="Upcoming Project"
-                                     onerror="this.src='https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=Coming+Soon'">
+                                     data-editable="true"
+                                     data-content-type="image"
+                                     data-target="upcoming-project-image">
                             </div>
-                            <p>An exciting new adventure is in development. Stay tuned for updates and announcements!</p>
+                            <p data-editable="true" data-content-type="text" data-target="upcoming-project-desc">
+                                An exciting new adventure is in development. Stay tuned for updates and announcements!
+                            </p>
                         </div>
                     </div>
                 </section>
@@ -103,40 +149,8 @@
                     <h2 class="carousel-title">Released Games</h2>
                     <div class="carousel-container" id="released-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+1" 
-                                     alt="Released Game 1" 
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
-                                <div class="carousel-info">
-                                    <h3>Project Alpha</h3>
-                                    <p>A thrilling platformer adventure with unique mechanics and stunning visuals.</p>
-                                    <div class="shop-price">$9.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+2" 
-                                     alt="Released Game 2"
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
-                                <div class="carousel-info">
-                                    <h3>Echoes of Time</h3>
-                                    <p>A puzzle adventure game where you manipulate time to solve mysteries.</p>
-                                    <div class="shop-price">$14.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+3" 
-                                     alt="Released Game 3"
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
-                                <div class="carousel-info">
-                                    <h3>Neon Runner</h3>
-                                    <p>Fast-paced endless runner set in a cyberpunk world with retro aesthetics.</p>
-                                    <div class="shop-price">$7.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
+                        <div class="carousel-track" data-carousel-type="released">
+                            <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
                         <div class="carousel-dots"></div>
@@ -148,61 +162,110 @@
                     <h2 class="carousel-title">Upcoming Projects</h2>
                     <div class="carousel-container" id="upcoming-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track">
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+1" 
-                                     alt="Upcoming Project 1"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
-                                <div class="carousel-info">
-                                    <h3>Dreamscape</h3>
-                                    <p>Explore a surreal world where dreams and reality collide in this atmospheric adventure.</p>
-                                    <div class="shop-price">$19.99</div>
-                                    <span class="shop-status status-upcoming">Coming Soon</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+2" 
-                                     alt="Upcoming Project 2"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
-                                <div class="carousel-info">
-                                    <h3>Chrono Knights</h3>
-                                    <p>Time-traveling knights battle through different historical eras in this action RPG.</p>
-                                    <div class="shop-price">$24.99</div>
-                                    <span class="shop-status status-upcoming">Coming Soon</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+3" 
-                                     alt="Upcoming Project 3"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
-                                <div class="carousel-info">
-                                    <h3>Pixel Legends</h3>
-                                    <p>Retro-inspired RPG with modern gameplay mechanics and epic storytelling.</p>
-                                    <div class="shop-price">$17.99</div>
-                                    <span class="shop-status status-upcoming">Coming Soon</span>
-                                </div>
-                            </div>
+                        <div class="carousel-track" data-carousel-type="upcoming">
+                            <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
                         <div class="carousel-dots"></div>
                     </div>
                 </section>
 
-                <!-- YouTube Trailer -->
-                <div class="trailercontainer">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/b2lC7cbFmXE?si=0QF0uBmAqdCE5Rj1" 
-                                title="YouTube video player" 
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                referrerpolicy="strict-origin-when-cross-origin" 
-                                allowfullscreen></iframe>
-                    </div>
+                <!-- Background Video (Now used as actual background) -->
+                <div class="background-video">
+                    <video autoplay muted loop playsinline id="bg-video">
+                        <source src="D.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="video-overlay"></div>
                 </div>
             </main>
         </div>
     </div>
-    
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+        <div class="cart-total">
+            <span class="cart-total-label">Total:</span>
+            <span class="cart-total-price" id="cart-total">$0.00</span>
+        </div>
+        <div class="cart-actions">
+            <button class="cart-btn cart-btn-checkout" id="checkout-btn">Checkout</button>
+            <button class="cart-btn cart-btn-clear" id="clear-cart">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (Hidden by default) -->
+    <div class="admin-panel-overlay" id="admin-panel-overlay">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h1>Admin Panel</h1>
+                <button class="admin-logout" id="admin-logout">Logout</button>
+            </div>
+            <div class="admin-sections">
+                <!-- Content Management -->
+                <div class="admin-section">
+                    <h2>Content Management</h2>
+                    <div class="admin-control">
+                        <label>Homepage Introduction:</label>
+                        <textarea id="admin-intro-text" placeholder="Edit introduction text..."></textarea>
+                    </div>
+                    <div class="admin-control">
+                        <label>Featured Item 1 Image URL:</label>
+                        <input type="text" id="admin-featured-1-img" placeholder="Image URL">
+                    </div>
+                    <div class="admin-control">
+                        <label>Featured Item 1 Text:</label>
+                        <input type="text" id="admin-featured-1-text" placeholder="Description text">
+                    </div>
+                    <button class="admin-save-btn" onclick="saveContentChanges()">Save Content Changes</button>
+                </div>
+
+                <!-- Carousel Management -->
+                <div class="admin-section">
+                    <h2>Carousel Items</h2>
+                    <div id="carousel-items-list">
+                        <!-- Dynamic carousel items will be loaded here -->
+                    </div>
+                    <button class="admin-add-btn" onclick="addCarouselItem()">Add New Item</button>
+                </div>
+
+                <!-- Shop Management -->
+                <div class="admin-section">
+                    <h2>Shop Products</h2>
+                    <div id="shop-items-list">
+                        <!-- Dynamic shop items will be loaded here -->
+                    </div>
+                    <button class="admin-add-btn" onclick="addShopItem()">Add New Product</button>
+                </div>
+
+                <!-- Settings -->
+                <div class="admin-section">
+                    <h2>Settings</h2>
+                    <div class="admin-control">
+                        <label>Change Admin Password:</label>
+                        <input type="password" id="admin-new-password" placeholder="New password">
+                    </div>
+                    <button class="admin-save-btn" onclick="updateAdminPassword()">Update Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
@@ -233,5 +296,6 @@
     </footer>
 
     <script src="main.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>

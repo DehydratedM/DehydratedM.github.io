@@ -8,8 +8,40 @@
     <title>DimDesk Studios - Portfolio</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <link rel="preload" as="image" href="cat.png">
+    <style>
+        .admin-footer-access {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .admin-footer-access a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(240, 128, 128, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-footer-access a:hover {
+            color: lightcoral;
+            background: rgba(240, 128, 128, 0.1);
+        }
+    </style>
 </head>
 <body>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
     <div class="Container">
         <div class="content">
             <header>
@@ -29,6 +61,12 @@
                             <li><a href="index.html" id="home-link">Home</a></li>
                             <li><a href="portfolio.html" id="portfolio-link" class="current-page">Portfolio</a></li>
                             <li><a href="shop.html" id="shop-link">Shop</a></li>
+                            <li class="cart-toggle">
+                                <a href="#" class="cart-icon" title="View Cart">
+                                    🛒
+                                    <span class="cart-count" id="cart-count">0</span>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     
@@ -49,7 +87,7 @@
             <main>
                 <div class="websiteIntro">
                     <h1 style="color: lightcoral">About Me</h1>
-                    <p style="color: mintcream">
+                    <p style="color: mintcream" id="portfolio-intro">
                         Hi there, I'm M! I've always been passionate about games and art for as long as I can remember. These two things have shaped who I am, and I dream of building something meaningful in these fields, even with the challenges they come with.
 
                         Your support would mean the world to me, in being part of this journey. As of now I'm on YouTube, Blue-sky, Cara and Patreon! I hope to see you around!
@@ -66,193 +104,37 @@
                 </div>
 
                 <!-- Skills Portfolio Grid -->
-                <div class="portfolio-grid">
-                    <!-- Art Category -->
-                    <div class="portfolio-category">
-                        <h3>🎨 Art & Design</h3>
-                        <ul class="skill-list">
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Photoshop</span>
-                                    <span class="skill-years">7+ years</span>
-                                </div>
-                                <div class="skill-desc">Asset making, illustrations, graphic design, photo editing/morphing</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Illustration</span>
-                                    <span class="skill-tag">Graphic Design</span>
-                                    <span class="skill-tag">Photo Editing</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 90%"></div>
-                                </div>
-                            </li>
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Traditional Art</span>
-                                    <span class="skill-years">8+ years</span>
-                                </div>
-                                <div class="skill-desc">Painting, color pencils, black & white, pen/markers - Animals, architecture, still life</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Painting</span>
-                                    <span class="skill-tag">Drawing</span>
-                                    <span class="skill-tag">Sketching</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 95%"></div>
-                                </div>
-                            </li>
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Writing</span>
-                                    <span class="skill-years">3+ years</span>
-                                </div>
-                                <div class="skill-desc">Short stories, thought pieces, novels - Main: Fantasy, Side: horror, gore, invoking</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Storytelling</span>
-                                    <span class="skill-tag">World Building</span>
-                                    <span class="skill-tag">Character Design</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 80%"></div>
-                                </div>
-                            </li>
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Animating</span>
-                                    <span class="skill-years">2+ years</span>
-                                </div>
-                                <div class="skill-desc">Short animations, storytelling - Photoshop, graphic tablet, Capcut/Premiere</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">2D Animation</span>
-                                    <span class="skill-tag">Motion Graphics</span>
-                                    <span class="skill-tag">Video Editing</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 70%"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Editing Category -->
-                    <div class="portfolio-category">
-                        <h3>🎬 Video Editing</h3>
-                        <ul class="skill-list">
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Premiere Pro</span>
-                                    <span class="skill-years">4+ years</span>
-                                </div>
-                                <div class="skill-desc">Trailers, playthroughs, self tapes - Longest video worked on: 10-14 hours</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Video Editing</span>
-                                    <span class="skill-tag">Color Grading</span>
-                                    <span class="skill-tag">Sound Design</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 85%"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Game Development Category -->
-                    <div class="portfolio-category">
-                        <h3>🎮 Game Development</h3>
-                        <ul class="skill-list">
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Unity & C#</span>
-                                    <span class="skill-years">5+ months</span>
-                                </div>
-                                <div class="skill-desc">2D PC & Android - Platformers, Endless-Runners, Puzzle Games</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Game Design</span>
-                                    <span class="skill-tag">Programming</span>
-                                    <span class="skill-tag">Mobile Dev</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 60%"></div>
-                                </div>
-                            </li>
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>HTML & CSS</span>
-                                    <span class="skill-years">1+ month</span>
-                                </div>
-                                <div class="skill-desc">Web development for game promotion and portfolio sites</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Web Design</span>
-                                    <span class="skill-tag">Responsive UI</span>
-                                    <span class="skill-tag">Frontend</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 50%"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Music Category -->
-                    <div class="portfolio-category">
-                        <h3>🎵 Music Production</h3>
-                        <ul class="skill-list">
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>FL Studio & Audacity</span>
-                                    <span class="skill-years">Beginner</span>
-                                </div>
-                                <div class="skill-desc">Just starting out - Planning releases on YouTube and Spotify</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Music Composition</span>
-                                    <span class="skill-tag">Sound Design</span>
-                                    <span class="skill-tag">Audio Editing</span>
-                                </div>
-                                <div class="skill-progress">
-                                    <div class="skill-progress-bar" style="width: 30%"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Limitations Category - This will be centered automatically -->
-                    <div class="portfolio-category">
-                        <h3>📝 Current Focus Areas</h3>
-                        <ul class="skill-list">
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Areas for Growth</span>
-                                </div>
-                                <div class="skill-desc">Human anatomy/portraits (beyond sketches) - Advanced coding concepts - Team collaboration</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Anatomy</span>
-                                    <span class="skill-tag">Advanced Coding</span>
-                                    <span class="skill-tag">Collaboration</span>
-                                </div>
-                            </li>
-                            <li class="skill-item">
-                                <div class="skill-name">
-                                    <span>Work Style</span>
-                                </div>
-                                <div class="skill-desc">Usually work solo - Strong independent problem solver - Passion-driven development</div>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">Independent</span>
-                                    <span class="skill-tag">Creative</span>
-                                    <span class="skill-tag">Passionate</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Video Background -->
-                <div class="video-container">
-                    <video autoplay muted loop playsinline>
-                        <source src="D.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                <div class="portfolio-grid" id="portfolio-skills">
+                    <!-- Dynamic content will be loaded here -->
                 </div>
             </main>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+        <div class="cart-total">
+            <span class="cart-total-label">Total:</span>
+            <span class="cart-total-price" id="cart-total">$0.00</span>
+        </div>
+        <div class="cart-actions">
+            <button class="cart-btn cart-btn-checkout" id="checkout-btn">Checkout</button>
+            <button class="cart-btn cart-btn-clear" id="clear-cart">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
     
@@ -281,6 +163,13 @@
             <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
             <div class="footerBottom">
                 <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+            <!-- Admin Access in Footer -->
+            <div class="admin-footer-access">
+                <a href="admin.html" title="Admin Panel">
+                    <span>⚙️</span>
+                    <span>Admin Access</span>
+                </a>
             </div>
         </div>
     </footer>

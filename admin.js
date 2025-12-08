@@ -1,4 +1,4 @@
-// admin.js - Enhanced with proper carousel toggle functionality
+// admin.js - Enhanced with proper carousel toggle functionality and restored UI
 // ==========================================================================
 const ADMIN_CREDENTIALS = {
     username: "dimdesk_admin",
@@ -66,7 +66,59 @@ document.addEventListener('DOMContentLoaded', function() {
             emailInput.value = savedEmail;
         }
     }
+    
+    // Add admin page specific styles
+    addAdminStyles();
 });
+
+function addAdminStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .admin-control-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .admin-category-controls {
+            background: rgba(30, 30, 30, 0.9);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(240, 128, 128, 0.2);
+        }
+        
+        .admin-category-items {
+            margin-top: 1.5rem;
+        }
+        
+        .admin-message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .admin-message.success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        
+        .admin-message.error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
 function handleLogin() {
     const username = document.getElementById('username').value;
@@ -109,10 +161,70 @@ function initAdminTabs() {
         `;
     }
     
+    // Add tab styles if not already added
+    if (!document.querySelector('#admin-tabs-styles')) {
+        const tabStyle = document.createElement('style');
+        tabStyle.id = 'admin-tabs-styles';
+        tabStyle.textContent = `
+            .admin-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+                padding: 1rem;
+                background: rgba(20, 20, 20, 0.8);
+                border-radius: 10px;
+                border: 1px solid rgba(240, 128, 128, 0.2);
+            }
+            
+            .admin-tab {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: wheat;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .admin-tab:hover {
+                background: rgba(240, 128, 128, 0.2);
+                transform: translateY(-2px);
+            }
+            
+            .admin-tab.active {
+                background: lightcoral;
+                color: #000;
+                border-color: lightcoral;
+                box-shadow: 0 5px 15px rgba(240, 128, 128, 0.3);
+            }
+            
+            .admin-section {
+                display: none;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            .admin-section.active {
+                display: block;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(tabStyle);
+    }
+    
     // Hide all sections, show active one
     const sections = document.querySelectorAll('.admin-section');
     sections.forEach(section => section.classList.remove('active'));
-    document.getElementById('admin-section-home').classList.add('active');
+    const homeSection = document.getElementById('admin-section-home');
+    if (homeSection) homeSection.classList.add('active');
     
     // Add tab click handlers
     document.querySelectorAll('.admin-tab').forEach(tab => {
@@ -428,7 +540,7 @@ function addCarouselItemElement(item, type, index, container) {
             <input type="text" class="carousel-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-type="${type}" data-field="image">
             <small style="color: #aaa; display: block; margin-top: 0.25rem;">Change this URL to update the image</small>
         </div>
-        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="admin-control-row">
             <div class="admin-control">
                 <label>Price:</label>
                 <input type="number" class="carousel-price" placeholder="Price" value="${item.price || 0}" step="0.01" data-index="${index}" data-type="${type}" data-field="price">
@@ -480,7 +592,7 @@ function addShopItemElement(item, index, container) {
             <input type="text" class="shop-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-field="image">
             <small style="color: #aaa; display: block; margin-top: 0.25rem;">Change this URL to update the product image</small>
         </div>
-        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+        <div class="admin-control-row">
             <div class="admin-control">
                 <label>Price:</label>
                 <input type="number" class="shop-price" placeholder="Price" value="${item.price || 0}" step="0.01" data-index="${index}" data-field="price">
@@ -538,7 +650,7 @@ function addSkillItemElement(skill, catIndex, skillIndex, container) {
             <label>Description:</label>
             <textarea class="skill-desc" placeholder="Skill Description" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="description">${skill.description || ''}</textarea>
         </div>
-        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="admin-control-row">
             <div class="admin-control">
                 <label>Tags (comma separated):</label>
                 <input type="text" class="skill-tags" placeholder="Tag1, Tag2, Tag3" value="${skill.tags ? skill.tags.join(', ') : ''}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="tags">

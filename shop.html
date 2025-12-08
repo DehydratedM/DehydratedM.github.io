@@ -3,14 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="DimDesk Studios Shop - Coming Soon">
+    <meta name="description" content="DimDesk Studios Shop - Browse Products">
     <link rel="stylesheet" href="styleSheet.css">
     <title>DimDesk Studios - Shop</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <link rel="preload" as="image" href="cat.png">
     <link rel="preload" as="image" href="crow.png">
+    <style>
+        .admin-footer-access {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .admin-footer-access a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(240, 128, 128, 0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-footer-access a:hover {
+            color: lightcoral;
+            background: rgba(240, 128, 128, 0.1);
+        }
+    </style>
 </head>
 <body>
+    <!-- Background Video -->
+    <div class="background-video">
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
     <div class="Container">
         <div class="content">
             <header>
@@ -30,6 +62,12 @@
                             <li><a href="index.html" id="home-link">Home</a></li>
                             <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
                             <li><a href="shop.html" id="shop-link" class="current-page">Shop</a></li>
+                            <li class="cart-toggle">
+                                <a href="#" class="cart-icon" title="View Cart">
+                                    🛒
+                                    <span class="cart-count" id="cart-count">0</span>
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                     
@@ -42,154 +80,47 @@
             </header>
 
             <div class="llogo">
-                <h1 style="color:lightcoral; font-size: 3rem;">Shop Coming Soon!</h1>
+                <h1 style="color:lightcoral; font-size: 3rem;">Our Shop</h1>
                 <p style="color: wheat; margin-top: 1rem; font-size: 1.2rem;">Browse our available and upcoming products</p>
             </div>
 
             <main>
                 <div class="websiteIntro">
-                    <p style="color: wheat">
+                    <p style="color: wheat" id="shop-intro">
                         ^^ Please understand the slow process! We're working hard to bring you quality products.<br>
                         In the meantime, check out what we have available and what's coming soon!
                     </p>
                 </div>
 
-                <!-- Released Products Carousel -->
+                <!-- Available Products Carousel -->
                 <section class="carousel-section">
                     <h2 class="carousel-title">Available Now</h2>
-                    <div class="carousel-container" id="released-carousel">
+                    <div class="carousel-container" id="shop-available-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track">
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+Download" 
-                                     alt="Project Alpha Download"
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
-                                <div class="carousel-info">
-                                    <h3>Project Alpha</h3>
-                                    <p>Complete game download with all features and future updates included.</p>
-                                    <div class="shop-price">$9.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Artbook" 
-                                     alt="Digital Artbook"
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Artbook'">
-                                <div class="carousel-info">
-                                    <h3>Digital Artbook</h3>
-                                    <p>100+ pages of concept art, sketches, and development insights.</p>
-                                    <div class="shop-price">$14.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack" 
-                                     alt="Game Soundtrack"
-                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack'">
-                                <div class="carousel-info">
-                                    <h3>Original Soundtrack</h3>
-                                    <p>Complete game soundtrack with 25+ tracks in high quality formats.</p>
-                                    <div class="shop-price">$7.99</div>
-                                    <span class="shop-status status-released">Available</span>
-                                </div>
-                            </div>
+                        <div class="carousel-track" id="shop-available-track">
+                            <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
-                        <div class="carousel-dots"></div>
+                        <div class="carousel-dots" id="shop-available-dots"></div>
                     </div>
                 </section>
 
-                <!-- Upcoming Products Carousel -->
+                <!-- Coming Soon Products Carousel -->
                 <section class="carousel-section">
                     <h2 class="carousel-title">Coming Soon</h2>
-                    <div class="carousel-container" id="upcoming-carousel">
+                    <div class="carousel-container" id="shop-upcoming-carousel">
                         <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
-                        <div class="carousel-track">
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical+Edition" 
-                                     alt="Physical Game Edition"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical'">
-                                <div class="carousel-info">
-                                    <h3>Physical Collector's Edition</h3>
-                                    <p>Limited edition physical release with exclusive merchandise.</p>
-                                    <div class="shop-price">$49.99</div>
-                                    <span class="shop-status status-upcoming">Pre-order Soon</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Merch+T-Shirt" 
-                                     alt="Studio T-Shirt"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=T-Shirt'">
-                                <div class="carousel-info">
-                                    <h3>Studio Merchandise</h3>
-                                    <p>High-quality apparel featuring DimDesk.Studios artwork.</p>
-                                    <div class="shop-price">$24.99</div>
-                                    <span class="shop-status status-upcoming">In Production</span>
-                                </div>
-                            </div>
-                            <div class="carousel-slide shop-item">
-                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Art+Prints" 
-                                     alt="Art Prints"
-                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Prints'">
-                                <div class="carousel-info">
-                                    <h3>Limited Art Prints</h3>
-                                    <p>Signed, numbered art prints from our game development.</p>
-                                    <div class="shop-price">$29.99</div>
-                                    <span class="shop-status status-upcoming">Coming Soon</span>
-                                </div>
-                            </div>
+                        <div class="carousel-track" id="shop-upcoming-track">
+                            <!-- Dynamic content will be loaded here -->
                         </div>
                         <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
-                        <div class="carousel-dots"></div>
+                        <div class="carousel-dots" id="shop-upcoming-dots"></div>
                     </div>
                 </section>
 
                 <!-- Product Grid -->
-                <div class="shop-grid">
-                    <div class="shop-item">
-                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Game" 
-                             alt="Digital Game"
-                             onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
-                        <div class="shop-item-info">
-                            <h3>Digital Games</h3>
-                            <p>Instant download of our completed games for PC and mobile platforms.</p>
-                            <div class="shop-price">From $4.99</div>
-                            <span class="shop-status status-released">Available</span>
-                        </div>
-                    </div>
-                    <div class="shop-item">
-                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Game+Assets" 
-                             alt="Game Assets"
-                             onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Assets'">
-                        <div class="shop-item-info">
-                            <h3>Game Assets Pack</h3>
-                            <p>Collection of reusable game assets for indie developers.</p>
-                            <div class="shop-price">$19.99</div>
-                            <span class="shop-status status-upcoming">Q2 2025</span>
-                        </div>
-                    </div>
-                    <div class="shop-item">
-                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers" 
-                             alt="Digital Wallpapers"
-                             onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers'">
-                        <div class="shop-item-info">
-                            <h3>Digital Wallpapers</h3>
-                            <p>High-resolution wallpapers featuring our artwork.</p>
-                            <div class="shop-price">$2.99</div>
-                            <span class="shop-status status-released">Available</span>
-                        </div>
-                    </div>
-                    <div class="shop-item">
-                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission" 
-                             alt="Commission Work"
-                             onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission'">
-                        <div class="shop-item-info">
-                            <h3>Custom Commissions</h3>
-                            <p>Commission custom artwork or game assets for your projects.</p>
-                            <div class="shop-price">Contact for Quote</div>
-                            <span class="shop-status status-soon">Limited Slots</span>
-                        </div>
-                    </div>
+                <div class="shop-grid" id="shop-products-grid">
+                    <!-- Dynamic content will be loaded here -->
                 </div>
 
                 <!-- Crow Character Section -->
@@ -197,15 +128,34 @@
                     <img alt="Crow Character - Shop Mascot" src="crow.png" 
                          onerror="this.src='https://via.placeholder.com/500x300/333/fff?text=Crow+Character+Coming+Soon'" />
                 </div>
-
-                <!-- Video Background -->
-                <div class="video-container">
-                    <video autoplay muted loop playsinline>
-                        <source src="D.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
             </main>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items" id="cart-items">
+            <div class="empty-cart">Your cart is empty</div>
+        </div>
+        <div class="cart-total">
+            <span class="cart-total-label">Total:</span>
+            <span class="cart-total-price" id="cart-total">$0.00</span>
+        </div>
+        <div class="cart-actions">
+            <button class="cart-btn cart-btn-checkout" id="checkout-btn">Checkout</button>
+            <button class="cart-btn cart-btn-clear" id="clear-cart">Clear Cart</button>
+        </div>
+    </div>
+
+    <!-- Item Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
     
@@ -234,6 +184,13 @@
             <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
             <div class="footerBottom">
                 <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+            <!-- Admin Access in Footer -->
+            <div class="admin-footer-access">
+                <a href="admin.html" title="Admin Panel">
+                    <span>⚙️</span>
+                    <span>Admin Access</span>
+                </a>
             </div>
         </div>
     </footer>

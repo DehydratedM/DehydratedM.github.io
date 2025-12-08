@@ -320,6 +320,36 @@
                 <div id="portfolio-skills-list"></div>
                 <button class="admin-add-btn" onclick="addSkillItem()">Add Skill Category</button>
             </div>
+
+            <!-- Settings Section -->
+<div id="admin-section-settings" class="admin-section">
+    <h2>Website Settings</h2>
+    <div class="admin-control">
+        <label style="display: flex; align-items: center; gap: 1rem;">
+            <input type="checkbox" id="carousel-toggle" checked 
+                   onchange="toggleCarouselSetting(this.checked)">
+            Enable Carousels
+        </label>
+        <small style="color: #aaa; display: block; margin-top: 0.5rem;">
+            Toggle carousels on/off. When off, the homepage will show a simpler layout.
+        </small>
+    </div>
+    <div class="admin-control">
+        <label>Featured Section Title:</label>
+        <input type="text" id="featured-title" placeholder="Featured Projects" 
+               value="Featured Projects">
+    </div>
+    <div class="admin-control">
+        <label>YouTube Video ID:</label>
+        <input type="text" id="youtube-video-id" placeholder="b2lC7cbFmXE" 
+               value="b2lC7cbFmXE">
+        <small style="color: #aaa; display: block; margin-top: 0.5rem;">
+            The ID after "youtube.com/watch?v=" in the URL
+        </small>
+    </div>
+    <button class="admin-save-btn" onclick="saveSettings()">Save Settings</button>
+</div>
+
             
             <!-- Security Settings Section -->
             <div id="admin-section-security" class="admin-section admin-security-section">

@@ -14,7 +14,9 @@
             <header>
                 <div class="HE">
                     <div class="lol">
-                        <h1 style="color:lightcoral"><img alt="cat" src="cat.png" width="90" /></h1>
+                        <a href="index.html" title="Return to Home">
+                            <h1 style="color:lightcoral"><img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" /></h1>
+                        </a>
                     </div>
                     
                     <button class="mobile-toggle" aria-label="Toggle navigation menu">
@@ -27,7 +29,7 @@
                         <ul>
                             <li><a href="index.html" id="home-link">Home</a></li>
                             <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
-                            <li><a href="shop.html" id="shop-link">Shop-</a></li>
+                            <li><a href="shop.html" id="shop-link" class="current-page">Shop-</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -46,7 +48,7 @@
                 </div>
 
                 <div class="crow">
-                    <img alt="crow" src="crow.png" />
+                    <img alt="Crow Character" src="crow.png" />
                 </div>
 
                 <div class="video-container">
@@ -62,11 +64,21 @@
     <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
-                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer"><img alt="bluesky-fillW" src="bluesky-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer"><img alt="youtube-fillW" src="youtube-fillW.png" width="30" height="30" /></a>
-                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer"><img alt="pathronW" src="pathronW.png" width="30" height="30" /></a>
-                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer"><img alt="itchioW" src="itchioW.png" width="30" height="30" /></a>
-                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer"><img alt="caraW" src="caraW.png" width="30" height="30" /></a>
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" />
+                </a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" />
+                </a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" />
+                </a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" />
+                </a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
+                    <img alt="Cara" src="caraW.png" width="30" height="30" />
+                </a>
             </div>
         </div>
         <div class="Oo">
@@ -85,8 +97,10 @@
             const navLinks = document.querySelector('.nav-links');
             const navItems = document.querySelectorAll('.nav-links a');
             
+            // Mobile menu functionality
             if (mobileToggle) {
-                mobileToggle.addEventListener('click', function() {
+                mobileToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     navLinks.classList.toggle('active');
                     mobileToggle.classList.toggle('active');
                 });
@@ -108,11 +122,6 @@
                 const portfolioLink = document.getElementById('portfolio-link');
                 const shopLink = document.getElementById('shop-link');
                 
-                // Remove current-page class from all links
-                if (homeLink) homeLink.classList.remove('current-page');
-                if (portfolioLink) portfolioLink.classList.remove('current-page');
-                if (shopLink) shopLink.classList.remove('current-page');
-                
                 // Add current-page class to shop link
                 if (shopLink) {
                     shopLink.classList.add('current-page');
@@ -120,8 +129,14 @@
                 }
                 
                 // Set other links text
-                if (homeLink) homeLink.innerHTML = 'Home';
-                if (portfolioLink) portfolioLink.innerHTML = 'Portfolio';
+                if (homeLink) {
+                    homeLink.innerHTML = 'Home';
+                    homeLink.classList.remove('current-page');
+                }
+                if (portfolioLink) {
+                    portfolioLink.innerHTML = 'Portfolio';
+                    portfolioLink.classList.remove('current-page');
+                }
             }
             
             // Call the function on page load
@@ -134,6 +149,34 @@
                     document.addEventListener('touchstart', function() {
                         video.play();
                     }, { once: true });
+                });
+            }
+            
+            // Add logo click animation
+            const logoLink = document.querySelector('.lol a');
+            if (logoLink) {
+                logoLink.addEventListener('click', function(e) {
+                    const logoImg = this.querySelector('img');
+                    if (logoImg) {
+                        logoImg.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            logoImg.style.transform = '';
+                        }, 200);
+                    }
+                });
+            }
+            
+            // Add crow image hover effect
+            const crowImage = document.querySelector('.crow img');
+            if (crowImage) {
+                crowImage.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                    this.style.boxShadow = '0 12px 30px rgba(0, 0, 0, 0.6)';
+                });
+                
+                crowImage.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                    this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.5)';
                 });
             }
         });

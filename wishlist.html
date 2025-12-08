@@ -3,60 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DimDesk Studios - Wishlist</title>
+    <title>DimDesk Studios - My Wishlist</title>
     <link rel="stylesheet" href="styleSheet.css">
     <link rel="icon" type="image/ico" href="Icon.ico">
-    <style>
-        .wishlist-header {
-            text-align: center;
-            padding: 2rem;
-            color: lightcoral;
-        }
-        
-        .wishlist-count {
-            font-size: 1.2rem;
-            color: wheat;
-            margin-top: 0.5rem;
-        }
-        
-        .empty-wishlist {
-            text-align: center;
-            padding: 3rem;
-            color: wheat;
-            font-size: 1.2rem;
-        }
-        
-        .wishlist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin: 3rem auto;
-            max-width: 1200px;
-            padding: 0 2rem;
-        }
-        
-        .wishlist-actions {
-            text-align: center;
-            margin: 2rem 0;
-        }
-        
-        .wishlist-btn-remove {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-            width: 100%;
-        }
-        
-        .wishlist-btn-remove:hover {
-            background: #e74c3c;
-        }
-    </style>
 </head>
-<body>
+<body class="wishlist-page">
     <!-- Background Video -->
     <div class="background-video">
         <video autoplay muted loop playsinline id="bg-video">
@@ -66,74 +17,97 @@
         <div class="video-overlay"></div>
     </div>
 
-    <div class="Container">
-        <div class="content">
-            <header>
-                <div class="HE">
-                    <div class="lol">
-                        <a href="index.html" title="Return to Home" id="logo-link">
-                            <h1 style="color:lightcoral">
-                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" 
-                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
-                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
-                            </h1>
-                        </a>
-                    </div>
-                    
-                    <nav class="nav-links">
-                        <ul>
-                            <li><a href="index.html" id="home-link">Home</a></li>
-                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
-                            <li><a href="shop.html" id="shop-link">Shop</a></li>
-                            <li><a href="wishlist.html" id="wishlist-link" class="current-page">Wishlist</a></li>
-                            <li class="cart-toggle">
-                                <a href="#" class="cart-icon" title="View Cart">
-                                    🛒
-                                    <span class="cart-count" id="cart-count">0</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    
-                    <button class="mobile-toggle" aria-label="Toggle navigation menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
+    <div class="wishlist-container">
+        <!-- Header -->
+        <header>
+            <div class="HE">
+                <div class="lol">
+                    <a href="index.html" title="Return to Home" id="logo-link">
+                        <h1 style="color:lightcoral">
+                            <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" 
+                                 onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+                            <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
+                        </h1>
+                    </a>
                 </div>
-            </header>
-
-            <!-- Wishlist Header -->
-            <div class="llogo">
-                <h1 style="color:lightcoral; font-size: 3rem;">My Wishlist</h1>
-                <p style="color: wheat; margin-top: 1rem; font-size: 1.2rem;">Save items you're interested in for later</p>
+                
+                <nav class="nav-links">
+                    <ul>
+                        <li><a href="index.html" id="home-link">Home</a></li>
+                        <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                        <li><a href="shop.html" id="shop-link">Shop</a></li>
+                        <li><a href="wishlist.html" id="wishlist-link" class="current-page">Wishlist</a></li>
+                        <li class="cart-toggle">
+                            <a href="#" class="cart-icon" title="View Cart">
+                                🛒
+                                <span class="cart-count" id="cart-count">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <button class="mobile-toggle" aria-label="Toggle navigation menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
+        </header>
 
-            <main>
-                <!-- Empty Wishlist Message -->
-                <div class="empty-wishlist" id="empty-wishlist" style="display: none;">
-                    <h3>Your wishlist is empty</h3>
-                    <p>Browse our shop and add items you're interested in!</p>
-                    <a href="shop.html" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                        Browse Shop
-                    </a>
+        <!-- Wishlist Header -->
+        <div class="wishlist-header">
+            <h1>My Wishlist</h1>
+            <p class="wishlist-subtitle">Track items you're interested in and get notified when they're available!</p>
+            
+            <!-- Stats -->
+            <div class="wishlist-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="wishlist-count">0</div>
+                    <div class="stat-label">Items in Wishlist</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="available-count">0</div>
+                    <div class="stat-label">Available Now</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="upcoming-count">0</div>
+                    <div class="stat-label">Coming Soon</div>
+                </div>
+            </div>
+        </div>
 
-                <!-- Wishlist Items Grid -->
-                <div class="wishlist-grid" id="wishlist-grid">
-                    <!-- Dynamic content will be loaded here -->
-                </div>
+        <!-- Empty Wishlist State -->
+        <div class="empty-wishlist" id="empty-wishlist">
+            <div class="empty-wishlist-icon">📋</div>
+            <h3>Your wishlist is empty</h3>
+            <p>Browse our collection and add items you're interested in to track them here!</p>
+            <a href="shop.html" class="browse-shop-btn">Browse Shop</a>
+        </div>
 
-                <!-- Wishlist Actions -->
-                <div class="wishlist-actions">
-                    <button onclick="clearWishlist()" style="background: #dc3545; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 1rem;">
-                        Clear Wishlist
-                    </button>
-                    <a href="shop.html" style="display: inline-block; padding: 0.75rem 1.5rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 8px; font-weight: bold;">
-                        Continue Shopping
-                    </a>
-                </div>
-            </main>
+        <!-- Wishlist Items Grid -->
+        <div class="wishlist-grid" id="wishlist-grid">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="notification-settings">
+            <h3>💌 Get Notified</h3>
+            <p style="color: wheat; margin-bottom: 1rem;">Enter your email to get notified when wishlisted items become available:</p>
+            <div class="notification-email-form">
+                <input type="email" id="notification-email" class="notification-email-input" placeholder="your@email.com" value="">
+                <button class="notification-email-btn" onclick="saveNotificationEmail()">Save Email</button>
+            </div>
+            <div id="notification-status" class="notification-status"></div>
+        </div>
+
+        <!-- Actions -->
+        <div style="text-align: center; margin: 3rem 0;">
+            <button onclick="clearWishlist()" style="background: #dc3545; color: white; border: none; padding: 1rem 2rem; border-radius: 10px; font-weight: 700; cursor: pointer; margin-right: 1rem; transition: all 0.3s ease;">
+                🗑️ Clear Wishlist
+            </button>
+            <a href="shop.html" style="display: inline-block; padding: 1rem 2rem; background: lightcoral; color: #000; text-decoration: none; border-radius: 10px; font-weight: 700; transition: all 0.3s ease;">
+                🛍️ Continue Shopping
+            </a>
         </div>
     </div>
 
@@ -163,7 +137,7 @@
             <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
-    
+
     <footer style="background-color: black">
         <div class="footerContainer">
             <div class="socialIcons">
@@ -202,6 +176,122 @@
 
     <script src="main.js"></script>
     <script>
+        // Wishlist page specific functions
+        function updateWishlistStats() {
+            const wishlistCount = document.getElementById('wishlist-count');
+            const availableCount = document.getElementById('available-count');
+            const upcomingCount = document.getElementById('upcoming-count');
+            
+            if (wishlistCount && wishlist) {
+                wishlistCount.textContent = wishlist.length;
+                
+                const available = wishlist.filter(item => item.status === 'released').length;
+                const upcoming = wishlist.filter(item => item.status === 'upcoming').length;
+                
+                if (availableCount) availableCount.textContent = available;
+                if (upcomingCount) upcomingCount.textContent = upcoming;
+            }
+        }
+        
+        function loadWishlistContent() {
+            const emptyWishlist = document.getElementById('empty-wishlist');
+            const wishlistGrid = document.getElementById('wishlist-grid');
+            
+            if (!wishlist || wishlist.length === 0) {
+                if (emptyWishlist) emptyWishlist.style.display = 'block';
+                if (wishlistGrid) {
+                    wishlistGrid.innerHTML = '';
+                    wishlistGrid.style.display = 'none';
+                }
+                updateWishlistStats();
+                return;
+            }
+            
+            if (emptyWishlist) emptyWishlist.style.display = 'none';
+            if (wishlistGrid) {
+                wishlistGrid.innerHTML = '';
+                wishlistGrid.style.display = 'grid';
+                
+                wishlist.forEach((item, index) => {
+                    // Find the full product info
+                    let product = null;
+                    
+                    // Check in shop products
+                    if (websiteData.shop.products) {
+                        product = websiteData.shop.products.find(p => p.id === item.id);
+                    }
+                    
+                    // Check in carousel items
+                    if (!product && websiteData.carousels) {
+                        const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
+                        product = allCarouselItems.find(p => p.id === item.id);
+                    }
+                    
+                    if (product) {
+                        const isAvailable = product.status === 'released';
+                        const launchDate = product.launchDate || '2024-12-31';
+                        
+                        const wishlistItem = document.createElement('div');
+                        wishlistItem.className = 'wishlist-item';
+                        wishlistItem.innerHTML = `
+                            <div class="wishlist-item-header">
+                                <img src="${product.image}" alt="${product.title}" class="wishlist-item-image" loading="lazy">
+                                <span class="wishlist-status status-${product.status}">
+                                    ${isAvailable ? 'Available Now' : 'Coming Soon'}
+                                </span>
+                                ${!isAvailable ? `
+                                    <div class="countdown-timer" data-launch-date="${launchDate}">
+                                        Launch: ${launchDate}
+                                    </div>
+                                ` : ''}
+                            </div>
+                            <div class="wishlist-item-content">
+                                <h3 class="wishlist-item-title">${product.title}</h3>
+                                <p class="wishlist-item-description">${product.description}</p>
+                                <div class="wishlist-item-price">$${product.price.toFixed(2)}</div>
+                                <div class="wishlist-item-actions">
+                                    <button class="wishlist-btn-remove" onclick="removeFromWishlist(${item.id})">
+                                        ❌ Remove
+                                    </button>
+                                    ${isAvailable ? `
+                                        <button class="wishlist-btn-cart" onclick="addToCartFromWishlist(${item.id})">
+                                            🛒 Add to Cart
+                                        </button>
+                                    ` : `
+                                        <button class="wishlist-btn-cart" disabled>
+                                            ⏳ Coming Soon
+                                        </button>
+                                    `}
+                                </div>
+                            </div>
+                        `;
+                        
+                        wishlistGrid.appendChild(wishlistItem);
+                    }
+                });
+                
+                // Initialize countdown timers
+                initializeCountdownTimers();
+            }
+            
+            updateWishlistStats();
+            
+            // Load saved email
+            const savedEmail = localStorage.getItem('dimdesk_notification_email');
+            if (savedEmail && document.getElementById('notification-email')) {
+                document.getElementById('notification-email').value = savedEmail;
+            }
+        }
+        
+        function removeFromWishlist(itemId) {
+            toggleWishlist(itemId);
+            loadWishlistContent();
+        }
+        
+        function addToCartFromWishlist(itemId) {
+            addToCart(itemId);
+        }
+        
         function clearWishlist() {
             if (wishlist.length === 0) {
                 showNotification('Wishlist is already empty', 'info');
@@ -216,9 +306,75 @@
             }
         }
         
+        function saveNotificationEmail() {
+            const emailInput = document.getElementById('notification-email');
+            const statusDiv = document.getElementById('notification-status');
+            
+            if (!emailInput || !emailInput.value.includes('@')) {
+                if (statusDiv) {
+                    statusDiv.textContent = 'Please enter a valid email address';
+                    statusDiv.className = 'notification-status error';
+                }
+                return;
+            }
+            
+            localStorage.setItem('dimdesk_notification_email', emailInput.value);
+            
+            if (statusDiv) {
+                statusDiv.textContent = 'Email saved successfully! You will be notified when wishlisted items become available.';
+                statusDiv.className = 'notification-status success';
+            }
+            
+            showNotification('Notification email saved!');
+            
+            // Clear status after 5 seconds
+            setTimeout(() => {
+                if (statusDiv) {
+                    statusDiv.style.display = 'none';
+                }
+            }, 5000);
+        }
+        
+        function initializeCountdownTimers() {
+            document.querySelectorAll('.countdown-timer').forEach(timer => {
+                const launchDate = new Date(timer.dataset.launchDate);
+                updateCountdown(timer, launchDate);
+                
+                // Update every minute
+                setInterval(() => {
+                    updateCountdown(timer, launchDate);
+                }, 60000);
+            });
+        }
+        
+        function updateCountdown(element, launchDate) {
+            const now = new Date();
+            const diff = launchDate - now;
+            
+            if (diff <= 0) {
+                element.textContent = 'Available Now!';
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            if (days > 0) {
+                element.textContent = `Launch in ${days} day${days !== 1 ? 's' : ''}`;
+            } else if (hours > 0) {
+                element.textContent = `Launch in ${hours} hour${hours !== 1 ? 's' : ''}`;
+            } else {
+                element.textContent = 'Launching today!';
+            }
+        }
+        
         // Initialize wishlist page
         document.addEventListener('DOMContentLoaded', function() {
             loadWishlistContent();
+            initNavigation();
+            initCartSystem();
+            initModalSystem();
+            updateCartCount();
         });
     </script>
 </body>

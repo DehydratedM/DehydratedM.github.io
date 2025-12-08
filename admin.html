@@ -272,8 +272,26 @@
                 <h1>Admin Panel</h1>
                 <button id="logout-btn" class="admin-logout">Logout</button>
             </div>
+
             
             <div id="admin-message" class="admin-message"></div>
+
+            <!-- Add this to admin.html in the admin-panel section -->
+<div class="admin-section">
+    <h2>Security Settings</h2>
+    <div class="admin-control">
+        <label>Change Admin Password:</label>
+        <input type="password" id="new-password" placeholder="New Password">
+    </div>
+    <button class="admin-save-btn" onclick="changePassword()">Change Password</button>
+    <div class="admin-instructions">
+        <p><strong>Current Credentials:</strong></p>
+        <p>Username: <code>dimdesk_admin</code></p>
+        <p>To change password, enter new password above and click "Change Password"</p>
+        <p><strong>Important:</strong> Remember your new password as it will be required for future logins.</p>
+    </div>
+</div>
+
             
             <div class="admin-sections">
                 <!-- Home Content -->

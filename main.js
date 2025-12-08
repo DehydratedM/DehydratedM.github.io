@@ -1,4 +1,4 @@
-// main.js - Enhanced with dynamic loading and carousel system
+// main.js - Enhanced with dynamic loading, carousel system, and wishlist
 console.log("DimDesk Studios - Main Script Loaded");
 
 // ==========================================================================
@@ -7,13 +7,14 @@ console.log("DimDesk Studios - Main Script Loaded");
 let cart = JSON.parse(localStorage.getItem('dimdesk_cart')) || [];
 let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
 let carouselInstances = {};
+let wishlist = JSON.parse(localStorage.getItem('dimdesk_wishlist')) || [];
+let notifications = JSON.parse(localStorage.getItem('dimdesk_notifications')) || [];
 
 // ==========================================================================
-// DEFAULT DATA STRUCTURE
+// DEFAULT DATA STRUCTURE (WITH ALL SKILLS)
 // ==========================================================================
 function getDefaultData() {
     return {
-        // Home Page
         home: {
             intro: "Hi, I'm M, the heart and soul behind this one-person indie studio. Games and art have been my passions for as long as I can remember, and they've shaped not just my creative journey but also the vision for this studio.\n\nMy dream is to craft meaningful experiences through games that blend creativity, storytelling, and artistry. It's a challenging road, but I'm committed to pouring my heart into every project, no matter how small or ambitious.\n\nYour support means more than words can express. By joining me on this journey, you'll be helping bring these dreams to life—and as a thank-you, you'll earn a special spot in the credits, early access to merch, game releases and some exclusive goodies along the way.\n\nThank you for believing in indie creators like me. Together, we can build something unforgettable.\n\n—M",
             featured: {
@@ -27,8 +28,6 @@ function getDefaultData() {
                 }
             }
         },
-        
-        // Shop Page
         shop: {
             intro: "^^ Please understand the slow process! We're working hard to bring you quality products.\nIn the meantime, check out what we have available and what's coming soon!",
             products: [
@@ -70,8 +69,6 @@ function getDefaultData() {
                 }
             ]
         },
-        
-        // Portfolio Page
         portfolio: {
             intro: "Hi there, I'm M! I've always been passionate about games and art for as long as I can remember. These two things have shaped who I am, and I dream of building something meaningful in these fields, even with the challenges they come with.\n\nYour support would mean the world to me, in being part of this journey. As of now I'm on YouTube, Blue-sky, Cara and Patreon! I hope to see you around!\nI'm the sole person currently working in Dimdesk. studios, an indie studio producing Games, art and more (as much as a single person can do, lol)\n\nThank you so much for taking the time to read this, and even more if you choose to help!\n\n—M",
             skills: [
@@ -91,6 +88,13 @@ function getDefaultData() {
                             description: "Painting, color pencils, black & white, pen/markers - Animals, architecture, still life",
                             tags: ["Painting", "Drawing", "Sketching"],
                             level: 95
+                        },
+                        {
+                            name: "Digital Illustration",
+                            years: "5+ years",
+                            description: "Character design, concept art, digital painting using various software",
+                            tags: ["Character Design", "Concept Art", "Digital Painting"],
+                            level: 85
                         }
                     ]
                 },
@@ -103,6 +107,13 @@ function getDefaultData() {
                             description: "Trailers, playthroughs, self tapes - Longest video worked on: 10-14 hours",
                             tags: ["Video Editing", "Color Grading", "Sound Design"],
                             level: 85
+                        },
+                        {
+                            name: "After Effects",
+                            years: "3+ years",
+                            description: "Motion graphics, visual effects, title animations",
+                            tags: ["Motion Graphics", "Visual Effects", "Animation"],
+                            level: 75
                         }
                     ]
                 },
@@ -122,13 +133,30 @@ function getDefaultData() {
                             description: "Web development for game promotion and portfolio sites",
                             tags: ["Web Design", "Responsive UI", "Frontend"],
                             level: 50
+                        },
+                        {
+                            name: "Game Design",
+                            years: "2+ years",
+                            description: "Concept development, level design, game mechanics, prototyping",
+                            tags: ["Level Design", "Mechanics", "Prototyping"],
+                            level: 70
+                        }
+                    ]
+                },
+                {
+                    category: "🎵 Audio Production",
+                    skills: [
+                        {
+                            name: "FL Studio",
+                            years: "3+ years",
+                            description: "Music composition, sound design, audio mixing for games",
+                            tags: ["Music Composition", "Sound Design", "Mixing"],
+                            level: 65
                         }
                     ]
                 }
             ]
         },
-        
-        // Carousel Games
         carousels: {
             released: [
                 {
@@ -201,14 +229,92 @@ function initializeWebsite() {
         initCarousels();
         initModalSystem();
         initCartSystem();
+        initWishlistSystem();
         initScrollAnimations();
         
         updateCartCount();
+        updateWishlistButtons();
         
         console.log("Website initialization complete");
     } catch (error) {
         console.error("Error during initialization:", error);
     }
+}
+
+// ==========================================================================
+// FIXED NAVIGATION SYSTEM
+// ==========================================================================
+function initNavigation() {
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (!mobileToggle || !navLinks) return;
+    
+    // FIX: Proper mobile toggle
+    mobileToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navLinks.classList.toggle('active');
+        this.classList.toggle('active');
+    });
+    
+    // FIX: Close mobile menu when clicking links
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                navLinks.classList.remove('active');
+                mobileToggle.classList.remove('active');
+            }
+        });
+    });
+    
+    // Highlight current page
+    highlightCurrentPage();
+    
+    // Close menu when clicking outside (FIXED)
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth <= 768) {
+            if (!navLinks.contains(event.target) && !mobileToggle.contains(event.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileToggle.classList.remove('active');
+            }
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            mobileToggle.classList.remove('active');
+        }
+    });
+}
+
+function highlightCurrentPage() {
+    const currentPage = window.location.pathname;
+    const page = currentPage.split('/').pop() || 'index.html';
+    const links = document.querySelectorAll('.nav-links a');
+    
+    links.forEach(link => {
+        link.classList.remove('current-page');
+        
+        if (page === 'index.html' || page === '' || page.includes('SiteTest')) {
+            if (link.getAttribute('href') === 'index.html' || link.getAttribute('href') === './' || link.getAttribute('href') === '') {
+                link.classList.add('current-page');
+            }
+        } else if (page === 'portfolio.html') {
+            if (link.getAttribute('href') === 'portfolio.html') {
+                link.classList.add('current-page');
+            }
+        } else if (page === 'shop.html') {
+            if (link.getAttribute('href') === 'shop.html') {
+                link.classList.add('current-page');
+            }
+        } else if (page === 'wishlist.html') {
+            if (link.getAttribute('href') === 'wishlist.html') {
+                link.classList.add('current-page');
+            }
+        }
+    });
 }
 
 // ==========================================================================
@@ -225,6 +331,8 @@ function initDynamicContent() {
         loadShopContent();
     } else if (page === 'portfolio.html') {
         loadPortfolioContent();
+    } else if (page === 'wishlist.html') {
+        loadWishlistContent();
     }
 }
 
@@ -232,7 +340,6 @@ function loadHomeContent() {
     // Load intro text
     const introText = document.getElementById('intro-text');
     if (introText && websiteData.home.intro) {
-        // Replace newlines with <br> tags for HTML display
         introText.innerHTML = websiteData.home.intro.replace(/\n/g, '<br>');
     }
     
@@ -260,8 +367,7 @@ function loadShopContent() {
     // Load shop intro
     const shopIntro = document.getElementById('shop-intro');
     if (shopIntro && websiteData.shop.intro) {
-        // Replace ^^ with superscript
-        shopIntro.innerHTML = websiteData.shop.intro.replace(/\^\^/g, '<sup>†</sup>');
+        shopIntro.innerHTML = websiteData.shop.intro.replace(/\^\^/g, '<sup>†</sup>').replace(/\n/g, '<br>');
     }
     
     // Load shop products
@@ -269,6 +375,7 @@ function loadShopContent() {
     if (shopGrid && websiteData.shop.products) {
         let html = '';
         websiteData.shop.products.forEach(product => {
+            const isInWishlist = wishlist.some(item => item.id === product.id);
             html += `
                 <div class="shop-item" onclick="showProductModal(${product.id})">
                     <img src="${product.image}" alt="${product.title}" loading="lazy">
@@ -279,6 +386,12 @@ function loadShopContent() {
                         <span class="shop-status status-${product.status}">
                             ${product.status === 'released' ? 'Available' : 'Coming Soon'}
                         </span>
+                        ${product.status === 'upcoming' ? 
+                            `<button class="wishlist-btn" data-product-id="${product.id}" 
+                             onclick="event.stopPropagation(); toggleWishlist(${product.id})">
+                                ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                            </button>` : ''
+                        }
                     </div>
                 </div>
             `;
@@ -294,7 +407,7 @@ function loadPortfolioContent() {
         portfolioIntro.innerHTML = websiteData.portfolio.intro.replace(/\n/g, '<br>');
     }
     
-    // Load skills
+    // Load skills (FIXED: All skills are loaded)
     const skillsGrid = document.getElementById('portfolio-skills');
     if (skillsGrid && websiteData.portfolio.skills) {
         let html = '';
@@ -342,8 +455,52 @@ function loadPortfolioContent() {
     }
 }
 
+function loadWishlistContent() {
+    const wishlistGrid = document.getElementById('wishlist-grid');
+    const emptyWishlist = document.getElementById('empty-wishlist');
+    
+    if (wishlist.length === 0) {
+        if (emptyWishlist) emptyWishlist.style.display = 'block';
+        if (wishlistGrid) wishlistGrid.style.display = 'none';
+    } else {
+        if (emptyWishlist) emptyWishlist.style.display = 'none';
+        if (wishlistGrid) {
+            let html = '';
+            wishlist.forEach(item => {
+                // Find the full product info
+                let product = websiteData.shop.products.find(p => p.id === item.id);
+                if (!product && websiteData.carousels) {
+                    const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
+                    product = allCarouselItems.find(p => p.id === item.id);
+                }
+                
+                if (product) {
+                    html += `
+                        <div class="shop-item" onclick="showProductModal(${item.id})">
+                            <img src="${product.image}" alt="${product.title}" loading="lazy">
+                            <div class="shop-item-info">
+                                <h3>${product.title}</h3>
+                                <p>${product.description}</p>
+                                <div class="shop-price">$${product.price.toFixed(2)}</div>
+                                <span class="shop-status status-${product.status}">
+                                    ${product.status === 'released' ? 'Available' : 'Coming Soon'}
+                                </span>
+                                <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(${item.id})" style="background: #dc3545; margin-top: 10px;">
+                                    ❤️ Remove from Wishlist
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            wishlistGrid.innerHTML = html;
+            wishlistGrid.style.display = 'grid';
+        }
+    }
+}
+
 // ==========================================================================
-// ENHANCED CAROUSEL SYSTEM
+// ENHANCED CAROUSEL SYSTEM (WITH TEMPORARY ITEMS)
 // ==========================================================================
 function initCarousels() {
     // Initialize carousels based on page
@@ -352,20 +509,24 @@ function initCarousels() {
     
     if (page === 'index.html' || page === '' || page.includes('SiteTest')) {
         // Home page carousels
-        if (document.getElementById('released-carousel')) {
-            carouselInstances.released = new Carousel('released-carousel', 'released');
-        }
-        if (document.getElementById('upcoming-carousel')) {
-            carouselInstances.upcoming = new Carousel('upcoming-carousel', 'upcoming');
-        }
+        setTimeout(() => {
+            if (document.getElementById('released-carousel')) {
+                carouselInstances.released = new Carousel('released-carousel', 'released');
+            }
+            if (document.getElementById('upcoming-carousel')) {
+                carouselInstances.upcoming = new Carousel('upcoming-carousel', 'upcoming');
+            }
+        }, 100);
     } else if (page === 'shop.html') {
         // Shop page carousels
-        if (document.getElementById('shop-available-carousel')) {
-            carouselInstances.shopAvailable = new Carousel('shop-available-carousel', 'released');
-        }
-        if (document.getElementById('shop-upcoming-carousel')) {
-            carouselInstances.shopUpcoming = new Carousel('shop-upcoming-carousel', 'upcoming');
-        }
+        setTimeout(() => {
+            if (document.getElementById('shop-available-carousel')) {
+                carouselInstances.shopAvailable = new Carousel('shop-available-carousel', 'released');
+            }
+            if (document.getElementById('shop-upcoming-carousel')) {
+                carouselInstances.shopUpcoming = new Carousel('shop-upcoming-carousel', 'upcoming');
+            }
+        }, 100);
     }
 }
 
@@ -386,7 +547,6 @@ class Carousel {
         this.autoSlideInterval = null;
         
         this.init();
-        this.startAutoSlide();
         
         // Handle window resize
         window.addEventListener('resize', () => {
@@ -397,10 +557,10 @@ class Carousel {
     
     getSlidesPerView() {
         const width = window.innerWidth;
-        if (width >= 1200) return 3; // Desktop
-        if (width >= 992) return 2;  // Laptop
-        if (width >= 768) return 2;  // Tablet
-        return 1;                    // Mobile
+        if (width >= 1200) return 3;
+        if (width >= 992) return 2;
+        if (width >= 768) return 2;
+        return 1;
     }
     
     init() {
@@ -420,6 +580,11 @@ class Carousel {
         
         // Update carousel
         this.updateCarousel();
+        
+        // Start auto-slide if not mobile
+        if (window.innerWidth > 768) {
+            this.startAutoSlide();
+        }
     }
     
     loadSlides() {
@@ -430,6 +595,7 @@ class Carousel {
         this.totalSlides = data.length;
         
         data.forEach((item, index) => {
+            const isInWishlist = wishlist.some(wishlistItem => wishlistItem.id === item.id);
             const slide = document.createElement('div');
             slide.className = 'carousel-slide';
             slide.innerHTML = `
@@ -441,6 +607,12 @@ class Carousel {
                     <span class="shop-status status-${item.status}">
                         ${item.status === 'released' ? 'Available' : 'Coming Soon'}
                     </span>
+                    ${item.status === 'upcoming' ? 
+                        `<button class="wishlist-btn" data-product-id="${item.id}" 
+                         onclick="event.stopPropagation(); toggleWishlist(${item.id})" style="margin-top: 10px;">
+                            ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                        </button>` : ''
+                    }
                 </div>
             `;
             
@@ -492,34 +664,39 @@ class Carousel {
     }
     
     nextSlide() {
+        this.stopAutoSlide();
         if (this.currentIndex >= this.totalSlides - this.slidesPerView) {
-            this.currentIndex = 0; // Loop back to start
+            this.currentIndex = 0;
         } else {
             this.currentIndex += this.slidesPerView;
         }
         this.updateCarousel();
+        this.startAutoSlide();
     }
     
     prevSlide() {
+        this.stopAutoSlide();
         if (this.currentIndex <= 0) {
-            this.currentIndex = this.totalSlides - this.slidesPerView; // Loop to end
+            this.currentIndex = this.totalSlides - this.slidesPerView;
         } else {
             this.currentIndex -= this.slidesPerView;
         }
         this.updateCarousel();
+        this.startAutoSlide();
     }
     
     goToSlide(index) {
+        this.stopAutoSlide();
         if (index >= 0 && index < this.totalSlides) {
             this.currentIndex = index;
             this.updateCarousel();
         }
+        this.startAutoSlide();
     }
     
     startAutoSlide() {
-        if (window.innerWidth <= 768) return; // Don't auto-slide on mobile
+        if (window.innerWidth <= 768 || this.autoSlideInterval) return;
         
-        this.stopAutoSlide();
         this.autoSlideInterval = setInterval(() => {
             this.nextSlide();
         }, 5000);
@@ -533,6 +710,8 @@ class Carousel {
     }
     
     showItemModal(item) {
+        const isInWishlist = wishlist.some(wishlistItem => wishlistItem.id === item.id);
+        
         const modalHTML = `
             <h2 style="color: lightcoral; margin-bottom: 1rem;">${item.title}</h2>
             <img src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
@@ -541,9 +720,15 @@ class Carousel {
                 <div style="color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
                     $${item.price.toFixed(2)}
                 </div>
-                <button onclick="addToCart(${item.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
-                    Add to Cart
-                </button>
+                ${item.status === 'released' ? 
+                    `<button onclick="addToCart(${item.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                        Add to Cart
+                    </button>` : 
+                    `<button onclick="toggleWishlist(${item.id})" class="wishlist-btn" data-product-id="${item.id}" 
+                     style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                        ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                    </button>`
+                }
                 <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
                     Close
                 </button>
@@ -556,100 +741,6 @@ class Carousel {
             showModal();
         }
     }
-}
-
-// ==========================================================================
-// PERFORMANCE OPTIMIZATIONS
-// ==========================================================================
-
-// Defer non-critical JavaScript
-window.addEventListener('load', function() {
-    // Load non-critical assets after page load
-    setTimeout(() => {
-        loadBackgroundVideo();
-    }, 1000);
-});
-
-function loadBackgroundVideo() {
-    const video = document.getElementById('bg-video');
-    if (video) {
-        video.load();
-        video.play().catch(e => console.log("Video autoplay prevented:", e));
-    }
-}
-
-// Optimize carousel loading
-function initCarousels() {
-    // Wait for DOM to be ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeCarousels);
-    } else {
-        setTimeout(initializeCarousels, 100);
-    }
-}
-
-function initializeCarousels() {
-    // Rest of carousel initialization code...
-}
-
-// ==========================================================================
-// NAVIGATION
-// ==========================================================================
-function initNavigation() {
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (!mobileToggle || !navLinks) return;
-    
-    mobileToggle.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        this.classList.toggle('active');
-    });
-    
-    // Close mobile menu when clicking links
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                navLinks.classList.remove('active');
-                mobileToggle.classList.remove('active');
-            }
-        });
-    });
-    
-    // Highlight current page
-    highlightCurrentPage();
-    
-    // Close menu when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!navLinks.contains(event.target) && !mobileToggle.contains(event.target)) {
-            navLinks.classList.remove('active');
-            mobileToggle.classList.remove('active');
-        }
-    });
-}
-
-function highlightCurrentPage() {
-    const currentPage = window.location.pathname;
-    const page = currentPage.split('/').pop() || 'index.html';
-    const links = document.querySelectorAll('.nav-links a');
-    
-    links.forEach(link => {
-        link.classList.remove('current-page');
-        
-        if (page === 'index.html' || page === '' || page.includes('SiteTest')) {
-            if (link.getAttribute('href') === 'index.html' || link.getAttribute('href') === './') {
-                link.classList.add('current-page');
-            }
-        } else if (page === 'portfolio.html') {
-            if (link.getAttribute('href') === 'portfolio.html') {
-                link.classList.add('current-page');
-            }
-        } else if (page === 'shop.html') {
-            if (link.getAttribute('href') === 'shop.html') {
-                link.classList.add('current-page');
-            }
-        }
-    });
 }
 
 // ==========================================================================
@@ -703,6 +794,8 @@ function showProductModal(productId) {
         return;
     }
     
+    const isInWishlist = wishlist.some(item => item.id === productId);
+    
     const modalHTML = `
         <h2 style="color: lightcoral; margin-bottom: 1rem;">${product.title}</h2>
         <img src="${product.image}" alt="${product.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
@@ -721,8 +814,9 @@ function showProductModal(productId) {
                 `<button onclick="addToCart(${product.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
                     Add to Cart
                 </button>` : 
-                `<button style="background: #666; color: #ccc; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: not-allowed;" disabled>
-                    Coming Soon
+                `<button onclick="toggleWishlist(${product.id})" class="wishlist-btn" data-product-id="${product.id}" 
+                 style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                    ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
                 </button>`
             }
             <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
@@ -862,21 +956,19 @@ function removeFromCart(itemId) {
 function updateCartDisplay() {
     const cartItems = document.getElementById('cart-items');
     const cartTotal = document.getElementById('cart-total');
-    const cartSubtotal = document.getElementById('cart-subtotal');
     
     if (!cartItems || !cartTotal) return;
     
     if (cart.length === 0) {
         cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
         cartTotal.textContent = '$0.00';
-        if (cartSubtotal) cartSubtotal.textContent = '$0.00';
     } else {
         let itemsHTML = '';
-        let subtotal = 0;
+        let total = 0;
         
         cart.forEach(item => {
             const itemTotal = item.price * item.quantity;
-            subtotal += itemTotal;
+            total += itemTotal;
             
             itemsHTML += `
                 <div class="cart-item">
@@ -891,13 +983,8 @@ function updateCartDisplay() {
             `;
         });
         
-        // Calculate tax (example: 10%)
-        const tax = subtotal * 0.1;
-        const total = subtotal + tax;
-        
         cartItems.innerHTML = itemsHTML;
         cartTotal.textContent = `$${total.toFixed(2)}`;
-        if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
     }
 }
 
@@ -933,18 +1020,12 @@ function checkout() {
     
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
-    // In a real implementation, this would redirect to a payment processor
-    // For now, we'll just show a success message
     const modalHTML = `
         <h2 style="color: lightcoral; margin-bottom: 1rem;">Order Summary</h2>
         <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                 <span>Subtotal:</span>
-                <span>$${(total * 0.9).toFixed(2)}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                <span>Tax (10%):</span>
-                <span>$${(total * 0.1).toFixed(2)}</span>
+                <span>$${total.toFixed(2)}</span>
             </div>
             <div style="display: flex; justify-content: space-between; font-weight: bold; border-top: 1px solid rgba(255, 255, 255, 0.2); padding-top: 0.5rem;">
                 <span>Total:</span>
@@ -986,6 +1067,95 @@ function completeCheckout() {
     // Close both modals and cart sidebar
     closeModal();
     closeCartSidebar();
+}
+
+// ==========================================================================
+// WISHLIST SYSTEM
+// ==========================================================================
+function initWishlistSystem() {
+    // Update wishlist buttons on page load
+    updateWishlistButtons();
+    
+    // Add click event for dynamically added wishlist buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('wishlist-btn')) {
+            const productId = parseInt(e.target.dataset.productId);
+            if (productId) {
+                toggleWishlist(productId);
+            }
+        }
+    });
+}
+
+function toggleWishlist(productId) {
+    // Find product
+    let product = null;
+    
+    // Check in shop products
+    if (websiteData.shop.products) {
+        product = websiteData.shop.products.find(p => p.id === productId);
+    }
+    
+    // Check in carousel items
+    if (!product && websiteData.carousels) {
+        const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
+        product = allCarouselItems.find(p => p.id === productId);
+    }
+    
+    if (!product) {
+        showNotification('Product not found!', 'error');
+        return;
+    }
+    
+    // Check if already in wishlist
+    const existingIndex = wishlist.findIndex(item => item.id === productId);
+    
+    if (existingIndex >= 0) {
+        // Remove from wishlist
+        wishlist.splice(existingIndex, 1);
+        showNotification(`Removed ${product.title} from wishlist`);
+    } else {
+        // Add to wishlist
+        wishlist.push({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image,
+            addedDate: new Date().toISOString(),
+            status: product.status
+        });
+        showNotification(`Added ${product.title} to wishlist!`);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
+    
+    // Update wishlist button states
+    updateWishlistButtons();
+    
+    // If on wishlist page, reload content
+    const page = window.location.pathname.split('/').pop() || 'index.html';
+    if (page === 'wishlist.html') {
+        loadWishlistContent();
+    }
+}
+
+function updateWishlistButtons() {
+    // Update all wishlist buttons
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        const productId = parseInt(btn.dataset.productId);
+        if (productId) {
+            const isInWishlist = wishlist.some(item => item.id === productId);
+            
+            if (isInWishlist) {
+                btn.innerHTML = '❤️ In Wishlist';
+                btn.style.background = '#dc3545';
+            } else {
+                btn.innerHTML = '🤍 Add to Wishlist';
+                btn.style.background = '#8e44ad';
+            }
+        }
+    });
 }
 
 // ==========================================================================
@@ -1066,266 +1236,40 @@ function initScrollAnimations() {
     });
 }
 
-// Add this to your code if you want simple password protection
-const ADMIN_PASSWORD = "dimdesk2024"; // Change this to your actual password
-
-function checkPassword() {
-    const password = prompt("Enter admin password:");
-    if (password === ADMIN_PASSWORD) {
-        showNotification("Access granted!", "success");
-        // Enable admin features here
-        return true;
-    } else {
-        showNotification("Incorrect password", "error");
-        return false;
-    }
-}
-
-// Call this when needed
-// checkPassword();
-
 // ==========================================================================
-// WISHLIST SYSTEM FOR UPCOMING ITEMS
+// TEMPORARY CAROUSEL ITEMS
 // ==========================================================================
-let wishlist = JSON.parse(localStorage.getItem('dimdesk_wishlist')) || [];
-let notifications = JSON.parse(localStorage.getItem('dimdesk_notifications')) || [];
-
-function initWishlistSystem() {
-    // Add wishlist buttons to upcoming items
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('wishlist-btn')) {
-            const productId = parseInt(e.target.dataset.productId);
-            toggleWishlist(productId);
-        }
-    });
-}
-
-function toggleWishlist(productId) {
-    // Find product
-    let product = null;
-    
-    // Check in shop products
-    if (websiteData.shop.products) {
-        product = websiteData.shop.products.find(p => p.id === productId);
-    }
-    
-    // Check in carousel items
-    if (!product && websiteData.carousels) {
-        const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
-        product = allCarouselItems.find(p => p.id === productId);
-    }
-    
-    if (!product) {
-        showNotification('Product not found!', 'error');
-        return;
-    }
-    
-    // Check if already in wishlist
-    const existingIndex = wishlist.findIndex(item => item.id === productId);
-    
-    if (existingIndex >= 0) {
-        // Remove from wishlist
-        wishlist.splice(existingIndex, 1);
-        showNotification(`Removed ${product.title} from wishlist`);
-    } else {
-        // Add to wishlist
-        wishlist.push({
-            id: product.id,
-            title: product.title,
-            price: product.price,
-            image: product.image,
-            addedDate: new Date().toISOString(),
-            status: product.status
-        });
-        showNotification(`Added ${product.title} to wishlist!`);
-        
-        // If it's an upcoming item, add notification preference
-        if (product.status === 'upcoming') {
-            addNotificationPreference(product.id, 'launch');
-        }
-    }
-    
-    // Save to localStorage
-    localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
-    localStorage.setItem('dimdesk_notifications', JSON.stringify(notifications));
-    
-    // Update wishlist button states
-    updateWishlistButtons();
-}
-
-function addNotificationPreference(productId, type) {
-    // Check if notification preference already exists
-    const existingIndex = notifications.findIndex(n => n.productId === productId && n.type === type);
-    
-    if (existingIndex === -1) {
-        notifications.push({
-            productId: productId,
-            type: type,
-            email: '', // Would be filled if user provides email
-            notified: false,
-            created: new Date().toISOString()
-        });
-    }
-}
-
-function updateWishlistButtons() {
-    // Update all wishlist buttons
-    document.querySelectorAll('.wishlist-btn').forEach(btn => {
-        const productId = parseInt(btn.dataset.productId);
-        const isInWishlist = wishlist.some(item => item.id === productId);
-        
-        if (isInWishlist) {
-            btn.innerHTML = '❤️ In Wishlist';
-            btn.classList.add('in-wishlist');
-        } else {
-            btn.innerHTML = '🤍 Add to Wishlist';
-            btn.classList.remove('in-wishlist');
-        }
-    });
-}
-
-// Modify the showProductModal function to include wishlist for upcoming items
-function showProductModal(productId) {
-    const product = websiteData.shop.products.find(p => p.id === productId);
-    if (!product) {
-        showNotification('Product not found!', 'error');
-        return;
-    }
-    
-    const isInWishlist = wishlist.some(item => item.id === productId);
-    
-    const modalHTML = `
-        <h2 style="color: lightcoral; margin-bottom: 1rem;">${product.title}</h2>
-        <img src="${product.image}" alt="${product.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
-        <p style="color: wheat; margin-bottom: 1rem;">${product.description}</p>
-        <div style="margin-bottom: 1rem; color: #aaa;">
-            <span class="shop-status status-${product.status}" style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px;">
-                ${product.status === 'released' ? 'Available Now' : 'Coming Soon'}
-            </span>
-            <span style="margin-left: 1rem;">Type: ${product.type}</span>
-        </div>
-        <div style="text-align: center;">
-            <div style="color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
-                $${product.price.toFixed(2)}
-            </div>
-            ${product.status === 'released' ? 
-                `<button onclick="addToCart(${product.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
-                    Add to Cart
-                </button>` : 
-                `<button onclick="toggleWishlist(${product.id})" class="wishlist-btn" data-product-id="${product.id}" 
-                 style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
-                    ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
-                </button>
-                <div style="margin-top: 1rem; color: #aaa; font-size: 0.9rem;">
-                    <p>We'll notify you when this item launches!</p>
-                    <div style="margin-top: 0.5rem;">
-                        <input type="email" id="notify-email-${product.id}" placeholder="Email for notifications" style="padding: 0.5rem; width: 80%; border-radius: 4px; border: 1px solid #666; background: rgba(255,255,255,0.1); color: white;">
-                        <button onclick="saveNotificationEmail(${product.id})" style="padding: 0.5rem 1rem; background: lightcoral; color: black; border: none; border-radius: 4px; cursor: pointer; margin-left: 0.5rem;">
-                            Save
-                        </button>
-                    </div>
-                </div>`
+function addTemporaryCarouselItems() {
+    // Check if we need to add temporary items (when data is empty)
+    if (!websiteData.carousels.released || websiteData.carousels.released.length === 0) {
+        websiteData.carousels.released = [
+            {
+                id: 101,
+                title: "Demo Game 1",
+                description: "A demonstration game showing our capabilities.",
+                image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Demo+Game",
+                price: 4.99,
+                status: "released"
             }
-            <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
-                Close
-            </button>
-        </div>
-    `;
-    
-    const modalBody = document.getElementById('modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = modalHTML;
-        showModal();
-    }
-}
-
-function saveNotificationEmail(productId) {
-    const emailInput = document.getElementById(`notify-email-${productId}`);
-    if (!emailInput) return;
-    
-    const email = emailInput.value.trim();
-    
-    // Basic email validation
-    if (!email || !email.includes('@')) {
-        showNotification('Please enter a valid email address', 'error');
-        return;
+        ];
     }
     
-    // Find or create notification
-    let notification = notifications.find(n => n.productId === productId);
-    if (!notification) {
-        notification = {
-            productId: productId,
-            type: 'launch',
-            email: email,
-            notified: false,
-            created: new Date().toISOString()
-        };
-        notifications.push(notification);
-    } else {
-        notification.email = email;
-    }
-    
-    localStorage.setItem('dimdesk_notifications', JSON.stringify(notifications));
-    showNotification('Notification preference saved!');
-}
-
-// Add wishlist initialization to the main initialization
-function initializeWebsite() {
-    try {
-        initNavigation();
-        initDynamicContent();
-        initCarousels();
-        initModalSystem();
-        initCartSystem();
-        initWishlistSystem(); // Add this line
-        initScrollAnimations();
-        
-        updateCartCount();
-        
-        console.log("Website initialization complete");
-    } catch (error) {
-        console.error("Error during initialization:", error);
-    }
-}
-
-// Update the Carousel class showItemModal method to include wishlist
-// In the Carousel class, update showItemModal method:
-showItemModal(item) {
-    const isInWishlist = wishlist.some(wishlistItem => wishlistItem.id === item.id);
-    
-    const modalHTML = `
-        <h2 style="color: lightcoral; margin-bottom: 1rem;">${item.title}</h2>
-        <img src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
-        <p style="color: wheat; margin-bottom: 1rem;">${item.description}</p>
-        <div style="text-align: center;">
-            <div style="color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
-                $${item.price.toFixed(2)}
-            </div>
-            ${item.status === 'released' ? 
-                `<button onclick="addToCart(${item.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
-                    Add to Cart
-                </button>` : 
-                `<button onclick="toggleWishlist(${item.id})" class="wishlist-btn" data-product-id="${item.id}" 
-                 style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
-                    ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
-                </button>
-                <div style="margin-top: 1rem; color: #aaa; font-size: 0.9rem;">
-                    <p>We'll notify you when this game launches!</p>
-                </div>`
+    if (!websiteData.carousels.upcoming || websiteData.carousels.upcoming.length === 0) {
+        websiteData.carousels.upcoming = [
+            {
+                id: 102,
+                title: "Upcoming Demo",
+                description: "An exciting project currently in development.",
+                image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon",
+                price: 12.99,
+                status: "upcoming"
             }
-            <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
-                Close
-            </button>
-        </div>
-    `;
-    
-    const modalBody = document.getElementById('modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = modalHTML;
-        showModal();
+        ];
     }
 }
+
+// Call this during initialization
+addTemporaryCarouselItems();
 
 // ==========================================================================
 // EXPORT FUNCTIONS FOR GLOBAL USE
@@ -1339,3 +1283,4 @@ window.closeModal = closeModal;
 window.toggleCart = toggleCart;
 window.closeCartSidebar = closeCartSidebar;
 window.showProductModal = showProductModal;
+window.toggleWishlist = toggleWishlist;

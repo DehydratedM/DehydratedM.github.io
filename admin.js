@@ -1,5 +1,5 @@
 // ==========================================================================
-// ADMIN PANEL - Enhanced with proper tab system and security
+// ADMIN PANEL - Enhanced with carousel toggle controls
 // ==========================================================================
 
 const ADMIN_CREDENTIALS = {
@@ -98,6 +98,7 @@ function initAdminTabs() {
             <button class="admin-tab" data-tab="carousel">🎮 Games</button>
             <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
             <button class="admin-tab" data-tab="portfolio">📊 Portfolio</button>
+            <button class="admin-tab" data-tab="settings">⚙️ Settings</button>
             <button class="admin-tab" data-tab="security">🔒 Security</button>
             <button class="admin-tab" data-tab="data">💾 Data</button>
         `;
@@ -191,12 +192,63 @@ function initAdminTabs() {
                 loadShopItems(websiteData.shop.products);
             } else if (tabId === 'portfolio') {
                 loadPortfolioSkills(websiteData.portfolio.skills);
+            } else if (tabId === 'settings') {
+                loadSettings();
             }
         });
     });
     
     // Load initial data
     loadAdminData();
+}
+
+// ==========================================================================
+// SETTINGS SECTION
+// ==========================================================================
+function loadSettings() {
+    const container = document.getElementById('admin-section-settings');
+    if (!container) return;
+    
+    const carouselEnabled = localStorage.getItem('dimdesk_carousel_enabled') !== 'false';
+    
+    container.innerHTML = `
+        <h2>Website Settings</h2>
+        <div class="admin-control">
+            <label style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" id="carousel-toggle" ${carouselEnabled ? 'checked' : ''} 
+                       onchange="toggleCarouselSetting(this.checked)">
+                Enable Carousels
+            </label>
+            <small style="color: #aaa; display: block; margin-top: 0.5rem;">
+                Toggle carousels on/off. When off, the homepage will show a simpler layout.
+            </small>
+        </div>
+        <div class="admin-control">
+            <label>Featured Section Title:</label>
+            <input type="text" id="featured-title" placeholder="Featured Projects" 
+                   value="${websiteData.home.featured.title || 'Featured Projects'}">
+        </div>
+        <div class="admin-control">
+            <label>YouTube Video ID:</label>
+            <input type="text" id="youtube-video-id" placeholder="b2lC7cbFmXE" 
+                   value="b2lC7cbFmXE">
+            <small style="color: #aaa; display: block; margin-top: 0.5rem;">
+                The ID after "youtube.com/watch?v=" in the URL
+            </small>
+        </div>
+        <button class="admin-save-btn" onclick="saveSettings()">Save Settings</button>
+    `;
+}
+
+function toggleCarouselSetting(enabled) {
+    localStorage.setItem('dimdesk_carousel_enabled', enabled);
+    showMessage(`Carousels ${enabled ? 'enabled' : 'disabled'}. Refresh the main site to see changes.`, 'success');
+}
+
+function saveSettings() {
+    websiteData.home.featured.title = document.getElementById('featured-title').value;
+    localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+    showMessage('Settings saved!', 'success');
 }
 
 // ==========================================================================
@@ -783,6 +835,7 @@ function getDefaultData() {
         home: {
             intro: "Hi, I'm M, the heart and soul behind this one-person indie studio. Games and art have been my passions for as long as I can remember, and they've shaped not just my creative journey but also the vision for this studio.\n\nMy dream is to craft meaningful experiences through games that blend creativity, storytelling, and artistry. It's a challenging road, but I'm committed to pouring my heart into every project, no matter how small or ambitious.\n\nYour support means more than words can express. By joining me on this journey, you'll be helping bring these dreams to life—and as a thank-you, you'll earn a special spot in the credits, early access to merch, game releases and some exclusive goodies along the way.\n\nThank you for believing in indie creators like me. Together, we can build something unforgettable.\n\n—M",
             featured: {
+                title: "Featured Projects",
                 latest: {
                     image: "https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=LATEST+RELEASE",
                     text: "Check out our most recent game release, available now on itch.io and other platforms!"

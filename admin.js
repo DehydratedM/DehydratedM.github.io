@@ -28,19 +28,17 @@ document.addEventListener('DOMContentLoaded', function() {
         showLoginScreen();
     }
     
-    // Login button handler
+    // Login button handler with Enter key support
     if (loginBtn) {
-        loginBtn.addEventListener('click', function() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
-                sessionStorage.setItem('admin_logged_in', 'true');
-                showAdminPanel();
-            } else {
-                loginError.textContent = 'Invalid username or password';
-                loginError.style.color = '#ff6b6b';
-            }
+        loginBtn.addEventListener('click', handleLogin);
+        
+        // Add Enter key support
+        document.getElementById('username').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+        
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
         });
     }
     
@@ -49,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
         logoutBtn.addEventListener('click', function() {
             sessionStorage.removeItem('admin_logged_in');
             showLoginScreen();
+            showMessage('Logged out successfully', 'success');
         });
     }
     
@@ -56,9 +55,31 @@ document.addEventListener('DOMContentLoaded', function() {
     if (isLoggedIn) {
         loadAdminData();
     }
+    
+    // Initialize tab navigation
+    initAdminTabs();
 });
 
-// Add to admin.js
+function handleLogin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const loginError = document.getElementById('login-error');
+    
+    if (!username || !password) {
+        loginError.textContent = 'Please enter both username and password';
+        return;
+    }
+    
+    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        sessionStorage.setItem('admin_logged_in', 'true');
+        showAdminPanel();
+        showMessage('Login successful!', 'success');
+    } else {
+        loginError.textContent = 'Invalid username or password';
+        loginError.style.color = '#ff6b6b';
+    }
+}
+
 function changePassword() {
     const newPassword = document.getElementById('new-password').value;
     
@@ -67,21 +88,16 @@ function changePassword() {
         return;
     }
     
-    // In a real application, this would be handled server-side
-    // For demo purposes, we'll update the client-side credentials
+    // Update credentials
     ADMIN_CREDENTIALS.password = newPassword;
     
-    // Show the new password (in real app, you'd hash this)
-    showMessage(`Password changed successfully! New password: ${newPassword}`, 'success');
+    // Show success message
+    showMessage('Password changed successfully!', 'success');
     
     // Clear the field
     document.getElementById('new-password').value = '';
-    
-    // Note: In a production environment, you would:
-    // 1. Hash the password
-    // 2. Send to server for secure storage
-    // 3. Never show the password in plain text
 }
+
 // ==========================================================================
 // UI FUNCTIONS
 // ==========================================================================
@@ -101,6 +117,8 @@ function showAdminPanel() {
 
 function showMessage(message, type = 'success') {
     const messageDiv = document.getElementById('admin-message');
+    if (!messageDiv) return;
+    
     messageDiv.textContent = message;
     messageDiv.className = `admin-message ${type}`;
     messageDiv.style.display = 'block';
@@ -108,6 +126,113 @@ function showMessage(message, type = 'success') {
     setTimeout(() => {
         messageDiv.style.display = 'none';
     }, 3000);
+}
+
+// ==========================================================================
+// TAB NAVIGATION SYSTEM (FOR EASIER NAVIGATION)
+// ==========================================================================
+function initAdminTabs() {
+    // Create tab navigation if not exists
+    const adminHeader = document.querySelector('.admin-header');
+    if (!adminHeader || document.getElementById('admin-tabs')) return;
+    
+    const tabsHTML = `
+        <div class="admin-tabs" id="admin-tabs">
+            <button class="admin-tab active" data-tab="home">🏠 Home</button>
+            <button class="admin-tab" data-tab="carousel">🎮 Games</button>
+            <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
+            <button class="admin-tab" data-tab="portfolio">📊 Portfolio</button>
+            <button class="admin-tab" data-tab="security">🔒 Security</button>
+            <button class="admin-tab" data-tab="data">💾 Data</button>
+        </div>
+    `;
+    
+    adminHeader.insertAdjacentHTML('afterend', tabsHTML);
+    
+    // Add tab styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .admin-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 10px;
+            border: 1px solid rgba(240, 128, 128, 0.2);
+        }
+        
+        .admin-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: wheat;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .admin-tab:hover {
+            background: rgba(240, 128, 128, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .admin-tab.active {
+            background: lightcoral;
+            color: #000;
+            border-color: lightcoral;
+        }
+        
+        .admin-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .admin-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add tab click handlers
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
+            
+            // Update active tab
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show corresponding section
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            if (tabId === 'home') {
+                document.querySelectorAll('.admin-section')[0].classList.add('active');
+            } else if (tabId === 'carousel') {
+                document.querySelectorAll('.admin-section')[1].classList.add('active');
+            } else if (tabId === 'shop') {
+                document.querySelectorAll('.admin-section')[2].classList.add('active');
+            } else if (tabId === 'portfolio') {
+                document.querySelectorAll('.admin-section')[3].classList.add('active');
+            } else if (tabId === 'security') {
+                document.querySelectorAll('.admin-section')[4].classList.add('active');
+            } else if (tabId === 'data') {
+                document.querySelectorAll('.admin-section')[5].classList.add('active');
+            }
+        });
+    });
 }
 
 // ==========================================================================
@@ -151,14 +276,20 @@ function loadCarouselItems(carousels) {
     container.innerHTML = '';
     
     // Released games
-    carousels.released.forEach((item, index) => {
-        addCarouselItemElement(item, 'released', index, container);
-    });
+    if (carousels.released && carousels.released.length > 0) {
+        carousels.released.forEach((item, index) => {
+            addCarouselItemElement(item, 'released', index, container);
+        });
+    } else {
+        container.innerHTML = '<p style="color: wheat; padding: 1rem;">No released games yet. Add some!</p>';
+    }
     
     // Upcoming games
-    carousels.upcoming.forEach((item, index) => {
-        addCarouselItemElement(item, 'upcoming', index, container);
-    });
+    if (carousels.upcoming && carousels.upcoming.length > 0) {
+        carousels.upcoming.forEach((item, index) => {
+            addCarouselItemElement(item, 'upcoming', index, container);
+        });
+    }
 }
 
 function loadShopItems(products) {
@@ -167,9 +298,13 @@ function loadShopItems(products) {
     
     container.innerHTML = '';
     
-    products.forEach((item, index) => {
-        addShopItemElement(item, index, container);
-    });
+    if (products && products.length > 0) {
+        products.forEach((item, index) => {
+            addShopItemElement(item, index, container);
+        });
+    } else {
+        container.innerHTML = '<p style="color: wheat; padding: 1rem;">No shop products yet. Add some!</p>';
+    }
 }
 
 function loadPortfolioSkills(skills) {
@@ -178,21 +313,27 @@ function loadPortfolioSkills(skills) {
     
     container.innerHTML = '';
     
-    skills.forEach((category, catIndex) => {
-        const categoryDiv = document.createElement('div');
-        categoryDiv.className = 'admin-control-group';
-        categoryDiv.innerHTML = `
-            <h3>${category.category}</h3>
-            <div class="admin-category-items" data-category-index="${catIndex}"></div>
-            <button class="admin-add-skill-btn" onclick="addSkillToCategory(${catIndex})">Add Skill to ${category.category}</button>
-        `;
-        container.appendChild(categoryDiv);
-        
-        const itemsContainer = categoryDiv.querySelector('.admin-category-items');
-        category.skills.forEach((skill, skillIndex) => {
-            addSkillItemElement(skill, catIndex, skillIndex, itemsContainer);
+    if (skills && skills.length > 0) {
+        skills.forEach((category, catIndex) => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'admin-control-group';
+            categoryDiv.innerHTML = `
+                <h3 style="color: lightcoral; margin: 1rem 0;">${category.category}</h3>
+                <div class="admin-category-items" data-category-index="${catIndex}" style="margin-bottom: 1.5rem;"></div>
+                <button class="admin-add-btn" onclick="addSkillToCategory(${catIndex})" style="margin-bottom: 2rem;">Add Skill to ${category.category}</button>
+            `;
+            container.appendChild(categoryDiv);
+            
+            const itemsContainer = categoryDiv.querySelector('.admin-category-items');
+            if (category.skills && category.skills.length > 0) {
+                category.skills.forEach((skill, skillIndex) => {
+                    addSkillItemElement(skill, catIndex, skillIndex, itemsContainer);
+                });
+            }
         });
-    });
+    } else {
+        container.innerHTML = '<p style="color: wheat; padding: 1rem;">No portfolio skills yet. Add some!</p>';
+    }
 }
 
 // ==========================================================================
@@ -200,24 +341,37 @@ function loadPortfolioSkills(skills) {
 // ==========================================================================
 function addCarouselItemElement(item, type, index, container) {
     const div = document.createElement('div');
-    div.className = 'admin-carousel-item';
+    div.className = 'admin-item';
     div.innerHTML = `
-        <div class="admin-control-row">
-            <input type="text" class="carousel-title" placeholder="Title" value="${item.title}" data-index="${index}" data-type="${type}" data-field="title">
-            <input type="text" class="carousel-image" placeholder="Image URL" value="${item.image}" data-index="${index}" data-type="${type}" data-field="image">
+        <div class="admin-item-header">
+            <h4 style="color: wheat;">${item.title || 'New Game'}</h4>
+            <button class="admin-remove-btn" onclick="removeCarouselItem(${index}, '${type}')">Remove</button>
         </div>
-        <div class="admin-control-row">
-            <textarea class="carousel-desc" placeholder="Description" data-index="${index}" data-type="${type}" data-field="description">${item.description}</textarea>
+        <div class="admin-control">
+            <label>Title:</label>
+            <input type="text" class="carousel-title" placeholder="Game Title" value="${item.title || ''}" data-index="${index}" data-type="${type}" data-field="title">
         </div>
-        <div class="admin-control-row">
-            <input type="number" class="carousel-price" placeholder="Price" value="${item.price}" step="0.01" data-index="${index}" data-type="${type}" data-field="price">
-            <select class="carousel-status" data-index="${index}" data-type="${type}" data-field="status">
-                <option value="released" ${item.status === 'released' ? 'selected' : ''}>Released</option>
-                <option value="upcoming" ${item.status === 'upcoming' ? 'selected' : ''}>Upcoming</option>
-            </select>
-            <input type="number" class="carousel-id" placeholder="ID" value="${item.id}" data-index="${index}" data-type="${type}" data-field="id">
+        <div class="admin-control">
+            <label>Description:</label>
+            <textarea class="carousel-desc" placeholder="Game Description" data-index="${index}" data-type="${type}" data-field="description">${item.description || ''}</textarea>
         </div>
-        <button class="admin-remove-btn" onclick="removeCarouselItem(${index}, '${type}')">Remove</button>
+        <div class="admin-control">
+            <label>Image URL:</label>
+            <input type="text" class="carousel-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-type="${type}" data-field="image">
+        </div>
+        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="admin-control">
+                <label>Price:</label>
+                <input type="number" class="carousel-price" placeholder="Price" value="${item.price || 0}" step="0.01" data-index="${index}" data-type="${type}" data-field="price">
+            </div>
+            <div class="admin-control">
+                <label>Status:</label>
+                <select class="carousel-status" data-index="${index}" data-type="${type}" data-field="status">
+                    <option value="released" ${item.status === 'released' ? 'selected' : ''}>Released</option>
+                    <option value="upcoming" ${item.status === 'upcoming' ? 'selected' : ''}>Upcoming</option>
+                </select>
+            </div>
+        </div>
     `;
     
     if (container) {
@@ -233,28 +387,45 @@ function addCarouselItemElement(item, type, index, container) {
 
 function addShopItemElement(item, index, container) {
     const div = document.createElement('div');
-    div.className = 'admin-shop-item';
+    div.className = 'admin-item';
     div.innerHTML = `
-        <div class="admin-control-row">
-            <input type="text" class="shop-title" placeholder="Title" value="${item.title}" data-index="${index}" data-field="title">
-            <input type="text" class="shop-image" placeholder="Image URL" value="${item.image}" data-index="${index}" data-field="image">
+        <div class="admin-item-header">
+            <h4 style="color: wheat;">${item.title || 'New Product'}</h4>
+            <button class="admin-remove-btn" onclick="removeShopItem(${index})">Remove</button>
         </div>
-        <div class="admin-control-row">
-            <textarea class="shop-desc" placeholder="Description" data-index="${index}" data-field="description">${item.description}</textarea>
+        <div class="admin-control">
+            <label>Title:</label>
+            <input type="text" class="shop-title" placeholder="Product Title" value="${item.title || ''}" data-index="${index}" data-field="title">
         </div>
-        <div class="admin-control-row">
-            <input type="number" class="shop-price" placeholder="Price" value="${item.price}" step="0.01" data-index="${index}" data-field="price">
-            <select class="shop-status" data-index="${index}" data-field="status">
-                <option value="released" ${item.status === 'released' ? 'selected' : ''}>Released</option>
-                <option value="upcoming" ${item.status === 'upcoming' ? 'selected' : ''}>Coming Soon</option>
-            </select>
-            <select class="shop-type" data-index="${index}" data-field="type">
-                <option value="game" ${item.type === 'game' ? 'selected' : ''}>Game</option>
-                <option value="digital" ${item.type === 'digital' ? 'selected' : ''}>Digital</option>
-                <option value="physical" ${item.type === 'physical' ? 'selected' : ''}>Physical</option>
-            </select>
+        <div class="admin-control">
+            <label>Description:</label>
+            <textarea class="shop-desc" placeholder="Product Description" data-index="${index}" data-field="description">${item.description || ''}</textarea>
         </div>
-        <button class="admin-remove-btn" onclick="removeShopItem(${index})">Remove</button>
+        <div class="admin-control">
+            <label>Image URL:</label>
+            <input type="text" class="shop-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-field="image">
+        </div>
+        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="admin-control">
+                <label>Price:</label>
+                <input type="number" class="shop-price" placeholder="Price" value="${item.price || 0}" step="0.01" data-index="${index}" data-field="price">
+            </div>
+            <div class="admin-control">
+                <label>Status:</label>
+                <select class="shop-status" data-index="${index}" data-field="status">
+                    <option value="released" ${item.status === 'released' ? 'selected' : ''}>Released</option>
+                    <option value="upcoming" ${item.status === 'upcoming' ? 'selected' : ''}>Coming Soon</option>
+                </select>
+            </div>
+            <div class="admin-control">
+                <label>Type:</label>
+                <select class="shop-type" data-index="${index}" data-field="type">
+                    <option value="game" ${item.type === 'game' ? 'selected' : ''}>Game</option>
+                    <option value="digital" ${item.type === 'digital' ? 'selected' : ''}>Digital</option>
+                    <option value="physical" ${item.type === 'physical' ? 'selected' : ''}>Physical</option>
+                </select>
+            </div>
+        </div>
     `;
     
     if (container) {
@@ -269,20 +440,34 @@ function addShopItemElement(item, index, container) {
 
 function addSkillItemElement(skill, catIndex, skillIndex, container) {
     const div = document.createElement('div');
-    div.className = 'admin-skill-item';
+    div.className = 'admin-item';
     div.innerHTML = `
-        <div class="admin-control-row">
-            <input type="text" class="skill-name" placeholder="Skill Name" value="${skill.name}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="name">
-            <input type="text" class="skill-years" placeholder="Years Experience" value="${skill.years}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="years">
+        <div class="admin-item-header">
+            <h4 style="color: wheat;">${skill.name || 'New Skill'}</h4>
+            <button class="admin-remove-btn" onclick="removeSkillItem(${catIndex}, ${skillIndex})">Remove</button>
         </div>
-        <div class="admin-control-row">
-            <textarea class="skill-desc" placeholder="Description" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="description">${skill.description}</textarea>
+        <div class="admin-control">
+            <label>Skill Name:</label>
+            <input type="text" class="skill-name" placeholder="Skill Name" value="${skill.name || ''}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="name">
         </div>
-        <div class="admin-control-row">
-            <input type="text" class="skill-tags" placeholder="Tags (comma separated)" value="${skill.tags.join(', ')}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="tags">
-            <input type="number" class="skill-level" placeholder="Level (0-100)" value="${skill.level}" min="0" max="100" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="level">
+        <div class="admin-control">
+            <label>Years Experience:</label>
+            <input type="text" class="skill-years" placeholder="e.g., 5+ years" value="${skill.years || ''}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="years">
         </div>
-        <button class="admin-remove-btn" onclick="removeSkillItem(${catIndex}, ${skillIndex})">Remove</button>
+        <div class="admin-control">
+            <label>Description:</label>
+            <textarea class="skill-desc" placeholder="Skill Description" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="description">${skill.description || ''}</textarea>
+        </div>
+        <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="admin-control">
+                <label>Tags (comma separated):</label>
+                <input type="text" class="skill-tags" placeholder="Tag1, Tag2, Tag3" value="${skill.tags ? skill.tags.join(', ') : ''}" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="tags">
+            </div>
+            <div class="admin-control">
+                <label>Skill Level (0-100):</label>
+                <input type="number" class="skill-level" placeholder="Level" value="${skill.level || 50}" min="0" max="100" data-cat-index="${catIndex}" data-skill-index="${skillIndex}" data-field="level">
+            </div>
+        </div>
     `;
     
     if (container) {
@@ -309,6 +494,10 @@ function addCarouselItem() {
         status: "released"
     };
     
+    if (!websiteData.carousels.released) {
+        websiteData.carousels.released = [];
+    }
+    
     websiteData.carousels.released.push(newItem);
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
     loadCarouselItems(websiteData.carousels);
@@ -326,6 +515,10 @@ function addShopItem() {
         status: "released",
         type: "digital"
     };
+    
+    if (!websiteData.shop.products) {
+        websiteData.shop.products = [];
+    }
     
     websiteData.shop.products.push(newItem);
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
@@ -347,6 +540,10 @@ function addSkillItem() {
         }]
     };
     
+    if (!websiteData.portfolio.skills) {
+        websiteData.portfolio.skills = [];
+    }
+    
     websiteData.portfolio.skills.push(newCategory);
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
     loadPortfolioSkills(websiteData.portfolio.skills);
@@ -362,6 +559,10 @@ function addSkillToCategory(catIndex) {
         tags: ["New Tag"],
         level: 50
     };
+    
+    if (!websiteData.portfolio.skills[catIndex].skills) {
+        websiteData.portfolio.skills[catIndex].skills = [];
+    }
     
     websiteData.portfolio.skills[catIndex].skills.push(newSkill);
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
@@ -400,6 +601,7 @@ function updateCarouselItem(event) {
     }
     
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+    showMessage('Carousel item updated!', 'success');
 }
 
 function updateShopItem(event) {
@@ -418,6 +620,7 @@ function updateShopItem(event) {
     
     websiteData.shop.products[index][field] = value;
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+    showMessage('Shop item updated!', 'success');
 }
 
 function updateSkillItem(event) {
@@ -437,6 +640,7 @@ function updateSkillItem(event) {
     
     websiteData.portfolio.skills[catIndex].skills[skillIndex][field] = value;
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+    showMessage('Skill updated!', 'success');
 }
 
 // ==========================================================================
@@ -754,11 +958,6 @@ function getDefaultData() {
                     status: "upcoming"
                 }
             ]
-        },
-        // Wishlist system
-        wishlist: {
-            items: [],
-            notifications: []
         }
     };
 }

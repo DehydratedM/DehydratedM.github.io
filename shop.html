@@ -6,7 +6,7 @@
     <meta name="description" content="DimDesk Studios Shop - Coming Soon">
     <link rel="stylesheet" href="styleSheet.css">
     <title>DimDesk Studios - Shop</title>
-    <link rel="icon" type="image/.ico" href="Icon.ico" />
+    <link rel="icon" type="image/ico" href="Icon.ico" />
 </head>
 <body>
     <div class="Container">
@@ -14,41 +14,172 @@
             <header>
                 <div class="HE">
                     <div class="lol">
-                        <a href="index.html" title="Return to Home">
-                            <h1 style="color:lightcoral"><img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" /></h1>
+                        <a href="index.html" title="Return to Home" id="logo-link">
+                            <h1 style="color:lightcoral">
+                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
+                            </h1>
                         </a>
                     </div>
+                    
+                    <nav class="nav-links">
+                        <ul>
+                            <li><a href="index.html" id="home-link">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link" class="current-page">Shop</a></li>
+                        </ul>
+                    </nav>
                     
                     <button class="mobile-toggle" aria-label="Toggle navigation menu">
                         <span></span>
                         <span></span>
                         <span></span>
                     </button>
-                    
-                    <nav class="nav-links">
-                        <ul>
-                            <li><a href="index.html" id="home-link">Home</a></li>
-                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
-                            <li><a href="shop.html" id="shop-link" class="current-page">Shop-</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </header>
 
+            <!-- Secondary Desktop Navigation -->
+            <div class="desktop-nav-secondary">
+                <ul>
+                    <li><a href="index.html" id="secondary-home">Home</a></li>
+                    <li><a href="portfolio.html" id="secondary-portfolio">Portfolio</a></li>
+                    <li><a href="shop.html" id="secondary-shop" class="current-page">Shop</a></li>
+                </ul>
+            </div>
+
             <div class="llogo">
-                <h1 style="color:lightcoral">Soon To Come!</h1>
+                <h1 style="color:lightcoral">Shop Coming Soon!</h1>
+                <p style="color: wheat; margin-top: 1rem; font-size: 1.2rem;">Browse our available and upcoming products</p>
             </div>
 
             <main>
                 <div class="websiteIntro">
                     <p style="color: wheat">
-                        ^^ please Understand the slow process!<br>
-                        In the meantime, talk to this fella!
+                        ^^ Please understand the slow process! We're working hard to bring you quality products.<br>
+                        In the meantime, check out what we have available and what's coming soon!
                     </p>
                 </div>
 
+                <!-- Released Products Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Available Now</h2>
+                    <div class="carousel-container" id="released-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track" id="released-track">
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+Download" alt="Project Alpha Download" onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                                <div class="carousel-info">
+                                    <h3>Project Alpha</h3>
+                                    <p>Complete game download with all features and future updates included.</p>
+                                    <div class="shop-price">$9.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Artbook" alt="Digital Artbook" onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Artbook'">
+                                <div class="carousel-info">
+                                    <h3>Digital Artbook</h3>
+                                    <p>100+ pages of concept art, sketches, and development insights.</p>
+                                    <div class="shop-price">$14.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack" alt="Game Soundtrack" onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack'">
+                                <div class="carousel-info">
+                                    <h3>Original Soundtrack</h3>
+                                    <p>Complete game soundtrack with 25+ tracks in high quality formats.</p>
+                                    <div class="shop-price">$7.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots" id="released-dots"></div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Products Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Coming Soon</h2>
+                    <div class="carousel-container" id="upcoming-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track" id="upcoming-track">
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical+Edition" alt="Physical Game Edition" onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical'">
+                                <div class="carousel-info">
+                                    <h3>Physical Collector's Edition</h3>
+                                    <p>Limited edition physical release with exclusive merchandise.</p>
+                                    <div class="shop-price">$49.99</div>
+                                    <span class="shop-status status-upcoming">Pre-order Soon</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Merch+T-Shirt" alt="Studio T-Shirt" onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=T-Shirt'">
+                                <div class="carousel-info">
+                                    <h3>Studio Merchandise</h3>
+                                    <p>High-quality apparel featuring DimDesk.Studios artwork.</p>
+                                    <div class="shop-price">$24.99</div>
+                                    <span class="shop-status status-upcoming">In Production</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Art+Prints" alt="Art Prints" onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Prints'">
+                                <div class="carousel-info">
+                                    <h3>Limited Art Prints</h3>
+                                    <p>Signed, numbered art prints from our game development.</p>
+                                    <div class="shop-price">$29.99</div>
+                                    <span class="shop-status status-upcoming">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots" id="upcoming-dots"></div>
+                    </div>
+                </section>
+
+                <!-- Product Grid -->
+                <div class="shop-grid">
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Game" alt="Digital Game" onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                        <div class="shop-item-info">
+                            <h3>Digital Games</h3>
+                            <p>Instant download of our completed games for PC and mobile platforms.</p>
+                            <div class="shop-price">From $4.99</div>
+                            <span class="shop-status status-released">Available</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Game+Assets" alt="Game Assets" onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Assets'">
+                        <div class="shop-item-info">
+                            <h3>Game Assets Pack</h3>
+                            <p>Collection of reusable game assets for indie developers.</p>
+                            <div class="shop-price">$19.99</div>
+                            <span class="shop-status status-upcoming">Q2 2025</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers" alt="Digital Wallpapers" onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers'">
+                        <div class="shop-item-info">
+                            <h3>Digital Wallpapers</h3>
+                            <p>High-resolution wallpapers featuring our artwork.</p>
+                            <div class="shop-price">$2.99</div>
+                            <span class="shop-status status-released">Available</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission" alt="Commission Work" onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission'">
+                        <div class="shop-item-info">
+                            <h3>Custom Commissions</h3>
+                            <p>Commission custom artwork or game assets for your projects.</p>
+                            <div class="shop-price">Contact for Quote</div>
+                            <span class="shop-status status-soon">Limited Slots</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="crow">
-                    <img alt="Crow Character" src="crow.png" />
+                    <img alt="Crow Character - Shop Mascot" src="crow.png" onerror="this.src='https://via.placeholder.com/500x300/333/fff?text=Crow+Character'" />
                 </div>
 
                 <div class="video-container">
@@ -65,19 +196,19 @@
         <div class="footerContainer">
             <div class="socialIcons">
                 <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" />
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" />
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
-                    <img alt="Patreon" src="pathronW.png" width="30" height="30" />
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
-                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" />
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
-                    <img alt="Cara" src="caraW.png" width="30" height="30" />
+                    <img alt="Cara" src="caraW.png" width="30" height="30" onerror="this.style.display='none'" />
                 </a>
             </div>
         </div>
@@ -91,13 +222,11 @@
     </footer>
 
     <script>
-        // Mobile Navigation Toggle
         document.addEventListener('DOMContentLoaded', function() {
+            // Navigation & Current Page Highlighting
             const mobileToggle = document.querySelector('.mobile-toggle');
             const navLinks = document.querySelector('.nav-links');
-            const navItems = document.querySelectorAll('.nav-links a');
             
-            // Mobile menu functionality
             if (mobileToggle) {
                 mobileToggle.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -106,8 +235,8 @@
                 });
             }
             
-            // Close mobile menu when clicking on a link
-            navItems.forEach(item => {
+            // Close mobile menu when clicking on links
+            document.querySelectorAll('.nav-links a').forEach(item => {
                 item.addEventListener('click', function() {
                     if (window.innerWidth <= 768) {
                         navLinks.classList.remove('active');
@@ -118,45 +247,41 @@
             
             // Highlight current page
             function highlightCurrentPage() {
-                const homeLink = document.getElementById('home-link');
-                const portfolioLink = document.getElementById('portfolio-link');
-                const shopLink = document.getElementById('shop-link');
+                const pages = [
+                    { id: 'home-link', secondary: 'secondary-home', page: 'index.html' },
+                    { id: 'portfolio-link', secondary: 'secondary-portfolio', page: 'portfolio.html' },
+                    { id: 'shop-link', secondary: 'secondary-shop', page: 'shop.html' }
+                ];
                 
-                // Add current-page class to shop link
-                if (shopLink) {
-                    shopLink.classList.add('current-page');
-                    shopLink.innerHTML = 'Shop-';
-                }
+                const currentPage = window.location.pathname.split('/').pop();
                 
-                // Set other links text
-                if (homeLink) {
-                    homeLink.innerHTML = 'Home';
-                    homeLink.classList.remove('current-page');
-                }
-                if (portfolioLink) {
-                    portfolioLink.innerHTML = 'Portfolio';
-                    portfolioLink.classList.remove('current-page');
-                }
-            }
-            
-            // Call the function on page load
-            highlightCurrentPage();
-            
-            // Prevent video from pausing on mobile when scrolling
-            const video = document.querySelector('video');
-            if (video) {
-                video.play().catch(function(error) {
-                    document.addEventListener('touchstart', function() {
-                        video.play();
-                    }, { once: true });
+                pages.forEach(page => {
+                    const mainLink = document.getElementById(page.id);
+                    const secondaryLink = document.getElementById(page.secondary);
+                    
+                    if (mainLink) {
+                        mainLink.classList.remove('current-page');
+                        if (currentPage === page.page) {
+                            mainLink.classList.add('current-page');
+                        }
+                    }
+                    
+                    if (secondaryLink) {
+                        secondaryLink.classList.remove('current-page');
+                        if (currentPage === page.page) {
+                            secondaryLink.classList.add('current-page');
+                        }
+                    }
                 });
             }
             
-            // Add logo click animation
-            const logoLink = document.querySelector('.lol a');
+            highlightCurrentPage();
+            
+            // Logo click animation
+            const logoLink = document.getElementById('logo-link');
             if (logoLink) {
                 logoLink.addEventListener('click', function(e) {
-                    const logoImg = this.querySelector('img');
+                    const logoImg = document.getElementById('cat-logo');
                     if (logoImg) {
                         logoImg.style.transform = 'scale(0.9)';
                         setTimeout(() => {
@@ -166,7 +291,164 @@
                 });
             }
             
-            // Add crow image hover effect
+            // Carousel functionality for shop
+            class Carousel {
+                constructor(containerId) {
+                    this.container = document.getElementById(containerId);
+                    if (!this.container) return;
+                    
+                    this.track = this.container.querySelector('.carousel-track');
+                    this.slides = Array.from(this.track.children);
+                    this.prevBtn = this.container.querySelector('.carousel-prev');
+                    this.nextBtn = this.container.querySelector('.carousel-next');
+                    this.dotsContainer = this.container.querySelector('.carousel-dots');
+                    
+                    this.currentIndex = 0;
+                    this.slideWidth = this.slides[0].getBoundingClientRect().width;
+                    this.slidesPerView = this.calculateSlidesPerView();
+                    
+                    this.init();
+                }
+                
+                calculateSlidesPerView() {
+                    const containerWidth = this.container.offsetWidth;
+                    const slideWidth = this.slides[0].offsetWidth + 20;
+                    return Math.floor(containerWidth / slideWidth) || 1;
+                }
+                
+                init() {
+                    // Create dots
+                    this.slides.forEach((_, index) => {
+                        const dot = document.createElement('button');
+                        dot.className = 'carousel-dot';
+                        if (index === 0) dot.classList.add('active');
+                        dot.addEventListener('click', () => this.goToSlide(index));
+                        this.dotsContainer.appendChild(dot);
+                    });
+                    
+                    this.dots = Array.from(this.dotsContainer.children);
+                    
+                    // Event listeners
+                    this.prevBtn.addEventListener('click', () => this.prevSlide());
+                    this.nextBtn.addEventListener('click', () => this.nextSlide());
+                    
+                    // Auto-advance
+                    this.startAutoAdvance();
+                    
+                    // Pause on hover
+                    this.container.addEventListener('mouseenter', () => this.pauseAutoAdvance());
+                    this.container.addEventListener('mouseleave', () => this.startAutoAdvance());
+                    
+                    // Update on resize
+                    window.addEventListener('resize', () => {
+                        this.slideWidth = this.slides[0].getBoundingClientRect().width;
+                        this.slidesPerView = this.calculateSlidesPerView();
+                        this.updateCarousel();
+                    });
+                }
+                
+                updateCarousel() {
+                    const moveAmount = this.slideWidth * this.currentIndex;
+                    this.track.style.transform = `translateX(-${moveAmount}px)`;
+                    
+                    this.dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === this.currentIndex);
+                    });
+                }
+                
+                nextSlide() {
+                    if (this.currentIndex >= this.slides.length - this.slidesPerView) {
+                        this.currentIndex = 0;
+                    } else {
+                        this.currentIndex++;
+                    }
+                    this.updateCarousel();
+                }
+                
+                prevSlide() {
+                    if (this.currentIndex <= 0) {
+                        this.currentIndex = this.slides.length - this.slidesPerView;
+                    } else {
+                        this.currentIndex--;
+                    }
+                    this.updateCarousel();
+                }
+                
+                goToSlide(index) {
+                    this.currentIndex = index;
+                    this.updateCarousel();
+                }
+                
+                startAutoAdvance() {
+                    this.autoAdvance = setInterval(() => this.nextSlide(), 5000);
+                }
+                
+                pauseAutoAdvance() {
+                    clearInterval(this.autoAdvance);
+                }
+            }
+            
+            // Initialize carousels
+            const releasedCarousel = new Carousel('released-carousel');
+            const upcomingCarousel = new Carousel('upcoming-carousel');
+            
+            // Product click handlers
+            document.querySelectorAll('.shop-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const status = this.querySelector('.shop-status').textContent;
+                    const title = this.querySelector('h3').textContent;
+                    
+                    if (status.includes('Available')) {
+                        alert(`Adding "${title}" to cart! (This is a demo)`);
+                    } else if (status.includes('Pre-order') || status.includes('Soon')) {
+                        alert(`"${title}" will be available soon! Check back later.`);
+                    } else {
+                        alert(`"${title}" - ${status}`);
+                    }
+                    
+                    // Visual feedback
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+            
+            // Video autoplay fix
+            const video = document.querySelector('video');
+            if (video) {
+                video.play().catch(function(error) {
+                    document.addEventListener('touchstart', function() {
+                        video.play();
+                    }, { once: true });
+                });
+            }
+            
+            // Secondary navigation for desktop
+            const secondaryNav = document.querySelector('.desktop-nav-secondary');
+            if (secondaryNav && window.innerWidth >= 1400) {
+                let isVisible = false;
+                
+                document.addEventListener('scroll', function() {
+                    if (window.scrollY > 300 && !isVisible) {
+                        secondaryNav.style.display = 'block';
+                        setTimeout(() => {
+                            secondaryNav.style.opacity = '1';
+                            secondaryNav.style.transform = 'translateY(0)';
+                        }, 10);
+                        isVisible = true;
+                    } else if (window.scrollY <= 300 && isVisible) {
+                        secondaryNav.style.opacity = '0';
+                        secondaryNav.style.transform = 'translateY(-20px)';
+                        setTimeout(() => {
+                            secondaryNav.style.display = 'none';
+                        }, 300);
+                        isVisible = false;
+                    }
+                });
+            }
+            
+            // Crow image hover effect
             const crowImage = document.querySelector('.crow img');
             if (crowImage) {
                 crowImage.addEventListener('mouseenter', function() {

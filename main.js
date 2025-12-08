@@ -559,6 +559,40 @@ class Carousel {
 }
 
 // ==========================================================================
+// PERFORMANCE OPTIMIZATIONS
+// ==========================================================================
+
+// Defer non-critical JavaScript
+window.addEventListener('load', function() {
+    // Load non-critical assets after page load
+    setTimeout(() => {
+        loadBackgroundVideo();
+    }, 1000);
+});
+
+function loadBackgroundVideo() {
+    const video = document.getElementById('bg-video');
+    if (video) {
+        video.load();
+        video.play().catch(e => console.log("Video autoplay prevented:", e));
+    }
+}
+
+// Optimize carousel loading
+function initCarousels() {
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeCarousels);
+    } else {
+        setTimeout(initializeCarousels, 100);
+    }
+}
+
+function initializeCarousels() {
+    // Rest of carousel initialization code...
+}
+
+// ==========================================================================
 // NAVIGATION
 // ==========================================================================
 function initNavigation() {

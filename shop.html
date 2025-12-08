@@ -1,1 +1,243 @@
-<script src="main.js"></script>
+<!DOCTYPE html>
+<html lang="en" xmlns="https://dehydratedm.github.io/SiteTest/shop.html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="DimDesk Studios Shop - Coming Soon">
+    <link rel="stylesheet" href="styleSheet.css">
+    <title>DimDesk Studios - Shop</title>
+    <link rel="icon" type="image/ico" href="Icon.ico" />
+    <link rel="preload" as="image" href="cat.png">
+    <link rel="preload" as="image" href="crow.png">
+</head>
+<body>
+    <div class="Container">
+        <div class="content">
+            <header>
+                <div class="HE">
+                    <div class="lol">
+                        <a href="index.html" title="Return to Home" id="logo-link">
+                            <h1 style="color:lightcoral">
+                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" 
+                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
+                            </h1>
+                        </a>
+                    </div>
+                    
+                    <nav class="nav-links">
+                        <ul>
+                            <li><a href="index.html" id="home-link">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link" class="current-page">Shop</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <button class="mobile-toggle" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="llogo">
+                <h1 style="color:lightcoral; font-size: 3rem;">Shop Coming Soon!</h1>
+                <p style="color: wheat; margin-top: 1rem; font-size: 1.2rem;">Browse our available and upcoming products</p>
+            </div>
+
+            <main>
+                <div class="websiteIntro">
+                    <p style="color: wheat">
+                        ^^ Please understand the slow process! We're working hard to bring you quality products.<br>
+                        In the meantime, check out what we have available and what's coming soon!
+                    </p>
+                </div>
+
+                <!-- Released Products Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Available Now</h2>
+                    <div class="carousel-container" id="released-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track">
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+Download" 
+                                     alt="Project Alpha Download"
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                                <div class="carousel-info">
+                                    <h3>Project Alpha</h3>
+                                    <p>Complete game download with all features and future updates included.</p>
+                                    <div class="shop-price">$9.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Artbook" 
+                                     alt="Digital Artbook"
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Artbook'">
+                                <div class="carousel-info">
+                                    <h3>Digital Artbook</h3>
+                                    <p>100+ pages of concept art, sketches, and development insights.</p>
+                                    <div class="shop-price">$14.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack" 
+                                     alt="Game Soundtrack"
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack'">
+                                <div class="carousel-info">
+                                    <h3>Original Soundtrack</h3>
+                                    <p>Complete game soundtrack with 25+ tracks in high quality formats.</p>
+                                    <div class="shop-price">$7.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Products Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Coming Soon</h2>
+                    <div class="carousel-container" id="upcoming-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track">
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical+Edition" 
+                                     alt="Physical Game Edition"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical'">
+                                <div class="carousel-info">
+                                    <h3>Physical Collector's Edition</h3>
+                                    <p>Limited edition physical release with exclusive merchandise.</p>
+                                    <div class="shop-price">$49.99</div>
+                                    <span class="shop-status status-upcoming">Pre-order Soon</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Merch+T-Shirt" 
+                                     alt="Studio T-Shirt"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=T-Shirt'">
+                                <div class="carousel-info">
+                                    <h3>Studio Merchandise</h3>
+                                    <p>High-quality apparel featuring DimDesk.Studios artwork.</p>
+                                    <div class="shop-price">$24.99</div>
+                                    <span class="shop-status status-upcoming">In Production</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide shop-item">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Art+Prints" 
+                                     alt="Art Prints"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Prints'">
+                                <div class="carousel-info">
+                                    <h3>Limited Art Prints</h3>
+                                    <p>Signed, numbered art prints from our game development.</p>
+                                    <div class="shop-price">$29.99</div>
+                                    <span class="shop-status status-upcoming">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </section>
+
+                <!-- Product Grid -->
+                <div class="shop-grid">
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Game" 
+                             alt="Digital Game"
+                             onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                        <div class="shop-item-info">
+                            <h3>Digital Games</h3>
+                            <p>Instant download of our completed games for PC and mobile platforms.</p>
+                            <div class="shop-price">From $4.99</div>
+                            <span class="shop-status status-released">Available</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Game+Assets" 
+                             alt="Game Assets"
+                             onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Assets'">
+                        <div class="shop-item-info">
+                            <h3>Game Assets Pack</h3>
+                            <p>Collection of reusable game assets for indie developers.</p>
+                            <div class="shop-price">$19.99</div>
+                            <span class="shop-status status-upcoming">Q2 2025</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers" 
+                             alt="Digital Wallpapers"
+                             onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Wallpapers'">
+                        <div class="shop-item-info">
+                            <h3>Digital Wallpapers</h3>
+                            <p>High-resolution wallpapers featuring our artwork.</p>
+                            <div class="shop-price">$2.99</div>
+                            <span class="shop-status status-released">Available</span>
+                        </div>
+                    </div>
+                    <div class="shop-item">
+                        <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission" 
+                             alt="Commission Work"
+                             onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Commission'">
+                        <div class="shop-item-info">
+                            <h3>Custom Commissions</h3>
+                            <p>Commission custom artwork or game assets for your projects.</p>
+                            <div class="shop-price">Contact for Quote</div>
+                            <span class="shop-status status-soon">Limited Slots</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crow Character Section -->
+                <div class="crow">
+                    <img alt="Crow Character - Shop Mascot" src="crow.png" 
+                         onerror="this.src='https://via.placeholder.com/500x300/333/fff?text=Crow+Character+Coming+Soon'" />
+                </div>
+
+                <!-- Video Background -->
+                <div class="video-container">
+                    <video autoplay muted loop playsinline>
+                        <source src="D.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <footer style="background-color: black">
+        <div class="footerContainer">
+            <div class="socialIcons">
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
+                    <img alt="Cara" src="caraW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+            </div>
+        </div>
+        <div class="Oo">
+            <p style="color: #D8A790; display: inline-block;">contact us:</p>
+            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
+            <div class="footerBottom">
+                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

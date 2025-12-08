@@ -1,12 +1,12 @@
+// admin.js - Enhanced with proper carousel toggle functionality
 // ==========================================================================
-// ADMIN PANEL - Enhanced with carousel toggle controls
-// ==========================================================================
-
 const ADMIN_CREDENTIALS = {
     username: "dimdesk_admin",
     password: "DimDeskSecure2024!",
     email: "admin@example.com"
 };
+
+let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
 
 // ==========================================================================
 // INITIALIZATION
@@ -14,11 +14,8 @@ const ADMIN_CREDENTIALS = {
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Admin panel loaded");
     
-    const loginScreen = document.getElementById('login-screen');
-    const adminPanel = document.getElementById('admin-panel');
     const loginBtn = document.getElementById('login-btn');
     const logoutBtn = document.getElementById('logout-btn');
-    const loginError = document.getElementById('login-error');
     
     // Check if already logged in
     const isLoggedIn = sessionStorage.getItem('admin_logged_in') === 'true';
@@ -35,13 +32,20 @@ document.addEventListener('DOMContentLoaded', function() {
         loginBtn.addEventListener('click', handleLogin);
         
         // Add Enter key support
-        document.getElementById('username').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
         
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') handleLogin();
-        });
+        if (usernameInput) {
+            usernameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+        }
+        
+        if (passwordInput) {
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleLogin();
+            });
+        }
     }
     
     // Logout button handler
@@ -57,8 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const savedEmail = localStorage.getItem('dimdesk_admin_email');
     if (savedEmail) {
         ADMIN_CREDENTIALS.email = savedEmail;
-        if (document.getElementById('admin-email')) {
-            document.getElementById('admin-email').value = savedEmail;
+        const emailInput = document.getElementById('admin-email');
+        if (emailInput) {
+            emailInput.value = savedEmail;
         }
     }
 });
@@ -88,12 +93,12 @@ function handleLogin() {
 // TAB SYSTEM
 // ==========================================================================
 function initAdminTabs() {
-    const tabs = document.getElementById('admin-tabs');
-    if (!tabs) return;
+    const tabsContainer = document.getElementById('admin-tabs');
+    if (!tabsContainer) return;
     
     // Create tabs if they don't exist
-    if (!tabs.innerHTML.includes('admin-tab')) {
-        tabs.innerHTML = `
+    if (!tabsContainer.querySelector('.admin-tab')) {
+        tabsContainer.innerHTML = `
             <button class="admin-tab active" data-tab="home">🏠 Home</button>
             <button class="admin-tab" data-tab="carousel">🎮 Games</button>
             <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
@@ -102,64 +107,6 @@ function initAdminTabs() {
             <button class="admin-tab" data-tab="security">🔒 Security</button>
             <button class="admin-tab" data-tab="data">💾 Data</button>
         `;
-    }
-    
-    // Add tab styles
-    if (!document.querySelector('#admin-tabs-styles')) {
-        const style = document.createElement('style');
-        style.id = 'admin-tabs-styles';
-        style.textContent = `
-            .admin-tabs {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-                margin-bottom: 2rem;
-                padding: 1rem;
-                background: rgba(20, 20, 20, 0.8);
-                border-radius: 10px;
-                border: 1px solid rgba(240, 128, 128, 0.2);
-            }
-            
-            .admin-tab {
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                color: wheat;
-                padding: 0.75rem 1.5rem;
-                border-radius: 8px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .admin-tab:hover {
-                background: rgba(240, 128, 128, 0.2);
-                transform: translateY(-2px);
-            }
-            
-            .admin-tab.active {
-                background: lightcoral;
-                color: #000;
-                border-color: lightcoral;
-            }
-            
-            .admin-section {
-                display: none;
-                animation: fadeIn 0.3s ease;
-            }
-            
-            .admin-section.active {
-                display: block;
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-        `;
-        document.head.appendChild(style);
     }
     
     // Hide all sections, show active one
@@ -186,14 +133,19 @@ function initAdminTabs() {
             }
             
             // Load data if needed
-            if (tabId === 'carousel') {
-                loadCarouselItems(websiteData.carousels);
-            } else if (tabId === 'shop') {
-                loadShopItems(websiteData.shop.products);
-            } else if (tabId === 'portfolio') {
-                loadPortfolioSkills(websiteData.portfolio.skills);
-            } else if (tabId === 'settings') {
-                loadSettings();
+            switch(tabId) {
+                case 'carousel':
+                    loadCarouselItems(websiteData.carousels);
+                    break;
+                case 'shop':
+                    loadShopItems(websiteData.shop.products);
+                    break;
+                case 'portfolio':
+                    loadPortfolioSkills(websiteData.portfolio.skills);
+                    break;
+                case 'settings':
+                    loadSettings();
+                    break;
             }
         });
     });
@@ -203,20 +155,21 @@ function initAdminTabs() {
 }
 
 // ==========================================================================
-// SETTINGS SECTION
+// SETTINGS SECTION WITH CAROUSEL TOGGLE - FIXED
 // ==========================================================================
 function loadSettings() {
     const container = document.getElementById('admin-section-settings');
     if (!container) return;
     
     const carouselEnabled = localStorage.getItem('dimdesk_carousel_enabled') !== 'false';
+    const featuredTitle = websiteData.home.featured.title || 'Featured Projects';
+    const youtubeVideoId = websiteData.home.youtubeVideoId || 'b2lC7cbFmXE';
     
     container.innerHTML = `
         <h2>Website Settings</h2>
         <div class="admin-control">
             <label style="display: flex; align-items: center; gap: 1rem;">
-                <input type="checkbox" id="carousel-toggle" ${carouselEnabled ? 'checked' : ''} 
-                       onchange="toggleCarouselSetting(this.checked)">
+                <input type="checkbox" id="carousel-toggle" ${carouselEnabled ? 'checked' : ''}>
                 Enable Carousels
             </label>
             <small style="color: #aaa; display: block; margin-top: 0.5rem;">
@@ -226,18 +179,26 @@ function loadSettings() {
         <div class="admin-control">
             <label>Featured Section Title:</label>
             <input type="text" id="featured-title" placeholder="Featured Projects" 
-                   value="${websiteData.home.featured.title || 'Featured Projects'}">
+                   value="${featuredTitle}">
         </div>
         <div class="admin-control">
             <label>YouTube Video ID:</label>
             <input type="text" id="youtube-video-id" placeholder="b2lC7cbFmXE" 
-                   value="b2lC7cbFmXE">
+                   value="${youtubeVideoId}">
             <small style="color: #aaa; display: block; margin-top: 0.5rem;">
                 The ID after "youtube.com/watch?v=" in the URL
             </small>
         </div>
         <button class="admin-save-btn" onclick="saveSettings()">Save Settings</button>
     `;
+    
+    // Add event listener for carousel toggle
+    const carouselToggle = document.getElementById('carousel-toggle');
+    if (carouselToggle) {
+        carouselToggle.addEventListener('change', function() {
+            toggleCarouselSetting(this.checked);
+        });
+    }
 }
 
 function toggleCarouselSetting(enabled) {
@@ -247,6 +208,8 @@ function toggleCarouselSetting(enabled) {
 
 function saveSettings() {
     websiteData.home.featured.title = document.getElementById('featured-title').value;
+    websiteData.home.youtubeVideoId = document.getElementById('youtube-video-id').value;
+    
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
     showMessage('Settings saved!', 'success');
 }
@@ -291,16 +254,23 @@ function saveAdminEmail() {
 // UI FUNCTIONS
 // ==========================================================================
 function showLoginScreen() {
-    document.getElementById('login-screen').style.display = 'block';
-    document.getElementById('admin-panel').style.display = 'none';
+    const loginScreen = document.getElementById('login-screen');
+    const adminPanel = document.getElementById('admin-panel');
+    
+    if (loginScreen) loginScreen.style.display = 'block';
+    if (adminPanel) adminPanel.style.display = 'none';
+    
     // Clear password field
     const passwordField = document.getElementById('password');
     if (passwordField) passwordField.value = '';
 }
 
 function showAdminPanel() {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
+    const loginScreen = document.getElementById('login-screen');
+    const adminPanel = document.getElementById('admin-panel');
+    
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (adminPanel) adminPanel.style.display = 'block';
 }
 
 function showMessage(message, type = 'success') {
@@ -319,8 +289,6 @@ function showMessage(message, type = 'success') {
 // ==========================================================================
 // DATA LOADING FOR ADMIN
 // ==========================================================================
-let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
-
 function loadAdminData() {
     // Load home content
     if (document.getElementById('intro-text')) {
@@ -355,17 +323,32 @@ function loadCarouselItems(carousels) {
     
     container.innerHTML = '';
     
+    if (!carousels || (!carousels.released && !carousels.upcoming)) {
+        container.innerHTML = '<p style="color: wheat; padding: 1rem;">No carousel data available.</p>';
+        return;
+    }
+    
     // Released games
     if (carousels.released && carousels.released.length > 0) {
+        const releasedTitle = document.createElement('h3');
+        releasedTitle.textContent = 'Released Games';
+        releasedTitle.style.color = 'lightcoral';
+        releasedTitle.style.marginTop = '2rem';
+        container.appendChild(releasedTitle);
+        
         carousels.released.forEach((item, index) => {
             addCarouselItemElement(item, 'released', index, container);
         });
-    } else {
-        container.innerHTML = '<p style="color: wheat; padding: 1rem;">No released games yet. Add some!</p>';
     }
     
     // Upcoming games
     if (carousels.upcoming && carousels.upcoming.length > 0) {
+        const upcomingTitle = document.createElement('h3');
+        upcomingTitle.textContent = 'Upcoming Games';
+        upcomingTitle.style.color = 'lightcoral';
+        upcomingTitle.style.marginTop = '2rem';
+        container.appendChild(upcomingTitle);
+        
         carousels.upcoming.forEach((item, index) => {
             addCarouselItemElement(item, 'upcoming', index, container);
         });
@@ -378,13 +361,14 @@ function loadShopItems(products) {
     
     container.innerHTML = '';
     
-    if (products && products.length > 0) {
-        products.forEach((item, index) => {
-            addShopItemElement(item, index, container);
-        });
-    } else {
+    if (!products || products.length === 0) {
         container.innerHTML = '<p style="color: wheat; padding: 1rem;">No shop products yet. Add some!</p>';
+        return;
     }
+    
+    products.forEach((item, index) => {
+        addShopItemElement(item, index, container);
+    });
 }
 
 function loadPortfolioSkills(skills) {
@@ -393,30 +377,31 @@ function loadPortfolioSkills(skills) {
     
     container.innerHTML = '';
     
-    if (skills && skills.length > 0) {
-        skills.forEach((category, catIndex) => {
-            const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'admin-category-controls';
-            categoryDiv.innerHTML = `
-                <div class="admin-control">
-                    <label>Category Name:</label>
-                    <input type="text" class="category-name" placeholder="Category Name" value="${category.category}" data-index="${catIndex}" data-field="category">
-                </div>
-                <div class="admin-category-items" data-category-index="${catIndex}" style="margin-bottom: 1.5rem;"></div>
-                <button class="admin-add-btn" onclick="addSkillToCategory(${catIndex})" style="margin-bottom: 2rem;">Add Skill to ${category.category}</button>
-            `;
-            container.appendChild(categoryDiv);
-            
-            const itemsContainer = categoryDiv.querySelector('.admin-category-items');
-            if (category.skills && category.skills.length > 0) {
-                category.skills.forEach((skill, skillIndex) => {
-                    addSkillItemElement(skill, catIndex, skillIndex, itemsContainer);
-                });
-            }
-        });
-    } else {
+    if (!skills || skills.length === 0) {
         container.innerHTML = '<p style="color: wheat; padding: 1rem;">No portfolio skills yet. Add some!</p>';
+        return;
     }
+    
+    skills.forEach((category, catIndex) => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'admin-category-controls';
+        categoryDiv.innerHTML = `
+            <div class="admin-control">
+                <label>Category Name:</label>
+                <input type="text" class="category-name" placeholder="Category Name" value="${category.category}" data-index="${catIndex}" data-field="category">
+            </div>
+            <div class="admin-category-items" data-category-index="${catIndex}" style="margin-bottom: 1.5rem;"></div>
+            <button class="admin-add-btn" onclick="addSkillToCategory(${catIndex})" style="margin-bottom: 2rem;">Add Skill to ${category.category}</button>
+        `;
+        container.appendChild(categoryDiv);
+        
+        const itemsContainer = categoryDiv.querySelector('.admin-category-items');
+        if (category.skills && category.skills.length > 0) {
+            category.skills.forEach((skill, skillIndex) => {
+                addSkillItemElement(skill, catIndex, skillIndex, itemsContainer);
+            });
+        }
+    });
 }
 
 // ==========================================================================
@@ -455,6 +440,11 @@ function addCarouselItemElement(item, type, index, container) {
                     <option value="upcoming" ${item.status === 'upcoming' ? 'selected' : ''}>Upcoming</option>
                 </select>
             </div>
+        </div>
+        <div class="admin-control">
+            <label>External Links (JSON format):</label>
+            <textarea class="carousel-links" placeholder='{"Steam": "https://...", "itch.io": "https://..."}' data-index="${index}" data-type="${type}" data-field="externalLinks">${item.externalLinks ? JSON.stringify(item.externalLinks, null, 2) : ''}</textarea>
+            <small style="color: #aaa; display: block; margin-top: 0.25rem;">Enter platform links in JSON format</small>
         </div>
     `;
     
@@ -510,6 +500,11 @@ function addShopItemElement(item, index, container) {
                     <option value="physical" ${item.type === 'physical' ? 'selected' : ''}>Physical</option>
                 </select>
             </div>
+        </div>
+        <div class="admin-control">
+            <label>External Links (JSON format):</label>
+            <textarea class="shop-links" placeholder='{"Steam": "https://...", "itch.io": "https://..."}' data-index="${index}" data-field="externalLinks">${item.externalLinks ? JSON.stringify(item.externalLinks, null, 2) : ''}</textarea>
+            <small style="color: #aaa; display: block; margin-top: 0.25rem;">Enter platform links in JSON format</small>
         </div>
     `;
     
@@ -575,7 +570,8 @@ function addCarouselItem() {
         description: "Game description here",
         image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=New+Game",
         price: 9.99,
-        status: "released"
+        status: "released",
+        externalLinks: {}
     };
     
     if (!websiteData.carousels.released) {
@@ -596,7 +592,8 @@ function addShopItem() {
         image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=New+Product",
         price: 9.99,
         status: "released",
-        type: "digital"
+        type: "digital",
+        externalLinks: {}
     };
     
     if (!websiteData.shop.products) {
@@ -658,28 +655,32 @@ function updateCarouselItem(event) {
     const index = parseInt(target.dataset.index);
     const type = target.dataset.type;
     const field = target.dataset.field;
-    const value = target.value;
+    let value = target.value;
     
-    if (type === 'released') {
+    try {
         if (field === 'price') {
-            websiteData.carousels.released[index][field] = parseFloat(value);
+            value = parseFloat(value);
+        } else if (field === 'externalLinks') {
+            if (value.trim()) {
+                value = JSON.parse(value);
+            } else {
+                value = {};
+            }
         } else if (field === 'id') {
-            websiteData.carousels.released[index][field] = parseInt(value);
-        } else {
-            websiteData.carousels.released[index][field] = value;
+            value = parseInt(value);
         }
-    } else if (type === 'upcoming') {
-        if (field === 'price') {
-            websiteData.carousels.upcoming[index][field] = parseFloat(value);
-        } else if (field === 'id') {
-            websiteData.carousels.upcoming[index][field] = parseInt(value);
-        } else {
+        
+        if (type === 'released') {
+            websiteData.carousels.released[index][field] = value;
+        } else if (type === 'upcoming') {
             websiteData.carousels.upcoming[index][field] = value;
         }
+        
+        localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+        showMessage('Carousel item updated!', 'success');
+    } catch (error) {
+        showMessage('Error updating item: ' + error.message, 'error');
     }
-    
-    localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
-    showMessage('Carousel item updated!', 'success');
 }
 
 function updateShopItem(event) {
@@ -688,15 +689,25 @@ function updateShopItem(event) {
     const field = target.dataset.field;
     let value = target.value;
     
-    if (field === 'price') {
-        value = parseFloat(value);
-    } else if (field === 'tags') {
-        value = value.split(',').map(tag => tag.trim());
+    try {
+        if (field === 'price') {
+            value = parseFloat(value);
+        } else if (field === 'externalLinks') {
+            if (value.trim()) {
+                value = JSON.parse(value);
+            } else {
+                value = {};
+            }
+        } else if (field === 'tags') {
+            value = value.split(',').map(tag => tag.trim());
+        }
+        
+        websiteData.shop.products[index][field] = value;
+        localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+        showMessage('Shop item updated!', 'success');
+    } catch (error) {
+        showMessage('Error updating item: ' + error.message, 'error');
     }
-    
-    websiteData.shop.products[index][field] = value;
-    localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
-    showMessage('Shop item updated!', 'success');
 }
 
 function updateSkillItem(event) {
@@ -706,17 +717,22 @@ function updateSkillItem(event) {
     const field = target.dataset.field;
     let value = target.value;
     
-    if (field === 'tags') {
-        value = value.split(',').map(tag => tag.trim());
-    } else if (field === 'level') {
-        value = parseInt(value);
-    } else if (field === 'category') {
-        websiteData.portfolio.skills[catIndex].category = value;
+    try {
+        if (field === 'tags') {
+            value = value.split(',').map(tag => tag.trim());
+        } else if (field === 'level') {
+            value = parseInt(value);
+        } else if (field === 'category') {
+            websiteData.portfolio.skills[catIndex].category = value;
+        } else {
+            websiteData.portfolio.skills[catIndex].skills[skillIndex][field] = value;
+        }
+        
+        localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+        showMessage('Skill updated!', 'success');
+    } catch (error) {
+        showMessage('Error updating skill: ' + error.message, 'error');
     }
-    
-    websiteData.portfolio.skills[catIndex].skills[skillIndex][field] = value;
-    localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
-    showMessage('Skill updated!', 'success');
 }
 
 // ==========================================================================
@@ -844,7 +860,8 @@ function getDefaultData() {
                     image: "https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=UPCOMING+PROJECT",
                     text: "An exciting new adventure is in development. Stay tuned for updates and announcements!"
                 }
-            }
+            },
+            youtubeVideoId: "b2lC7cbFmXE"
         },
         shop: {
             intro: "^^ Please understand the slow process! We're working hard to bring you quality products.\nIn the meantime, check out what we have available and what's coming soon!",
@@ -856,7 +873,12 @@ function getDefaultData() {
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+Download",
                     price: 9.99,
                     status: "released",
-                    type: "game"
+                    type: "game",
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Direct Download": "#"
+                    }
                 },
                 {
                     id: 2,
@@ -865,7 +887,11 @@ function getDefaultData() {
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Digital+Artbook",
                     price: 14.99,
                     status: "released",
-                    type: "digital"
+                    type: "digital",
+                    externalLinks: {
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Direct Download": "#"
+                    }
                 },
                 {
                     id: 3,
@@ -874,7 +900,12 @@ function getDefaultData() {
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Soundtrack",
                     price: 7.99,
                     status: "released",
-                    type: "digital"
+                    type: "digital",
+                    externalLinks: {
+                        "Bandcamp": "#",
+                        "Spotify": "#",
+                        "Apple Music": "#"
+                    }
                 },
                 {
                     id: 4,
@@ -883,7 +914,10 @@ function getDefaultData() {
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Physical+Edition",
                     price: 49.99,
                     status: "upcoming",
-                    type: "physical"
+                    type: "physical",
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 }
             ]
         },
@@ -978,54 +1012,75 @@ function getDefaultData() {
         carousels: {
             released: [
                 {
-                    id: 1,
+                    id: 101,
                     title: "Project Alpha",
                     description: "A thrilling platformer adventure with unique mechanics and stunning visuals.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+1",
                     price: 9.99,
-                    status: "released"
+                    status: "released",
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "itch.io": "https://dimdesk.itch.io/"
+                    }
                 },
                 {
-                    id: 2,
+                    id: 102,
                     title: "Echoes of Time",
                     description: "A puzzle adventure game where you manipulate time to solve mysteries.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+2",
                     price: 14.99,
-                    status: "released"
+                    status: "released",
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "GOG": "https://www.gog.com/"
+                    }
                 },
                 {
-                    id: 3,
+                    id: 103,
                     title: "Neon Runner",
                     description: "Fast-paced endless runner set in a cyberpunk world with retro aesthetics.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+3",
                     price: 7.99,
-                    status: "released"
+                    status: "released",
+                    externalLinks: {
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Google Play": "https://play.google.com/"
+                    }
                 }
             ],
             upcoming: [
                 {
-                    id: 4,
+                    id: 104,
                     title: "Dreamscape",
                     description: "Explore a surreal world where dreams and reality collide in this atmospheric adventure.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+1",
                     price: 19.99,
-                    status: "upcoming"
+                    status: "upcoming",
+                    externalLinks: {
+                        "Wishlist on Steam": "https://store.steampowered.com/"
+                    }
                 },
                 {
-                    id: 5,
+                    id: 105,
                     title: "Chrono Knights",
                     description: "Time-traveling knights battle through different historical eras in this action RPG.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+2",
                     price: 24.99,
-                    status: "upcoming"
+                    status: "upcoming",
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 },
                 {
-                    id: 6,
+                    id: 106,
                     title: "Pixel Legends",
                     description: "Retro-inspired RPG with modern gameplay mechanics and epic storytelling.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+3",
                     price: 17.99,
-                    status: "upcoming"
+                    status: "upcoming",
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 }
             ]
         }

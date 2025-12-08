@@ -1,4 +1,4 @@
-// main.js - Enhanced with wishlist page and external linking
+// main.js - Enhanced with carousel toggles and fixed navigation
 // ==========================================================================
 // GLOBAL VARIABLES
 // ==========================================================================
@@ -6,9 +6,10 @@ let cart = JSON.parse(localStorage.getItem('dimdesk_cart')) || [];
 let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
 let carouselInstances = {};
 let wishlist = JSON.parse(localStorage.getItem('dimdesk_wishlist')) || [];
+let carouselEnabled = localStorage.getItem('dimdesk_carousel_enabled') !== 'false'; // Enabled by default
 
 // ==========================================================================
-// IMPROVED CAROUSEL CLASS WITH WISHLIST INTEGRATION
+// IMPROVED CAROUSEL CLASS WITH PROPER ALIGNMENT
 // ==========================================================================
 class Carousel {
     constructor(containerId, type) {
@@ -94,6 +95,20 @@ class Carousel {
             });
             
             this.track.appendChild(slide);
+        });
+        
+        // Apply proper slide sizing
+        this.updateSlideWidths();
+    }
+    
+    updateSlideWidths() {
+        const slides = this.track.querySelectorAll('.carousel-slide');
+        const slideWidthPercentage = 100 / this.slidesPerView;
+        const gap = 2; // rem gap converted to percentage
+        
+        slides.forEach(slide => {
+            slide.style.flex = `0 0 calc(${slideWidthPercentage}% - ${gap}rem)`;
+            slide.style.minWidth = `calc(${slideWidthPercentage}% - ${gap}rem)`;
         });
     }
     
@@ -303,6 +318,53 @@ class Carousel {
 }
 
 // ==========================================================================
+// CAROUSEL TOGGLE FUNCTIONALITY
+// ==========================================================================
+function toggleCarousels(enable) {
+    carouselEnabled = enable;
+    localStorage.setItem('dimdesk_carousel_enabled', enable);
+    
+    const carouselSections = document.querySelectorAll('.carousel-section');
+    const featuredSection = document.querySelector('.featured-section');
+    
+    if (!enable) {
+        // Hide carousels
+        carouselSections.forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Adjust featured section
+        if (featuredSection) {
+            featuredSection.style.marginBottom = '4rem';
+            featuredSection.style.marginTop = '4rem';
+        }
+    } else {
+        // Show carousels
+        carouselSections.forEach(section => {
+            section.style.display = 'block';
+        });
+        
+        // Restore featured section
+        if (featuredSection) {
+            featuredSection.style.marginBottom = '';
+            featuredSection.style.marginTop = '';
+        }
+        
+        // Reinitialize carousels
+        setTimeout(() => {
+            initCarousels();
+        }, 100);
+    }
+}
+
+function checkCarouselStatus() {
+    const enabled = localStorage.getItem('dimdesk_carousel_enabled');
+    if (enabled === 'false') {
+        toggleCarousels(false);
+    }
+}
+
+// ==========================================================================
 // WISHLIST FUNCTIONS - ENHANCED WITH EXTERNAL LINKS
 // ==========================================================================
 function toggleWishlist(productId) {
@@ -494,7 +556,10 @@ function initializeWebsite() {
     try {
         initNavigation();
         initDynamicContent();
-        initCarousels();
+        checkCarouselStatus();
+        if (carouselEnabled) {
+            initCarousels();
+        }
         initModalSystem();
         initCartSystem();
         updateWishlistButtons();
@@ -534,7 +599,7 @@ function initCarousels() {
 }
 
 // ==========================================================================
-// NAVIGATION - UPDATED WITH WISHLIST LINK
+// NAVIGATION - FIXED MOBILE NAVIGATION
 // ==========================================================================
 function initNavigation() {
     const mobileToggle = document.querySelector('.mobile-toggle');
@@ -546,6 +611,7 @@ function initNavigation() {
         e.stopPropagation();
         navLinks.classList.toggle('active');
         this.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
     });
     
     // Close mobile menu when clicking links
@@ -554,6 +620,7 @@ function initNavigation() {
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('active');
                 mobileToggle.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     });
@@ -564,17 +631,25 @@ function initNavigation() {
     // Close menu when clicking outside
     document.addEventListener('click', function(event) {
         if (window.innerWidth <= 768) {
-            if (!navLinks.contains(event.target) && !mobileToggle.contains(event.target) && navLinks.classList.contains('active')) {
+            const isClickInsideNav = navLinks.contains(event.target);
+            const isClickOnToggle = mobileToggle.contains(event.target);
+            
+            if (!isClickInsideNav && !isClickOnToggle && navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
                 mobileToggle.classList.remove('active');
+                document.body.style.overflow = '';
             }
         }
     });
     
+    // Handle window resize
     window.addEventListener('resize', function() {
-        if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            mobileToggle.classList.remove('active');
+        if (window.innerWidth > 768) {
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         }
     });
 }
@@ -885,7 +960,7 @@ function clearWishlist() {
 }
 
 // ==========================================================================
-// CART SYSTEM (unchanged but kept for completeness)
+// CART SYSTEM
 // ==========================================================================
 function initCartSystem() {
     const cartToggle = document.querySelector('.cart-toggle');
@@ -1446,3 +1521,4 @@ window.toggleWishlist = toggleWishlist;
 window.removeFromWishlist = removeFromWishlist;
 window.addToCartFromWishlist = addToCartFromWishlist;
 window.clearWishlist = clearWishlist;
+window.toggleCarousels = toggleCarousels;

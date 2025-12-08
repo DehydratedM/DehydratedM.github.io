@@ -1,10 +1,11 @@
 // ==========================================================================
-// ADMIN PANEL - Enhanced with password protection and full CRUD operations
+// ADMIN PANEL - Enhanced with proper tab system and security
 // ==========================================================================
 
 const ADMIN_CREDENTIALS = {
     username: "dimdesk_admin",
-    password: "DimDeskSecure2024!" // Easy to change later
+    password: "DimDeskSecure2024!",
+    email: "admin@example.com"
 };
 
 // ==========================================================================
@@ -24,11 +25,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (isLoggedIn) {
         showAdminPanel();
+        initAdminTabs();
     } else {
         showLoginScreen();
     }
     
-    // Login button handler with Enter key support
+    // Login button handler
     if (loginBtn) {
         loginBtn.addEventListener('click', handleLogin);
         
@@ -51,13 +53,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Load data for editing
-    if (isLoggedIn) {
-        loadAdminData();
+    // Load admin email if saved
+    const savedEmail = localStorage.getItem('dimdesk_admin_email');
+    if (savedEmail) {
+        ADMIN_CREDENTIALS.email = savedEmail;
+        if (document.getElementById('admin-email')) {
+            document.getElementById('admin-email').value = savedEmail;
+        }
     }
-    
-    // Initialize tab navigation
-    initAdminTabs();
 });
 
 function handleLogin() {
@@ -74,12 +77,131 @@ function handleLogin() {
         sessionStorage.setItem('admin_logged_in', 'true');
         showAdminPanel();
         showMessage('Login successful!', 'success');
+        initAdminTabs();
     } else {
         loginError.textContent = 'Invalid username or password';
         loginError.style.color = '#ff6b6b';
     }
 }
 
+// ==========================================================================
+// TAB SYSTEM
+// ==========================================================================
+function initAdminTabs() {
+    const tabs = document.getElementById('admin-tabs');
+    if (!tabs) return;
+    
+    // Create tabs if they don't exist
+    if (!tabs.innerHTML.includes('admin-tab')) {
+        tabs.innerHTML = `
+            <button class="admin-tab active" data-tab="home">🏠 Home</button>
+            <button class="admin-tab" data-tab="carousel">🎮 Games</button>
+            <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
+            <button class="admin-tab" data-tab="portfolio">📊 Portfolio</button>
+            <button class="admin-tab" data-tab="security">🔒 Security</button>
+            <button class="admin-tab" data-tab="data">💾 Data</button>
+        `;
+    }
+    
+    // Add tab styles
+    if (!document.querySelector('#admin-tabs-styles')) {
+        const style = document.createElement('style');
+        style.id = 'admin-tabs-styles';
+        style.textContent = `
+            .admin-tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+                padding: 1rem;
+                background: rgba(20, 20, 20, 0.8);
+                border-radius: 10px;
+                border: 1px solid rgba(240, 128, 128, 0.2);
+            }
+            
+            .admin-tab {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: wheat;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .admin-tab:hover {
+                background: rgba(240, 128, 128, 0.2);
+                transform: translateY(-2px);
+            }
+            
+            .admin-tab.active {
+                background: lightcoral;
+                color: #000;
+                border-color: lightcoral;
+            }
+            
+            .admin-section {
+                display: none;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            .admin-section.active {
+                display: block;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Hide all sections, show active one
+    const sections = document.querySelectorAll('.admin-section');
+    sections.forEach(section => section.classList.remove('active'));
+    document.getElementById('admin-section-home').classList.add('active');
+    
+    // Add tab click handlers
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
+            
+            // Update active tab
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Hide all sections
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Show active section
+            const activeSection = document.getElementById(`admin-section-${tabId}`);
+            if (activeSection) {
+                activeSection.classList.add('active');
+            }
+            
+            // Load data if needed
+            if (tabId === 'carousel') {
+                loadCarouselItems(websiteData.carousels);
+            } else if (tabId === 'shop') {
+                loadShopItems(websiteData.shop.products);
+            } else if (tabId === 'portfolio') {
+                loadPortfolioSkills(websiteData.portfolio.skills);
+            }
+        });
+    });
+    
+    // Load initial data
+    loadAdminData();
+}
+
+// ==========================================================================
+// SECURITY FUNCTIONS
+// ==========================================================================
 function changePassword() {
     const newPassword = document.getElementById('new-password').value;
     
@@ -98,6 +220,21 @@ function changePassword() {
     document.getElementById('new-password').value = '';
 }
 
+function saveAdminEmail() {
+    const email = document.getElementById('admin-email').value;
+    
+    if (!email || !email.includes('@')) {
+        showMessage('Please enter a valid email address', 'error');
+        return;
+    }
+    
+    // Save email
+    ADMIN_CREDENTIALS.email = email;
+    localStorage.setItem('dimdesk_admin_email', email);
+    
+    showMessage('Email saved successfully!', 'success');
+}
+
 // ==========================================================================
 // UI FUNCTIONS
 // ==========================================================================
@@ -112,7 +249,6 @@ function showLoginScreen() {
 function showAdminPanel() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-panel').style.display = 'block';
-    loadAdminData();
 }
 
 function showMessage(message, type = 'success') {
@@ -129,119 +265,11 @@ function showMessage(message, type = 'success') {
 }
 
 // ==========================================================================
-// TAB NAVIGATION SYSTEM (FOR EASIER NAVIGATION)
-// ==========================================================================
-function initAdminTabs() {
-    // Create tab navigation if not exists
-    const adminHeader = document.querySelector('.admin-header');
-    if (!adminHeader || document.getElementById('admin-tabs')) return;
-    
-    const tabsHTML = `
-        <div class="admin-tabs" id="admin-tabs">
-            <button class="admin-tab active" data-tab="home">🏠 Home</button>
-            <button class="admin-tab" data-tab="carousel">🎮 Games</button>
-            <button class="admin-tab" data-tab="shop">🛍️ Shop</button>
-            <button class="admin-tab" data-tab="portfolio">📊 Portfolio</button>
-            <button class="admin-tab" data-tab="security">🔒 Security</button>
-            <button class="admin-tab" data-tab="data">💾 Data</button>
-        </div>
-    `;
-    
-    adminHeader.insertAdjacentHTML('afterend', tabsHTML);
-    
-    // Add tab styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .admin-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 10px;
-            border: 1px solid rgba(240, 128, 128, 0.2);
-        }
-        
-        .admin-tab {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: wheat;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .admin-tab:hover {
-            background: rgba(240, 128, 128, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .admin-tab.active {
-            background: lightcoral;
-            color: #000;
-            border-color: lightcoral;
-        }
-        
-        .admin-section {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .admin-section.active {
-            display: block;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Add tab click handlers
-    document.querySelectorAll('.admin-tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-            const tabId = this.dataset.tab;
-            
-            // Update active tab
-            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Show corresponding section
-            document.querySelectorAll('.admin-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            if (tabId === 'home') {
-                document.querySelectorAll('.admin-section')[0].classList.add('active');
-            } else if (tabId === 'carousel') {
-                document.querySelectorAll('.admin-section')[1].classList.add('active');
-            } else if (tabId === 'shop') {
-                document.querySelectorAll('.admin-section')[2].classList.add('active');
-            } else if (tabId === 'portfolio') {
-                document.querySelectorAll('.admin-section')[3].classList.add('active');
-            } else if (tabId === 'security') {
-                document.querySelectorAll('.admin-section')[4].classList.add('active');
-            } else if (tabId === 'data') {
-                document.querySelectorAll('.admin-section')[5].classList.add('active');
-            }
-        });
-    });
-}
-
-// ==========================================================================
 // DATA LOADING FOR ADMIN
 // ==========================================================================
+let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
+
 function loadAdminData() {
-    // Load website data from localStorage or default
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
-    
     // Load home content
     if (document.getElementById('intro-text')) {
         document.getElementById('intro-text').value = websiteData.home.intro;
@@ -316,9 +344,12 @@ function loadPortfolioSkills(skills) {
     if (skills && skills.length > 0) {
         skills.forEach((category, catIndex) => {
             const categoryDiv = document.createElement('div');
-            categoryDiv.className = 'admin-control-group';
+            categoryDiv.className = 'admin-category-controls';
             categoryDiv.innerHTML = `
-                <h3 style="color: lightcoral; margin: 1rem 0;">${category.category}</h3>
+                <div class="admin-control">
+                    <label>Category Name:</label>
+                    <input type="text" class="category-name" placeholder="Category Name" value="${category.category}" data-index="${catIndex}" data-field="category">
+                </div>
                 <div class="admin-category-items" data-category-index="${catIndex}" style="margin-bottom: 1.5rem;"></div>
                 <button class="admin-add-btn" onclick="addSkillToCategory(${catIndex})" style="margin-bottom: 2rem;">Add Skill to ${category.category}</button>
             `;
@@ -358,6 +389,7 @@ function addCarouselItemElement(item, type, index, container) {
         <div class="admin-control">
             <label>Image URL:</label>
             <input type="text" class="carousel-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-type="${type}" data-field="image">
+            <small style="color: #aaa; display: block; margin-top: 0.25rem;">Change this URL to update the image</small>
         </div>
         <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="admin-control">
@@ -404,6 +436,7 @@ function addShopItemElement(item, index, container) {
         <div class="admin-control">
             <label>Image URL:</label>
             <input type="text" class="shop-image" placeholder="https://example.com/image.jpg" value="${item.image || ''}" data-index="${index}" data-field="image">
+            <small style="color: #aaa; display: block; margin-top: 0.25rem;">Change this URL to update the product image</small>
         </div>
         <div class="admin-control-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
             <div class="admin-control">
@@ -484,7 +517,6 @@ function addSkillItemElement(skill, catIndex, skillIndex, container) {
 // ADD NEW ITEMS FUNCTIONS
 // ==========================================================================
 function addCarouselItem() {
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     const newItem = {
         id: Date.now(),
         title: "New Game",
@@ -505,7 +537,6 @@ function addCarouselItem() {
 }
 
 function addShopItem() {
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     const newItem = {
         id: Date.now(),
         title: "New Product",
@@ -527,8 +558,6 @@ function addShopItem() {
 }
 
 function addSkillItem() {
-    // This adds a new category
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     const newCategory = {
         category: "New Category",
         skills: [{
@@ -551,7 +580,6 @@ function addSkillItem() {
 }
 
 function addSkillToCategory(catIndex) {
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     const newSkill = {
         name: "New Skill",
         years: "0+ years",
@@ -579,8 +607,6 @@ function updateCarouselItem(event) {
     const type = target.dataset.type;
     const field = target.dataset.field;
     const value = target.value;
-    
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     
     if (type === 'released') {
         if (field === 'price') {
@@ -610,8 +636,6 @@ function updateShopItem(event) {
     const field = target.dataset.field;
     let value = target.value;
     
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
-    
     if (field === 'price') {
         value = parseFloat(value);
     } else if (field === 'tags') {
@@ -630,12 +654,12 @@ function updateSkillItem(event) {
     const field = target.dataset.field;
     let value = target.value;
     
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
-    
     if (field === 'tags') {
         value = value.split(',').map(tag => tag.trim());
     } else if (field === 'level') {
         value = parseInt(value);
+    } else if (field === 'category') {
+        websiteData.portfolio.skills[catIndex].category = value;
     }
     
     websiteData.portfolio.skills[catIndex].skills[skillIndex][field] = value;
@@ -648,8 +672,6 @@ function updateSkillItem(event) {
 // ==========================================================================
 function removeCarouselItem(index, type) {
     if (!confirm('Are you sure you want to remove this item?')) return;
-    
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     
     if (type === 'released') {
         websiteData.carousels.released.splice(index, 1);
@@ -665,9 +687,7 @@ function removeCarouselItem(index, type) {
 function removeShopItem(index) {
     if (!confirm('Are you sure you want to remove this product?')) return;
     
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     websiteData.shop.products.splice(index, 1);
-    
     localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
     loadShopItems(websiteData.shop.products);
     showMessage('Product removed successfully!');
@@ -676,7 +696,6 @@ function removeShopItem(index) {
 function removeSkillItem(catIndex, skillIndex) {
     if (!confirm('Are you sure you want to remove this skill?')) return;
     
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     websiteData.portfolio.skills[catIndex].skills.splice(skillIndex, 1);
     
     // If category is empty, remove it
@@ -693,9 +712,6 @@ function removeSkillItem(catIndex, skillIndex) {
 // SAVE FUNCTIONS
 // ==========================================================================
 function saveHomeContent() {
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
-    
-    // Update home content
     websiteData.home.intro = document.getElementById('intro-text').value;
     websiteData.home.featured.latest.image = document.getElementById('latest-release-image').value;
     websiteData.home.featured.latest.text = document.getElementById('latest-release-desc').value;
@@ -710,7 +726,6 @@ function saveHomeContent() {
 // DATA MANAGEMENT
 // ==========================================================================
 function exportData() {
-    const websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
     const dataStr = JSON.stringify(websiteData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
@@ -736,6 +751,7 @@ function importData() {
         reader.onload = function(e) {
             try {
                 const importedData = JSON.parse(e.target.result);
+                websiteData = importedData;
                 localStorage.setItem('dimdesk_data', JSON.stringify(importedData));
                 loadAdminData();
                 showMessage('Data imported successfully!');
@@ -752,14 +768,15 @@ function importData() {
 
 function resetData() {
     if (confirm('Are you sure you want to reset all data to default? This cannot be undone!')) {
-        localStorage.removeItem('dimdesk_data');
+        websiteData = getDefaultData();
+        localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
         loadAdminData();
         showMessage('Data reset to default!', 'success');
     }
 }
 
 // ==========================================================================
-// DEFAULT DATA (Enhanced with all skills from before)
+// DEFAULT DATA
 // ==========================================================================
 function getDefaultData() {
     return {

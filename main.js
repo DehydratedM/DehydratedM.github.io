@@ -318,7 +318,7 @@ class Carousel {
 }
 
 // ==========================================================================
-// CAROUSEL TOGGLE FUNCTIONALITY
+// CAROUSEL TOGGLE FUNCTIONALITY - FIXED
 // ==========================================================================
 function toggleCarousels(enable) {
     carouselEnabled = enable;
@@ -351,9 +351,7 @@ function toggleCarousels(enable) {
         }
         
         // Reinitialize carousels
-        setTimeout(() => {
-            initCarousels();
-        }, 100);
+        initCarousels();
     }
 }
 
@@ -361,11 +359,13 @@ function checkCarouselStatus() {
     const enabled = localStorage.getItem('dimdesk_carousel_enabled');
     if (enabled === 'false') {
         toggleCarousels(false);
+    } else {
+        toggleCarousels(true);
     }
 }
 
 // ==========================================================================
-// WISHLIST FUNCTIONS - ENHANCED WITH EXTERNAL LINKS
+// WISHLIST FUNCTIONS
 // ==========================================================================
 function toggleWishlist(productId) {
     let product = null;
@@ -458,10 +458,17 @@ function updateWishlistButtons() {
             }
         }
     });
+    
+    // Update wishlist badge
+    const wishlistBadge = document.getElementById('wishlist-badge');
+    if (wishlistBadge) {
+        wishlistBadge.textContent = wishlist.length;
+        wishlistBadge.style.display = wishlist.length > 0 ? 'flex' : 'none';
+    }
 }
 
 // ==========================================================================
-// MODAL SYSTEM WITH WISHLIST INTEGRATION
+// MODAL SYSTEM
 // ==========================================================================
 function showProductModal(productId) {
     const product = websiteData.shop.products.find(p => p.id === productId);
@@ -557,9 +564,6 @@ function initializeWebsite() {
         initNavigation();
         initDynamicContent();
         checkCarouselStatus();
-        if (carouselEnabled) {
-            initCarousels();
-        }
         initModalSystem();
         initCartSystem();
         updateWishlistButtons();
@@ -579,19 +583,19 @@ function initCarousels() {
     
     if (page === 'index.html' || page === '' || page.includes('SiteTest')) {
         setTimeout(() => {
-            if (document.getElementById('released-carousel')) {
+            if (document.getElementById('released-carousel') && carouselEnabled) {
                 carouselInstances.released = new Carousel('released-carousel', 'released');
             }
-            if (document.getElementById('upcoming-carousel')) {
+            if (document.getElementById('upcoming-carousel') && carouselEnabled) {
                 carouselInstances.upcoming = new Carousel('upcoming-carousel', 'upcoming');
             }
         }, 100);
     } else if (page === 'shop.html') {
         setTimeout(() => {
-            if (document.getElementById('shop-available-carousel')) {
+            if (document.getElementById('shop-available-carousel') && carouselEnabled) {
                 carouselInstances.shopAvailable = new Carousel('shop-available-carousel', 'released');
             }
-            if (document.getElementById('shop-upcoming-carousel')) {
+            if (document.getElementById('shop-upcoming-carousel') && carouselEnabled) {
                 carouselInstances.shopUpcoming = new Carousel('shop-upcoming-carousel', 'upcoming');
             }
         }, 100);
@@ -599,7 +603,7 @@ function initCarousels() {
 }
 
 // ==========================================================================
-// NAVIGATION - FIXED MOBILE NAVIGATION
+// NAVIGATION - FIXED WITH MULTIPLE NAVIGATION METHODS
 // ==========================================================================
 function initNavigation() {
     const mobileToggle = document.querySelector('.mobile-toggle');
@@ -607,20 +611,21 @@ function initNavigation() {
     
     if (!mobileToggle || !navLinks) return;
     
+    // Mobile toggle click
     mobileToggle.addEventListener('click', function(e) {
         e.stopPropagation();
         navLinks.classList.toggle('active');
         this.classList.toggle('active');
-        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        document.body.classList.toggle('menu-open');
     });
     
-    // Close mobile menu when clicking links
+    // Close menu when clicking links
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
                 navLinks.classList.remove('active');
                 mobileToggle.classList.remove('active');
-                document.body.style.overflow = '';
+                document.body.classList.remove('menu-open');
             }
         });
     });
@@ -637,7 +642,7 @@ function initNavigation() {
             if (!isClickInsideNav && !isClickOnToggle && navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
                 mobileToggle.classList.remove('active');
-                document.body.style.overflow = '';
+                document.body.classList.remove('menu-open');
             }
         }
     });
@@ -648,7 +653,59 @@ function initNavigation() {
             if (navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
                 mobileToggle.classList.remove('active');
-                document.body.style.overflow = '';
+                document.body.classList.remove('menu-open');
+            }
+        }
+    });
+    
+    // Add keyboard navigation (ESC to close menu)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            mobileToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
+    
+    // Add swipe support for mobile
+    addSwipeSupport();
+}
+
+function addSwipeSupport() {
+    let startX = 0;
+    let startY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchend', function(e) {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+        
+        // Only consider horizontal swipes
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                // Swipe left - close menu if open
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                    document.querySelector('.mobile-toggle').classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            } else {
+                // Swipe right - open menu if closed and on mobile
+                if (window.innerWidth <= 768) {
+                    const navLinks = document.querySelector('.nav-links');
+                    if (navLinks && !navLinks.classList.contains('active')) {
+                        navLinks.classList.add('active');
+                        document.querySelector('.mobile-toggle').classList.add('active');
+                        document.body.classList.add('menu-open');
+                    }
+                }
             }
         }
     });
@@ -1264,7 +1321,7 @@ function showNotification(message, type = 'success') {
 }
 
 // ==========================================================================
-// DEFAULT DATA - UPDATED WITH EXTERNAL LINKS
+// DEFAULT DATA
 // ==========================================================================
 function getDefaultData() {
     return {
@@ -1522,3 +1579,4 @@ window.removeFromWishlist = removeFromWishlist;
 window.addToCartFromWishlist = addToCartFromWishlist;
 window.clearWishlist = clearWishlist;
 window.toggleCarousels = toggleCarousels;
+window.initCarousels = initCarousels;

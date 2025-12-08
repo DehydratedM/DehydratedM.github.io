@@ -1051,6 +1051,249 @@ function checkPassword() {
 // checkPassword();
 
 // ==========================================================================
+// WISHLIST SYSTEM FOR UPCOMING ITEMS
+// ==========================================================================
+let wishlist = JSON.parse(localStorage.getItem('dimdesk_wishlist')) || [];
+let notifications = JSON.parse(localStorage.getItem('dimdesk_notifications')) || [];
+
+function initWishlistSystem() {
+    // Add wishlist buttons to upcoming items
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('wishlist-btn')) {
+            const productId = parseInt(e.target.dataset.productId);
+            toggleWishlist(productId);
+        }
+    });
+}
+
+function toggleWishlist(productId) {
+    // Find product
+    let product = null;
+    
+    // Check in shop products
+    if (websiteData.shop.products) {
+        product = websiteData.shop.products.find(p => p.id === productId);
+    }
+    
+    // Check in carousel items
+    if (!product && websiteData.carousels) {
+        const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
+        product = allCarouselItems.find(p => p.id === productId);
+    }
+    
+    if (!product) {
+        showNotification('Product not found!', 'error');
+        return;
+    }
+    
+    // Check if already in wishlist
+    const existingIndex = wishlist.findIndex(item => item.id === productId);
+    
+    if (existingIndex >= 0) {
+        // Remove from wishlist
+        wishlist.splice(existingIndex, 1);
+        showNotification(`Removed ${product.title} from wishlist`);
+    } else {
+        // Add to wishlist
+        wishlist.push({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: product.image,
+            addedDate: new Date().toISOString(),
+            status: product.status
+        });
+        showNotification(`Added ${product.title} to wishlist!`);
+        
+        // If it's an upcoming item, add notification preference
+        if (product.status === 'upcoming') {
+            addNotificationPreference(product.id, 'launch');
+        }
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
+    localStorage.setItem('dimdesk_notifications', JSON.stringify(notifications));
+    
+    // Update wishlist button states
+    updateWishlistButtons();
+}
+
+function addNotificationPreference(productId, type) {
+    // Check if notification preference already exists
+    const existingIndex = notifications.findIndex(n => n.productId === productId && n.type === type);
+    
+    if (existingIndex === -1) {
+        notifications.push({
+            productId: productId,
+            type: type,
+            email: '', // Would be filled if user provides email
+            notified: false,
+            created: new Date().toISOString()
+        });
+    }
+}
+
+function updateWishlistButtons() {
+    // Update all wishlist buttons
+    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+        const productId = parseInt(btn.dataset.productId);
+        const isInWishlist = wishlist.some(item => item.id === productId);
+        
+        if (isInWishlist) {
+            btn.innerHTML = '❤️ In Wishlist';
+            btn.classList.add('in-wishlist');
+        } else {
+            btn.innerHTML = '🤍 Add to Wishlist';
+            btn.classList.remove('in-wishlist');
+        }
+    });
+}
+
+// Modify the showProductModal function to include wishlist for upcoming items
+function showProductModal(productId) {
+    const product = websiteData.shop.products.find(p => p.id === productId);
+    if (!product) {
+        showNotification('Product not found!', 'error');
+        return;
+    }
+    
+    const isInWishlist = wishlist.some(item => item.id === productId);
+    
+    const modalHTML = `
+        <h2 style="color: lightcoral; margin-bottom: 1rem;">${product.title}</h2>
+        <img src="${product.image}" alt="${product.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
+        <p style="color: wheat; margin-bottom: 1rem;">${product.description}</p>
+        <div style="margin-bottom: 1rem; color: #aaa;">
+            <span class="shop-status status-${product.status}" style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 4px;">
+                ${product.status === 'released' ? 'Available Now' : 'Coming Soon'}
+            </span>
+            <span style="margin-left: 1rem;">Type: ${product.type}</span>
+        </div>
+        <div style="text-align: center;">
+            <div style="color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                $${product.price.toFixed(2)}
+            </div>
+            ${product.status === 'released' ? 
+                `<button onclick="addToCart(${product.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                    Add to Cart
+                </button>` : 
+                `<button onclick="toggleWishlist(${product.id})" class="wishlist-btn" data-product-id="${product.id}" 
+                 style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                    ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                </button>
+                <div style="margin-top: 1rem; color: #aaa; font-size: 0.9rem;">
+                    <p>We'll notify you when this item launches!</p>
+                    <div style="margin-top: 0.5rem;">
+                        <input type="email" id="notify-email-${product.id}" placeholder="Email for notifications" style="padding: 0.5rem; width: 80%; border-radius: 4px; border: 1px solid #666; background: rgba(255,255,255,0.1); color: white;">
+                        <button onclick="saveNotificationEmail(${product.id})" style="padding: 0.5rem 1rem; background: lightcoral; color: black; border: none; border-radius: 4px; cursor: pointer; margin-left: 0.5rem;">
+                            Save
+                        </button>
+                    </div>
+                </div>`
+            }
+            <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                Close
+            </button>
+        </div>
+    `;
+    
+    const modalBody = document.getElementById('modal-body');
+    if (modalBody) {
+        modalBody.innerHTML = modalHTML;
+        showModal();
+    }
+}
+
+function saveNotificationEmail(productId) {
+    const emailInput = document.getElementById(`notify-email-${productId}`);
+    if (!emailInput) return;
+    
+    const email = emailInput.value.trim();
+    
+    // Basic email validation
+    if (!email || !email.includes('@')) {
+        showNotification('Please enter a valid email address', 'error');
+        return;
+    }
+    
+    // Find or create notification
+    let notification = notifications.find(n => n.productId === productId);
+    if (!notification) {
+        notification = {
+            productId: productId,
+            type: 'launch',
+            email: email,
+            notified: false,
+            created: new Date().toISOString()
+        };
+        notifications.push(notification);
+    } else {
+        notification.email = email;
+    }
+    
+    localStorage.setItem('dimdesk_notifications', JSON.stringify(notifications));
+    showNotification('Notification preference saved!');
+}
+
+// Add wishlist initialization to the main initialization
+function initializeWebsite() {
+    try {
+        initNavigation();
+        initDynamicContent();
+        initCarousels();
+        initModalSystem();
+        initCartSystem();
+        initWishlistSystem(); // Add this line
+        initScrollAnimations();
+        
+        updateCartCount();
+        
+        console.log("Website initialization complete");
+    } catch (error) {
+        console.error("Error during initialization:", error);
+    }
+}
+
+// Update the Carousel class showItemModal method to include wishlist
+// In the Carousel class, update showItemModal method:
+showItemModal(item) {
+    const isInWishlist = wishlist.some(wishlistItem => wishlistItem.id === item.id);
+    
+    const modalHTML = `
+        <h2 style="color: lightcoral; margin-bottom: 1rem;">${item.title}</h2>
+        <img src="${item.image}" alt="${item.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;" loading="lazy">
+        <p style="color: wheat; margin-bottom: 1rem;">${item.description}</p>
+        <div style="text-align: center;">
+            <div style="color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                $${item.price.toFixed(2)}
+            </div>
+            ${item.status === 'released' ? 
+                `<button onclick="addToCart(${item.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                    Add to Cart
+                </button>` : 
+                `<button onclick="toggleWishlist(${item.id})" class="wishlist-btn" data-product-id="${item.id}" 
+                 style="background: ${isInWishlist ? '#dc3545' : '#8e44ad'}; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 0.5rem;">
+                    ${isInWishlist ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                </button>
+                <div style="margin-top: 1rem; color: #aaa; font-size: 0.9rem;">
+                    <p>We'll notify you when this game launches!</p>
+                </div>`
+            }
+            <button onclick="closeModal()" style="background: transparent; color: lightcoral; border: 1px solid lightcoral; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                Close
+            </button>
+        </div>
+    `;
+    
+    const modalBody = document.getElementById('modal-body');
+    if (modalBody) {
+        modalBody.innerHTML = modalHTML;
+        showModal();
+    }
+}
+
+// ==========================================================================
 // EXPORT FUNCTIONS FOR GLOBAL USE
 // ==========================================================================
 window.addToCart = addToCart;

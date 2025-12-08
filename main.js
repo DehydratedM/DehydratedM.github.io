@@ -1,5 +1,4 @@
-// main.js - Enhanced with improved carousel system and wishlist integration
-
+// main.js - Enhanced with wishlist page and external linking
 // ==========================================================================
 // GLOBAL VARIABLES
 // ==========================================================================
@@ -9,7 +8,7 @@ let carouselInstances = {};
 let wishlist = JSON.parse(localStorage.getItem('dimdesk_wishlist')) || [];
 
 // ==========================================================================
-// IMPROVED CAROUSEL CLASS WITH FIXED INDICATORS & LOOPING
+// IMPROVED CAROUSEL CLASS WITH WISHLIST INTEGRATION
 // ==========================================================================
 class Carousel {
     constructor(containerId, type) {
@@ -29,7 +28,6 @@ class Carousel {
         
         this.init();
         
-        // Handle window resize
         window.addEventListener('resize', () => {
             this.slidesPerView = this.getSlidesPerView();
             this.updateCarousel();
@@ -45,10 +43,8 @@ class Carousel {
     }
     
     init() {
-        // Load slides from data
         this.loadSlides();
         
-        // Add event listeners
         if (this.prevBtn) {
             this.prevBtn.addEventListener('click', () => this.prevSlide());
         }
@@ -56,16 +52,9 @@ class Carousel {
             this.nextBtn.addEventListener('click', () => this.nextSlide());
         }
         
-        // Initialize dots
         this.initDots();
-        
-        // Update carousel
         this.updateCarousel();
-        
-        // Start auto-slide
         this.startAutoSlide();
-        
-        // Add touch support
         this.addTouchSupport();
     }
     
@@ -96,6 +85,7 @@ class Carousel {
                     <span class="shop-status status-${item.status}">
                         ${item.status === 'released' ? 'Available' : 'Coming Soon'}
                     </span>
+                    ${item.externalLinks ? this.renderExternalLinks(item.externalLinks) : ''}
                 </div>
             `;
             
@@ -107,12 +97,39 @@ class Carousel {
         });
     }
     
+    renderExternalLinks(links) {
+        if (!links || Object.keys(links).length === 0) return '';
+        
+        let html = '<div class="external-links">';
+        for (const [platform, url] of Object.entries(links)) {
+            const icon = this.getPlatformIcon(platform);
+            html += `
+                <a href="${url}" target="_blank" rel="noopener noreferrer" class="external-link" 
+                   onclick="event.stopPropagation();" title="Available on ${platform}">
+                    ${icon}
+                </a>
+            `;
+        }
+        html += '</div>';
+        return html;
+    }
+    
+    getPlatformIcon(platform) {
+        const icons = {
+            'steam': '🎮',
+            'itch.io': '🎯',
+            'gog': '📀',
+            'epic': '🏪',
+            'humble': '🎁',
+            'direct': '🌐'
+        };
+        return icons[platform.toLowerCase()] || '🔗';
+    }
+    
     initDots() {
         if (!this.dotsContainer || this.totalSlides === 0) return;
         
         this.dotsContainer.innerHTML = '';
-        
-        // Calculate total number of dots based on slides per view
         const totalGroups = Math.ceil(this.totalSlides / this.slidesPerView);
         
         for (let i = 0; i < totalGroups; i++) {
@@ -150,7 +167,6 @@ class Carousel {
         this.stopAutoSlide();
         
         if (this.currentIndex >= this.totalSlides - this.slidesPerView) {
-            // Loop back to start
             this.currentIndex = 0;
         } else {
             this.currentIndex += this.slidesPerView;
@@ -164,7 +180,6 @@ class Carousel {
         this.stopAutoSlide();
         
         if (this.currentIndex <= 0) {
-            // Loop to end
             this.currentIndex = this.totalSlides - this.slidesPerView;
         } else {
             this.currentIndex -= this.slidesPerView;
@@ -216,7 +231,7 @@ class Carousel {
             if (!isDragging) return;
             
             const diff = startX - currentX;
-            if (Math.abs(diff) > 50) { // Minimum swipe distance
+            if (Math.abs(diff) > 50) {
                 if (diff > 0) {
                     this.nextSlide();
                 } else {
@@ -244,6 +259,7 @@ class Carousel {
             <div style="text-align: center; color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
                 $${item.price.toFixed(2)}
             </div>
+            ${item.externalLinks ? this.renderModalExternalLinks(item.externalLinks) : ''}
             <div class="modal-actions">
                 ${item.status === 'released' ? 
                     `<button onclick="addToCart(${item.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">
@@ -266,13 +282,30 @@ class Carousel {
             showModal();
         }
     }
+    
+    renderModalExternalLinks(links) {
+        if (!links || Object.keys(links).length === 0) return '';
+        
+        let html = '<div style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">';
+        for (const [platform, url] of Object.entries(links)) {
+            const icon = this.getPlatformIcon(platform);
+            html += `
+                <a href="${url}" target="_blank" rel="noopener noreferrer" 
+                   style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px; color: wheat; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2);">
+                    ${icon}
+                    <span>${platform}</span>
+                </a>
+            `;
+        }
+        html += '</div>';
+        return html;
+    }
 }
 
 // ==========================================================================
-// WISHLIST FUNCTIONS - ENHANCED
+// WISHLIST FUNCTIONS - ENHANCED WITH EXTERNAL LINKS
 // ==========================================================================
 function toggleWishlist(productId) {
-    // Find product
     let product = null;
     
     // Check in shop products
@@ -291,7 +324,6 @@ function toggleWishlist(productId) {
         return;
     }
     
-    // Check if already in wishlist
     const existingIndex = wishlist.findIndex(item => item.id === productId);
     
     if (existingIndex >= 0) {
@@ -300,14 +332,20 @@ function toggleWishlist(productId) {
         showNotification(`Removed ${product.title} from wishlist`);
     } else {
         // Add to wishlist
-        wishlist.push({
+        const wishlistItem = {
             id: product.id,
             title: product.title,
             price: product.price,
             image: product.image,
             status: product.status,
+            externalLinks: product.externalLinks || null,
             addedDate: new Date().toISOString()
-        });
+        };
+        
+        if (product.type) wishlistItem.type = product.type;
+        if (product.description) wishlistItem.description = product.description;
+        
+        wishlist.push(wishlistItem);
         showNotification(`Added ${product.title} to wishlist!`);
     }
     
@@ -386,6 +424,7 @@ function showProductModal(productId) {
         <div style="text-align: center; color: lightcoral; font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
             $${product.price.toFixed(2)}
         </div>
+        ${product.externalLinks ? renderModalExternalLinks(product.externalLinks) : ''}
         <div class="modal-actions">
             ${isAvailable ? 
                 `<button onclick="addToCart(${product.id})" style="background: lightcoral; color: #000; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%;">
@@ -407,6 +446,40 @@ function showProductModal(productId) {
         modalBody.innerHTML = modalHTML;
         showModal();
     }
+}
+
+function renderModalExternalLinks(links) {
+    if (!links || Object.keys(links).length === 0) return '';
+    
+    let html = '<div style="margin-bottom: 1rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">';
+    for (const [platform, url] of Object.entries(links)) {
+        const icon = getPlatformIcon(platform);
+        html += `
+            <a href="${url}" target="_blank" rel="noopener noreferrer" 
+               style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(255, 255, 255, 0.1); border-radius: 8px; color: wheat; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.3s ease;">
+                ${icon}
+                <span>${platform}</span>
+            </a>
+        `;
+    }
+    html += '</div>';
+    return html;
+}
+
+function getPlatformIcon(platform) {
+    const icons = {
+        'steam': '🎮',
+        'itch.io': '🎯',
+        'gog': '📀',
+        'epic': '🏪',
+        'humble': '🎁',
+        'direct': '🌐',
+        'amazon': '📦',
+        'playstation': '🎮',
+        'xbox': '🟩',
+        'nintendo': '🔴'
+    };
+    return icons[platform.toLowerCase()] || '🔗';
 }
 
 // ==========================================================================
@@ -436,12 +509,10 @@ function initializeWebsite() {
 // CAROUSEL INITIALIZATION
 // ==========================================================================
 function initCarousels() {
-    // Initialize carousels based on page
     const path = window.location.pathname;
     const page = path.split('/').pop() || 'index.html';
     
     if (page === 'index.html' || page === '' || page.includes('SiteTest')) {
-        // Home page carousels
         setTimeout(() => {
             if (document.getElementById('released-carousel')) {
                 carouselInstances.released = new Carousel('released-carousel', 'released');
@@ -451,7 +522,6 @@ function initCarousels() {
             }
         }, 100);
     } else if (page === 'shop.html') {
-        // Shop page carousels
         setTimeout(() => {
             if (document.getElementById('shop-available-carousel')) {
                 carouselInstances.shopAvailable = new Carousel('shop-available-carousel', 'released');
@@ -464,7 +534,7 @@ function initCarousels() {
 }
 
 // ==========================================================================
-// NAVIGATION
+// NAVIGATION - UPDATED WITH WISHLIST LINK
 // ==========================================================================
 function initNavigation() {
     const mobileToggle = document.querySelector('.mobile-toggle');
@@ -501,7 +571,6 @@ function initNavigation() {
         }
     });
     
-    // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth > 768 && navLinks.classList.contains('active')) {
             navLinks.classList.remove('active');
@@ -552,7 +621,7 @@ function initDynamicContent() {
     } else if (page === 'portfolio.html') {
         loadPortfolioContent();
     } else if (page === 'wishlist.html') {
-        // Wishlist content is handled in wishlist.html's own script
+        loadWishlistContent();
     }
 }
 
@@ -609,12 +678,31 @@ function loadShopContent() {
                         <span class="shop-status status-${product.status}">
                             ${product.status === 'released' ? 'Available' : 'Coming Soon'}
                         </span>
+                        ${product.externalLinks ? renderExternalLinksSmall(product.externalLinks) : ''}
                     </div>
                 </div>
             `;
         });
         shopGrid.innerHTML = html;
     }
+}
+
+function renderExternalLinksSmall(links) {
+    if (!links || Object.keys(links).length === 0) return '';
+    
+    let html = '<div class="external-links-small">';
+    let count = 0;
+    for (const [platform] of Object.entries(links)) {
+        if (count >= 3) break; // Show only first 3 platforms
+        const icon = getPlatformIcon(platform);
+        html += `<span class="external-link-icon" title="Available on ${platform}">${icon}</span>`;
+        count++;
+    }
+    if (Object.keys(links).length > 3) {
+        html += `<span class="external-link-more" title="More platforms">+${Object.keys(links).length - 3}</span>`;
+    }
+    html += '</div>';
+    return html;
 }
 
 function loadPortfolioContent() {
@@ -671,7 +759,133 @@ function loadPortfolioContent() {
 }
 
 // ==========================================================================
-// CART SYSTEM
+// WISHLIST CONTENT LOADING
+// ==========================================================================
+function loadWishlistContent() {
+    const emptyWishlist = document.getElementById('empty-wishlist');
+    const wishlistGrid = document.getElementById('wishlist-grid');
+    
+    if (!wishlist || wishlist.length === 0) {
+        if (emptyWishlist) emptyWishlist.style.display = 'block';
+        if (wishlistGrid) {
+            wishlistGrid.innerHTML = '';
+            wishlistGrid.style.display = 'none';
+        }
+        updateWishlistStats();
+        return;
+    }
+    
+    if (emptyWishlist) emptyWishlist.style.display = 'none';
+    if (wishlistGrid) {
+        wishlistGrid.innerHTML = '';
+        wishlistGrid.style.display = 'grid';
+        
+        wishlist.forEach((item) => {
+            const isAvailable = item.status === 'released';
+            
+            const wishlistItem = document.createElement('div');
+            wishlistItem.className = 'wishlist-item';
+            wishlistItem.innerHTML = `
+                <div class="wishlist-item-header">
+                    <img src="${item.image}" alt="${item.title}" class="wishlist-item-image" loading="lazy">
+                    <span class="wishlist-status status-${item.status}">
+                        ${isAvailable ? 'Available Now' : 'Coming Soon'}
+                    </span>
+                </div>
+                <div class="wishlist-item-content">
+                    <h3 class="wishlist-item-title">${item.title}</h3>
+                    <p class="wishlist-item-description">${item.description || 'No description available.'}</p>
+                    <div class="wishlist-item-price">$${item.price.toFixed(2)}</div>
+                    ${item.externalLinks ? renderWishlistExternalLinks(item.externalLinks) : ''}
+                    <div class="wishlist-item-actions">
+                        <button class="wishlist-btn-remove" onclick="removeFromWishlist(${item.id})">
+                            ❌ Remove
+                        </button>
+                        ${isAvailable ? `
+                            <button class="wishlist-btn-cart" onclick="addToCartFromWishlist(${item.id})">
+                                🛒 Add to Cart
+                            </button>
+                        ` : `
+                            <button class="wishlist-btn-cart" disabled>
+                                ⏳ Coming Soon
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+            
+            wishlistGrid.appendChild(wishlistItem);
+        });
+        
+        updateWishlistStats();
+    }
+}
+
+function renderWishlistExternalLinks(links) {
+    if (!links || Object.keys(links).length === 0) return '';
+    
+    let html = '<div class="wishlist-external-links">';
+    for (const [platform, url] of Object.entries(links)) {
+        const icon = getPlatformIcon(platform);
+        html += `
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="wishlist-external-link" title="Buy on ${platform}">
+                ${icon} ${platform}
+            </a>
+        `;
+    }
+    html += '</div>';
+    return html;
+}
+
+function updateWishlistStats() {
+    const wishlistCount = document.getElementById('wishlist-count');
+    const availableCount = document.getElementById('available-count');
+    const upcomingCount = document.getElementById('upcoming-count');
+    
+    if (wishlistCount && wishlist) {
+        wishlistCount.textContent = wishlist.length;
+        
+        const available = wishlist.filter(item => item.status === 'released').length;
+        const upcoming = wishlist.filter(item => item.status === 'upcoming').length;
+        
+        if (availableCount) availableCount.textContent = available;
+        if (upcomingCount) upcomingCount.textContent = upcoming;
+    }
+}
+
+function removeFromWishlist(itemId) {
+    const index = wishlist.findIndex(item => item.id === itemId);
+    if (index !== -1) {
+        const itemTitle = wishlist[index].title;
+        wishlist.splice(index, 1);
+        localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
+        showNotification(`Removed ${itemTitle} from wishlist`);
+        loadWishlistContent();
+        updateWishlistButtons();
+    }
+}
+
+function addToCartFromWishlist(itemId) {
+    addToCart(itemId);
+}
+
+function clearWishlist() {
+    if (wishlist.length === 0) {
+        showNotification('Wishlist is already empty', 'info');
+        return;
+    }
+    
+    if (confirm('Are you sure you want to clear your entire wishlist?')) {
+        wishlist = [];
+        localStorage.setItem('dimdesk_wishlist', JSON.stringify(wishlist));
+        loadWishlistContent();
+        updateWishlistButtons();
+        showNotification('Wishlist cleared');
+    }
+}
+
+// ==========================================================================
+// CART SYSTEM (unchanged but kept for completeness)
 // ==========================================================================
 function initCartSystem() {
     const cartToggle = document.querySelector('.cart-toggle');
@@ -720,12 +934,10 @@ function closeCartSidebar() {
 function addToCart(itemId) {
     let product = null;
     
-    // Check in shop products
     if (websiteData.shop.products) {
         product = websiteData.shop.products.find(p => p.id === itemId);
     }
     
-    // Check in carousel items
     if (!product && websiteData.carousels) {
         const allCarouselItems = [...websiteData.carousels.released, ...websiteData.carousels.upcoming];
         product = allCarouselItems.find(p => p.id === itemId);
@@ -977,7 +1189,7 @@ function showNotification(message, type = 'success') {
 }
 
 // ==========================================================================
-// DEFAULT DATA
+// DEFAULT DATA - UPDATED WITH EXTERNAL LINKS
 // ==========================================================================
 function getDefaultData() {
     return {
@@ -1005,7 +1217,11 @@ function getDefaultData() {
                     price: 9.99,
                     status: "released",
                     type: "game",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Direct Download": "#"
+                    }
                 },
                 {
                     id: 2,
@@ -1015,7 +1231,10 @@ function getDefaultData() {
                     price: 14.99,
                     status: "released",
                     type: "digital",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Direct Download": "#"
+                    }
                 },
                 {
                     id: 3,
@@ -1025,7 +1244,11 @@ function getDefaultData() {
                     price: 7.99,
                     status: "released",
                     type: "digital",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "Bandcamp": "#",
+                        "Spotify": "#",
+                        "Apple Music": "#"
+                    }
                 },
                 {
                     id: 4,
@@ -1035,7 +1258,9 @@ function getDefaultData() {
                     price: 49.99,
                     status: "upcoming",
                     type: "physical",
-                    launchDate: "2024-12-31"
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 }
             ]
         },
@@ -1130,60 +1355,75 @@ function getDefaultData() {
         carousels: {
             released: [
                 {
-                    id: 1,
+                    id: 101,
                     title: "Project Alpha",
                     description: "A thrilling platformer adventure with unique mechanics and stunning visuals.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+1",
                     price: 9.99,
                     status: "released",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "itch.io": "https://dimdesk.itch.io/"
+                    }
                 },
                 {
-                    id: 2,
+                    id: 102,
                     title: "Echoes of Time",
                     description: "A puzzle adventure game where you manipulate time to solve mysteries.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+2",
                     price: 14.99,
                     status: "released",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "Steam": "https://store.steampowered.com/",
+                        "GOG": "https://www.gog.com/"
+                    }
                 },
                 {
-                    id: 3,
+                    id: 103,
                     title: "Neon Runner",
                     description: "Fast-paced endless runner set in a cyberpunk world with retro aesthetics.",
                     image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+3",
                     price: 7.99,
                     status: "released",
-                    launchDate: "2024-01-01"
+                    externalLinks: {
+                        "itch.io": "https://dimdesk.itch.io/",
+                        "Google Play": "https://play.google.com/"
+                    }
                 }
             ],
             upcoming: [
                 {
-                    id: 4,
+                    id: 104,
                     title: "Dreamscape",
                     description: "Explore a surreal world where dreams and reality collide in this atmospheric adventure.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+1",
                     price: 19.99,
                     status: "upcoming",
-                    launchDate: "2024-12-31"
+                    externalLinks: {
+                        "Wishlist on Steam": "https://store.steampowered.com/"
+                    }
                 },
                 {
-                    id: 5,
+                    id: 105,
                     title: "Chrono Knights",
                     description: "Time-traveling knights battle through different historical eras in this action RPG.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+2",
                     price: 24.99,
                     status: "upcoming",
-                    launchDate: "2024-12-31"
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 },
                 {
-                    id: 6,
+                    id: 106,
                     title: "Pixel Legends",
                     description: "Retro-inspired RPG with modern gameplay mechanics and epic storytelling.",
                     image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+3",
                     price: 17.99,
                     status: "upcoming",
-                    launchDate: "2024-12-31"
+                    externalLinks: {
+                        "Coming Soon": "#"
+                    }
                 }
             ]
         }
@@ -1203,3 +1443,6 @@ window.toggleCart = toggleCart;
 window.closeCartSidebar = closeCartSidebar;
 window.showProductModal = showProductModal;
 window.toggleWishlist = toggleWishlist;
+window.removeFromWishlist = removeFromWishlist;
+window.addToCartFromWishlist = addToCartFromWishlist;
+window.clearWishlist = clearWishlist;

@@ -1,1 +1,237 @@
-<script src="main.js"></script>
+<!DOCTYPE html>
+<html lang="en" xmlns="https://dehydratedm.github.io/SiteTest/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="DimDesk.Studios - Independent game development studio">
+    <link rel="stylesheet" href="styleSheet.css">
+    <title>DimDesk.Studios</title>
+    <link rel="icon" type="image/ico" href="Icon.ico" />
+    <link rel="preload" as="image" href="logo2.png">
+    <link rel="preload" as="image" href="cat.png">
+</head>
+<body>
+    <div class="Container">
+        <div class="content">
+            <header>
+                <div class="HE">
+                    <div class="lol">
+                        <a href="index.html" title="Return to Home" id="logo-link">
+                            <h1 style="color:lightcoral">
+                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="90" id="cat-logo" 
+                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
+                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
+                            </h1>
+                        </a>
+                    </div>
+                    
+                    <!-- Desktop Navigation -->
+                    <nav class="nav-links">
+                        <ul>
+                            <li><a href="index.html" id="home-link" class="current-page">Home</a></li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="shop.html" id="shop-link">Shop</a></li>
+                        </ul>
+                    </nav>
+                    
+                    <button class="mobile-toggle" aria-label="Toggle navigation menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="llogo">
+                <h1 style="color:lightcoral">
+                    <img alt="DimDesk Studios Main Logo" src="logo2.png" class="main-logo" 
+                         onerror="this.style.display='none'; document.getElementById('main-logo-fallback').style.display='block';" />
+                    <span id="main-logo-fallback" class="logo-fallback" style="display:none;">DimDesk.Studios</span>
+                </h1>
+            </div>
+
+            <!-- Video Background -->
+            <div class="video-container">
+                <video autoplay muted loop playsinline>
+                    <source src="D.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+
+            <main>
+                <div class="websiteIntro">
+                    <p style="color: wheat">
+                        Hi, I'm M, the heart and soul behind this one-person indie studio. Games and art have been my passions for as long as I can remember, and they've shaped not just my creative journey but also the vision for this studio.
+
+                        My dream is to craft meaningful experiences through games that blend creativity, storytelling, and artistry. It's a challenging road, but I'm committed to pouring my heart into every project, no matter how small or ambitious.
+
+                        Your support means more than words can express. By joining me on this journey, you'll be helping bring these dreams to life—and as a thank-you, you'll earn a special spot in the credits, early access to merch, game releases and some exclusive goodies along the way.
+
+                        Thank you for believing in indie creators like me. Together, we can build something unforgettable.
+
+                        —M
+                    </p>
+                </div>
+
+                <!-- Featured Sections -->
+                <section class="featured-section">
+                    <div class="featured-grid">
+                        <div class="featured-card">
+                            <h2>LATEST RELEASE</h2>
+                            <div class="featured-image" id="latest-release">
+                                <img src="https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=LATEST+RELEASE" 
+                                     alt="Latest Release" 
+                                     onerror="this.src='https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=Game'">
+                            </div>
+                            <p>Check out our most recent game release, available now on itch.io and other platforms!</p>
+                        </div>
+                        
+                        <div class="featured-card">
+                            <h2>UPCOMING PROJECT</h2>
+                            <div class="featured-image" id="upcoming-project">
+                                <img src="https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=UPCOMING+PROJECT" 
+                                     alt="Upcoming Project"
+                                     onerror="this.src='https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=Coming+Soon'">
+                            </div>
+                            <p>An exciting new adventure is in development. Stay tuned for updates and announcements!</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Released Games Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Released Games</h2>
+                    <div class="carousel-container" id="released-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+1" 
+                                     alt="Released Game 1" 
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                                <div class="carousel-info">
+                                    <h3>Project Alpha</h3>
+                                    <p>A thrilling platformer adventure with unique mechanics and stunning visuals.</p>
+                                    <div class="shop-price">$9.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+2" 
+                                     alt="Released Game 2"
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                                <div class="carousel-info">
+                                    <h3>Echoes of Time</h3>
+                                    <p>A puzzle adventure game where you manipulate time to solve mysteries.</p>
+                                    <div class="shop-price">$14.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+3" 
+                                     alt="Released Game 3"
+                                     onerror="this.src='https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game'">
+                                <div class="carousel-info">
+                                    <h3>Neon Runner</h3>
+                                    <p>Fast-paced endless runner set in a cyberpunk world with retro aesthetics.</p>
+                                    <div class="shop-price">$7.99</div>
+                                    <span class="shop-status status-released">Available</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Games Carousel -->
+                <section class="carousel-section">
+                    <h2 class="carousel-title">Upcoming Projects</h2>
+                    <div class="carousel-container" id="upcoming-carousel">
+                        <button class="carousel-btn carousel-prev" aria-label="Previous slide">❮</button>
+                        <div class="carousel-track">
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+1" 
+                                     alt="Upcoming Project 1"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
+                                <div class="carousel-info">
+                                    <h3>Dreamscape</h3>
+                                    <p>Explore a surreal world where dreams and reality collide in this atmospheric adventure.</p>
+                                    <div class="shop-price">$19.99</div>
+                                    <span class="shop-status status-upcoming">Coming Soon</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+2" 
+                                     alt="Upcoming Project 2"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
+                                <div class="carousel-info">
+                                    <h3>Chrono Knights</h3>
+                                    <p>Time-traveling knights battle through different historical eras in this action RPG.</p>
+                                    <div class="shop-price">$24.99</div>
+                                    <span class="shop-status status-upcoming">Coming Soon</span>
+                                </div>
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+3" 
+                                     alt="Upcoming Project 3"
+                                     onerror="this.src='https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon'">
+                                <div class="carousel-info">
+                                    <h3>Pixel Legends</h3>
+                                    <p>Retro-inspired RPG with modern gameplay mechanics and epic storytelling.</p>
+                                    <div class="shop-price">$17.99</div>
+                                    <span class="shop-status status-upcoming">Coming Soon</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-btn carousel-next" aria-label="Next slide">❯</button>
+                        <div class="carousel-dots"></div>
+                    </div>
+                </section>
+
+                <!-- YouTube Trailer -->
+                <div class="trailercontainer">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/b2lC7cbFmXE?si=0QF0uBmAqdCE5Rj1" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen></iframe>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <footer style="background-color: black">
+        <div class="footerContainer">
+            <div class="socialIcons">
+                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                    <img alt="YouTube" src="youtube-fillW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
+                    <img alt="Patreon" src="pathronW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
+                    <img alt="Itch.io" src="itchioW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
+                    <img alt="Cara" src="caraW.png" width="30" height="30" onerror="this.style.display='none'" />
+                </a>
+            </div>
+        </div>
+        <div class="Oo">
+            <p style="color: #D8A790; display: inline-block;">contact us:</p>
+            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
+            <div class="footerBottom">
+                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>

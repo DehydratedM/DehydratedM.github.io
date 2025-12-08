@@ -1,173 +1,198 @@
-// main.js - SIMPLIFIED WORKING VERSION
-console.log("DimDesk Studios - Main script loaded");
+// main.js - Enhanced with better carousel and integration
+console.log("DimDesk Studios - Enhanced Main Script Loaded");
 
 // ==========================================================================
 // GLOBAL VARIABLES
 // ==========================================================================
 let cart = JSON.parse(localStorage.getItem('dimdesk_cart')) || [];
+let websiteData = JSON.parse(localStorage.getItem('dimdesk_data')) || getDefaultData();
+let isAdmin = localStorage.getItem('dimdesk_admin') === 'true';
+
+// ==========================================================================
+// DEFAULT DATA STRUCTURE
+// ==========================================================================
+function getDefaultData() {
+    return {
+        content: {
+            intro: "Hi, I'm M, the heart and soul behind this one-person indie studio...",
+            featured: {
+                latest: {
+                    image: "https://via.placeholder.com/350x200/2c3e50/ecf0f1?text=LATEST+RELEASE",
+                    text: "Check out our most recent game release!"
+                },
+                upcoming: {
+                    image: "https://via.placeholder.com/350x200/8e44ad/ecf0f1?text=UPCOMING+PROJECT",
+                    text: "An exciting new adventure is in development!"
+                }
+            }
+        },
+        carousels: {
+            released: [
+                {
+                    id: 1,
+                    title: "Project Alpha",
+                    description: "A thrilling platformer adventure with unique mechanics.",
+                    image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+1",
+                    price: 9.99,
+                    status: "released"
+                },
+                {
+                    id: 2,
+                    title: "Echoes of Time",
+                    description: "A puzzle adventure game where you manipulate time.",
+                    image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Game+2",
+                    price: 14.99,
+                    status: "released"
+                }
+            ],
+            upcoming: [
+                {
+                    id: 3,
+                    title: "Dreamscape",
+                    description: "Explore a surreal world where dreams and reality collide.",
+                    image: "https://via.placeholder.com/300x200/8e44ad/ecf0f1?text=Coming+Soon+1",
+                    price: 19.99,
+                    status: "upcoming"
+                }
+            ]
+        },
+        shop: {
+            products: [
+                {
+                    id: 101,
+                    title: "Digital Artbook",
+                    description: "100+ pages of concept art and sketches.",
+                    image: "https://via.placeholder.com/300x200/2c3e50/ecf0f1?text=Artbook",
+                    price: 14.99,
+                    status: "available",
+                    category: "digital"
+                }
+            ]
+        }
+    };
+}
 
 // ==========================================================================
 // INITIALIZATION
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM Loaded - Initializing website");
-    initializeWebsite();
+    console.log("DOM Loaded - Initializing enhanced website");
+    initializeEnhancedWebsite();
 });
 
-// ==========================================================================
-// WEBSITE INITIALIZATION
-// ==========================================================================
-function initializeWebsite() {
-    console.log("Initializing website components");
-    
+function initializeEnhancedWebsite() {
     try {
         initNavigation();
-        initLogoHandling();
-        initCarousels();
+        initEnhancedCarousels();
         initModalSystem();
         initCartSystem();
-        initVideoAutoplay();
-        initImageLoading();
-        initScrollEffects();
+        initAdminSystem();
+        initDynamicContent();
+        initScrollAnimations();
         
-        // Load dynamic content
-        loadPageSpecificContent();
-        
-        // Update cart
+        // Load data-based content
+        loadDynamicContent();
         updateCartCount();
         
-        console.log("Website initialization complete");
+        console.log("Enhanced website initialization complete");
     } catch (error) {
         console.error("Error during initialization:", error);
     }
 }
 
 // ==========================================================================
-// BASIC NAVIGATION
+// ENHANCED RESPONSIVE CAROUSEL
 // ==========================================================================
-function initNavigation() {
-    console.log("Initializing navigation");
-    
-    const mobileToggle = document.querySelector('.mobile-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (!mobileToggle || !navLinks) {
-        console.warn("Navigation elements not found");
-        return;
-    }
-    
-    // Mobile menu toggle
-    mobileToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        navLinks.classList.toggle('active');
-        mobileToggle.classList.toggle('active');
-    });
-    
-    // Close mobile menu when clicking links
-    document.querySelectorAll('.nav-links a').forEach(item => {
-        item.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                navLinks.classList.remove('active');
-                mobileToggle.classList.remove('active');
-            }
-        });
-    });
-    
-    // Highlight current page
-    highlightCurrentPage();
-}
-
-function highlightCurrentPage() {
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    console.log("Current page:", currentPage);
-    
-    // Remove all current-page classes
-    document.querySelectorAll('.current-page').forEach(el => {
-        el.classList.remove('current-page');
-    });
-    
-    // Add current-page class based on page
-    const pageMap = {
-        'index.html': '#home-link',
-        'portfolio.html': '#portfolio-link',
-        'shop.html': '#shop-link'
-    };
-    
-    const selector = pageMap[currentPage] || pageMap['index.html'];
-    if (selector) {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.classList.add('current-page');
-        }
-    }
-}
-
-// ==========================================================================
-// LOGO HANDLING - SIMPLIFIED
-// ==========================================================================
-function initLogoHandling() {
-    const logoLink = document.getElementById('logo-link');
-    if (logoLink) {
-        logoLink.addEventListener('click', function(e) {
-            const logoImg = document.getElementById('cat-logo');
-            if (logoImg) {
-                logoImg.style.transform = 'scale(0.9)';
-                setTimeout(() => {
-                    logoImg.style.transform = '';
-                }, 200);
-            }
-        });
-    }
-    
-    // Handle logo errors
-    document.querySelectorAll('img').forEach(img => {
-        img.addEventListener('error', function() {
-            console.warn('Image failed to load:', this.src);
-            this.style.opacity = '0.5';
-        });
-    });
-}
-
-// ==========================================================================
-// SIMPLE CAROUSEL - NO INFINITE LOOP (Easier to debug)
-// ==========================================================================
-class SimpleCarousel {
-    constructor(containerId) {
+class EnhancedCarousel {
+    constructor(containerId, type) {
         this.container = document.getElementById(containerId);
         if (!this.container) {
             console.warn("Carousel container not found:", containerId);
-            return;
+            return null;
         }
         
-        console.log("Initializing carousel:", containerId);
-        
+        this.type = type;
         this.track = this.container.querySelector('.carousel-track');
-        this.slides = Array.from(this.track.children);
         this.prevBtn = this.container.querySelector('.carousel-prev');
         this.nextBtn = this.container.querySelector('.carousel-next');
         this.dotsContainer = this.container.querySelector('.carousel-dots');
         
+        this.slides = [];
         this.currentIndex = 0;
-        this.totalSlides = this.slides.length;
+        this.autoSlideInterval = null;
+        this.isDragging = false;
+        this.startPos = 0;
+        this.currentTranslate = 0;
+        this.prevTranslate = 0;
+        this.animationID = null;
         
         this.init();
     }
     
     init() {
-        // Create dots
-        if (this.dotsContainer) {
-            this.dotsContainer.innerHTML = '';
-            this.slides.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = 'carousel-dot';
-                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
-                dot.addEventListener('click', () => this.goToSlide(index));
-                this.dotsContainer.appendChild(dot);
-            });
-            this.dots = Array.from(this.dotsContainer.children);
+        // Load slides from data
+        this.loadSlides();
+        
+        // Create initial slide structure
+        this.createSlides();
+        
+        // Add event listeners
+        this.addEventListeners();
+        
+        // Initialize dots
+        this.initDots();
+        
+        // Start auto-slide on desktop
+        if (window.innerWidth > 768) {
+            this.startAutoSlide();
         }
         
-        // Event listeners for buttons
+        // Handle window resize
+        window.addEventListener('resize', () => this.handleResize());
+        
+        console.log(`Enhanced carousel initialized (${this.type}) with ${this.slides.length} slides`);
+    }
+    
+    loadSlides() {
+        const data = websiteData.carousels[this.type] || [];
+        this.slides = [...data];
+    }
+    
+    createSlides() {
+        if (!this.track) return;
+        
+        this.track.innerHTML = '';
+        
+        this.slides.forEach((slide, index) => {
+            const slideHTML = `
+                <div class="carousel-slide" data-index="${index}">
+                    <img src="${slide.image}" 
+                         alt="${slide.title}" 
+                         onerror="this.src='https://via.placeholder.com/300x200/333/fff?text=Image+Not+Found'">
+                    <div class="carousel-info">
+                        <h3>${slide.title}</h3>
+                        <p>${slide.description}</p>
+                        <div class="shop-price">$${slide.price.toFixed(2)}</div>
+                        <span class="shop-status status-${slide.status}">
+                            ${slide.status === 'released' ? 'Available' : 'Coming Soon'}
+                        </span>
+                    </div>
+                </div>
+            `;
+            this.track.insertAdjacentHTML('beforeend', slideHTML);
+            
+            // Add click event to slide
+            const slideElement = this.track.lastElementChild;
+            slideElement.addEventListener('click', () => {
+                this.showItemModal(slide);
+            });
+        });
+        
+        this.updateCarousel();
+    }
+    
+    addEventListeners() {
+        // Button navigation
         if (this.prevBtn) {
             this.prevBtn.addEventListener('click', () => this.prevSlide());
         }
@@ -176,18 +201,83 @@ class SimpleCarousel {
             this.nextBtn.addEventListener('click', () => this.nextSlide());
         }
         
-        // Initial update
-        this.updateCarousel();
+        // Touch/mouse events for dragging
+        this.track.addEventListener('mousedown', this.touchStart.bind(this));
+        this.track.addEventListener('touchstart', this.touchStart.bind(this));
         
-        console.log("Carousel initialized with", this.totalSlides, "slides");
+        this.track.addEventListener('mousemove', this.touchMove.bind(this));
+        this.track.addEventListener('touchmove', this.touchMove.bind(this));
+        
+        this.track.addEventListener('mouseup', this.touchEnd.bind(this));
+        this.track.addEventListener('mouseleave', this.touchEnd.bind(this));
+        this.track.addEventListener('touchend', this.touchEnd.bind(this));
+        
+        // Pause auto-slide on hover
+        this.container.addEventListener('mouseenter', () => this.stopAutoSlide());
+        this.container.addEventListener('mouseleave', () => this.startAutoSlide());
+    }
+    
+    touchStart(e) {
+        if (window.innerWidth <= 768) return;
+        
+        this.isDragging = true;
+        this.startPos = this.getPositionX(e);
+        this.prevTranslate = this.currentTranslate;
+        this.animationID = requestAnimationFrame(this.animation.bind(this));
+        this.container.style.cursor = 'grabbing';
+    }
+    
+    touchMove(e) {
+        if (!this.isDragging) return;
+        
+        const currentPosition = this.getPositionX(e);
+        this.currentTranslate = this.prevTranslate + currentPosition - this.startPos;
+    }
+    
+    touchEnd() {
+        if (!this.isDragging) return;
+        
+        this.isDragging = false;
+        cancelAnimationFrame(this.animationID);
+        this.container.style.cursor = 'grab';
+        
+        const movedBy = this.currentTranslate - this.prevTranslate;
+        const slideWidth = this.track.children[0]?.offsetWidth || 300;
+        
+        if (movedBy < -100 && this.currentIndex < this.slides.length - 1) {
+            this.nextSlide();
+        } else if (movedBy > 100 && this.currentIndex > 0) {
+            this.prevSlide();
+        } else {
+            this.updateCarousel();
+        }
+    }
+    
+    getPositionX(e) {
+        return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+    }
+    
+    animation() {
+        if (this.isDragging) {
+            this.setSliderPosition();
+            requestAnimationFrame(this.animation.bind(this));
+        }
+    }
+    
+    setSliderPosition() {
+        if (!this.isDragging) {
+            this.track.style.transform = `translateX(${this.currentTranslate}px)`;
+        }
     }
     
     updateCarousel() {
-        if (!this.track) return;
+        if (!this.track || this.slides.length === 0) return;
         
-        const slideWidth = this.slides[0]?.offsetWidth || 300;
-        const translateX = -slideWidth * this.currentIndex;
+        const slideWidth = this.track.children[0]?.offsetWidth || 300;
+        const gap = 20;
+        const translateX = -(this.currentIndex * (slideWidth + gap));
         
+        this.track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
         this.track.style.transform = `translateX(${translateX}px)`;
         
         // Update dots
@@ -196,518 +286,339 @@ class SimpleCarousel {
                 dot.classList.toggle('active', index === this.currentIndex);
             });
         }
+        
+        // Reset dragging
+        this.currentTranslate = translateX;
+        this.prevTranslate = translateX;
+    }
+    
+    initDots() {
+        if (!this.dotsContainer || this.slides.length === 0) return;
+        
+        this.dotsContainer.innerHTML = '';
+        this.dots = [];
+        
+        for (let i = 0; i < this.slides.length; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'carousel-dot';
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => this.goToSlide(i));
+            this.dotsContainer.appendChild(dot);
+            this.dots.push(dot);
+        }
+        
+        this.updateDots();
+    }
+    
+    updateDots() {
+        if (!this.dots) return;
+        this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentIndex);
+        });
     }
     
     nextSlide() {
-        if (this.currentIndex >= this.totalSlides - 1) {
-            this.currentIndex = 0; // Loop back to start
-        } else {
-            this.currentIndex++;
-        }
+        this.currentIndex = (this.currentIndex + 1) % this.slides.length;
         this.updateCarousel();
+        this.updateDots();
     }
     
     prevSlide() {
-        if (this.currentIndex <= 0) {
-            this.currentIndex = this.totalSlides - 1; // Loop to end
-        } else {
-            this.currentIndex--;
-        }
+        this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
         this.updateCarousel();
+        this.updateDots();
     }
     
     goToSlide(index) {
-        if (index >= 0 && index < this.totalSlides) {
+        if (index >= 0 && index < this.slides.length) {
             this.currentIndex = index;
             this.updateCarousel();
+            this.updateDots();
         }
     }
-}
-
-function initCarousels() {
-    console.log("Initializing carousels");
     
-    // Initialize all carousels on page
-    const carouselIds = ['released-carousel', 'upcoming-carousel'];
-    
-    carouselIds.forEach(id => {
-        if (document.getElementById(id)) {
-            new SimpleCarousel(id);
-        }
-    });
-    
-    // For shop page, also initialize shop carousels
-    if (window.location.pathname.includes('shop.html')) {
-        // Shop page might have different carousel IDs
-        const shopCarousels = document.querySelectorAll('.carousel-container');
-        shopCarousels.forEach((container, index) => {
-            if (!container.id) {
-                container.id = `shop-carousel-${index}`;
-                new SimpleCarousel(container.id);
-            }
-        });
+    startAutoSlide() {
+        if (window.innerWidth <= 768) return;
+        
+        this.stopAutoSlide();
+        this.autoSlideInterval = setInterval(() => {
+            this.nextSlide();
+        }, 5000); // Change slide every 5 seconds
     }
-}
-
-// ==========================================================================
-// SIMPLE MODAL SYSTEM
-// ==========================================================================
-function initModalSystem() {
-    console.log("Initializing modal system");
     
-    // Create modal HTML if it doesn't exist
-    if (!document.getElementById('modal-overlay')) {
+    stopAutoSlide() {
+        if (this.autoSlideInterval) {
+            clearInterval(this.autoSlideInterval);
+            this.autoSlideInterval = null;
+        }
+    }
+    
+    handleResize() {
+        this.updateCarousel();
+        
+        // Stop auto-slide on mobile, start on desktop
+        if (window.innerWidth <= 768) {
+            this.stopAutoSlide();
+        } else if (!this.autoSlideInterval) {
+            this.startAutoSlide();
+        }
+    }
+    
+    showItemModal(item) {
         const modalHTML = `
-            <div class="modal-overlay" id="modal-overlay">
-                <div class="modal-content">
-                    <button class="modal-close" id="modal-close">&times;</button>
-                    <div class="modal-body" id="modal-body"></div>
-                </div>
+            <h2 class="modal-title">${item.title}</h2>
+            <img src="${item.image}" alt="${item.title}" class="modal-image">
+            <div class="modal-description">
+                <p>${item.description}</p>
+                <div class="modal-price">$${item.price?.toFixed(2) || 'Contact for Quote'}</div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-primary" onclick="addToCart(${item.id})">
+                    Add to Cart
+                </button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
+                    Close
+                </button>
             </div>
         `;
-        document.body.insertAdjacentHTML('beforeend', modalHTML);
-    }
-    
-    // Add event listeners
-    const modalClose = document.getElementById('modal-close');
-    const modalOverlay = document.getElementById('modal-overlay');
-    
-    if (modalClose) {
-        modalClose.addEventListener('click', closeModal);
-    }
-    
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
-        });
-    }
-    
-    // Close modal with Escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
-    });
-}
-
-function showItemModal(item) {
-    const modalOverlay = document.getElementById('modal-overlay');
-    const modalBody = document.getElementById('modal-body');
-    
-    if (!modalOverlay || !modalBody) return;
-    
-    const modalHTML = `
-        <h2 class="modal-title">${item.title}</h2>
-        <img src="${item.image}" alt="${item.title}" class="modal-image">
-        <div class="modal-description">
-            <p>${item.description}</p>
-            <div class="modal-price">$${item.price?.toFixed(2) || 'Contact for Quote'}</div>
-        </div>
-        <div class="modal-actions">
-            <button class="modal-btn modal-btn-primary" onclick="addToCart(${item.id})">
-                Add to Cart
-            </button>
-            <button class="modal-btn modal-btn-secondary" onclick="closeModal()">
-                Close
-            </button>
-        </div>
-    `;
-    
-    modalBody.innerHTML = modalHTML;
-    modalOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-    const modalOverlay = document.getElementById('modal-overlay');
-    if (modalOverlay) {
-        modalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-// ==========================================================================
-// SIMPLE CART SYSTEM
-// ==========================================================================
-function initCartSystem() {
-    console.log("Initializing cart system");
-    
-    // Only add cart to shop page or if we're on a page with shop items
-    if (window.location.pathname.includes('shop.html') || 
-        window.location.pathname.includes('index.html')) {
         
-        // Add cart icon to navigation
-        const navUl = document.querySelector('.nav-links ul');
-        if (navUl && !document.querySelector('.cart-toggle')) {
-            const cartIcon = `
-                <li class="cart-toggle">
-                    <a href="#" class="cart-icon">
-                        🛒
-                        <span class="cart-count" id="cart-count">0</span>
-                    </a>
-                </li>
-            `;
-            navUl.insertAdjacentHTML('beforeend', cartIcon);
-            
-            // Add click event to cart icon
-            const cartToggle = document.querySelector('.cart-toggle');
-            if (cartToggle) {
-                cartToggle.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    toggleCart();
-                });
-            }
+        const modalBody = document.getElementById('modal-body');
+        if (modalBody) {
+            modalBody.innerHTML = modalHTML;
+            showModal();
         }
-        
-        // Create cart sidebar if it doesn't exist
-        if (!document.getElementById('cart-sidebar')) {
-            const cartHTML = `
-                <div class="cart-sidebar" id="cart-sidebar">
-                    <div class="cart-header">
-                        <h2>Your Cart</h2>
-                        <button class="close-cart" id="close-cart">&times;</button>
-                    </div>
-                    <div class="cart-items" id="cart-items">
-                        <div class="empty-cart">Your cart is empty</div>
-                    </div>
-                    <div class="cart-total">
-                        <span class="cart-total-label">Total:</span>
-                        <span class="cart-total-price" id="cart-total">$0.00</span>
-                    </div>
-                    <div class="cart-actions">
-                        <button class="cart-btn cart-btn-checkout" id="checkout-btn">Checkout</button>
-                        <button class="cart-btn cart-btn-clear" id="clear-cart">Clear Cart</button>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', cartHTML);
-            
-            // Add cart event listeners
-            document.getElementById('close-cart').addEventListener('click', closeCartSidebar);
-            document.getElementById('checkout-btn').addEventListener('click', checkout);
-            document.getElementById('clear-cart').addEventListener('click', clearCart);
-        }
-        
-        // Update cart display
-        updateCartDisplay();
     }
 }
 
-function toggleCart() {
-    const cartSidebar = document.getElementById('cart-sidebar');
-    if (cartSidebar) {
-        cartSidebar.classList.toggle('active');
-        document.body.style.overflow = cartSidebar.classList.contains('active') ? 'hidden' : '';
-    }
-}
-
-function closeCartSidebar() {
-    const cartSidebar = document.getElementById('cart-sidebar');
-    if (cartSidebar) {
-        cartSidebar.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-}
-
-function addToCart(itemId) {
-    console.log("Adding to cart:", itemId);
+function initEnhancedCarousels() {
+    console.log("Initializing enhanced carousels");
     
-    // Sample items - in real app, this would come from your database
-    const items = [
-        { id: 1, title: 'Project Alpha', price: 9.99, image: 'https://via.placeholder.com/100x100' },
-        { id: 2, title: 'Digital Artbook', price: 14.99, image: 'https://via.placeholder.com/100x100' },
-        { id: 3, title: 'Game Soundtrack', price: 7.99, image: 'https://via.placeholder.com/100x100' },
-        { id: 4, title: 'Digital Games', price: 4.99, image: 'https://via.placeholder.com/100x100' }
+    const carousels = [
+        { id: 'released-carousel', type: 'released' },
+        { id: 'upcoming-carousel', type: 'upcoming' }
     ];
     
-    const item = items.find(i => i.id === itemId);
-    if (!item) {
-        alert('Item not found!');
-        return;
-    }
+    window.carouselInstances = {};
     
-    // Check if item already in cart
-    const existingItem = cart.find(i => i.id === itemId);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-    } else {
-        cart.push({
-            id: item.id,
-            title: item.title,
-            price: item.price,
-            image: item.image,
-            quantity: 1
-        });
-    }
-    
-    // Save to localStorage
-    localStorage.setItem('dimdesk_cart', JSON.stringify(cart));
-    
-    // Update display
-    updateCartDisplay();
-    updateCartCount();
-    
-    // Show feedback
-    showNotification(`Added ${item.title} to cart!`);
-    
-    // Close modal if open
-    closeModal();
-}
-
-function removeFromCart(itemId) {
-    cart = cart.filter(item => item.id !== itemId);
-    localStorage.setItem('dimdesk_cart', JSON.stringify(cart));
-    updateCartDisplay();
-    updateCartCount();
-    showNotification('Item removed from cart');
-}
-
-function updateCartDisplay() {
-    const cartItems = document.getElementById('cart-items');
-    const cartTotal = document.getElementById('cart-total');
-    
-    if (!cartItems || !cartTotal) return;
-    
-    if (cart.length === 0) {
-        cartItems.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
-        cartTotal.textContent = '$0.00';
-    } else {
-        let itemsHTML = '';
-        let total = 0;
-        
-        cart.forEach(item => {
-            const itemTotal = item.price * item.quantity;
-            total += itemTotal;
-            
-            itemsHTML += `
-                <div class="cart-item">
-                    <img src="${item.image}" alt="${item.title}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <div class="cart-item-title">${item.title}</div>
-                        <div class="cart-item-price">$${item.price.toFixed(2)} × ${item.quantity}</div>
-                    </div>
-                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})">&times;</button>
-                </div>
-            `;
-        });
-        
-        cartItems.innerHTML = itemsHTML;
-        cartTotal.textContent = `$${total.toFixed(2)}`;
-    }
-}
-
-function updateCartCount() {
-    const cartCount = document.getElementById('cart-count');
-    if (cartCount) {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems;
-        cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
-    }
-}
-
-function clearCart() {
-    if (cart.length === 0) return;
-    
-    if (confirm('Are you sure you want to clear your cart?')) {
-        cart = [];
-        localStorage.setItem('dimdesk_cart', JSON.stringify(cart));
-        updateCartDisplay();
-        updateCartCount();
-        showNotification('Cart cleared');
-    }
-}
-
-function checkout() {
-    if (cart.length === 0) {
-        showNotification('Your cart is empty');
-        return;
-    }
-    
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    showNotification(`Thank you for your order! Total: $${total.toFixed(2)}`);
-    
-    // Clear cart after checkout
-    cart = [];
-    localStorage.setItem('dimdesk_cart', JSON.stringify(cart));
-    updateCartDisplay();
-    updateCartCount();
-    closeCartSidebar();
-}
-
-// ==========================================================================
-// VIDEO AUTOPLAY
-// ==========================================================================
-function initVideoAutoplay() {
-    const videos = document.querySelectorAll('video');
-    videos.forEach(video => {
-        video.play().catch(e => {
-            console.log("Video autoplay failed:", e);
-        });
-    });
-}
-
-// ==========================================================================
-// IMAGE LOADING
-// ==========================================================================
-function initImageLoading() {
-    // Add lazy loading
-    document.querySelectorAll('img').forEach(img => {
-        if (!img.hasAttribute('loading')) {
-            img.setAttribute('loading', 'lazy');
+    carousels.forEach(({ id, type }) => {
+        if (document.getElementById(id)) {
+            window.carouselInstances[id] = new EnhancedCarousel(id, type);
         }
     });
 }
 
 // ==========================================================================
-// SCROLL EFFECTS
+// DYNAMIC CONTENT LOADING
 // ==========================================================================
-function initScrollEffects() {
-    // Simple fade-in on scroll
-    const animateOnScroll = () => {
-        const elements = document.querySelectorAll('.featured-card, .portfolio-category, .shop-item');
-        
-        elements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            
-            if (elementTop < windowHeight - 100) {
-                element.style.opacity = '1';
-                element.style.transform = 'translateY(0)';
-            }
-        });
-    };
-    
-    // Initial setup for animation
-    document.querySelectorAll('.featured-card, .portfolio-category, .shop-item').forEach(element => {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    });
-    
-    // Trigger animations
-    window.addEventListener('load', animateOnScroll);
-    window.addEventListener('scroll', animateOnScroll);
-}
-
-// ==========================================================================
-// PAGE SPECIFIC CONTENT
-// ==========================================================================
-function loadPageSpecificContent() {
-    console.log("Loading page-specific content");
-    
-    if (window.location.pathname.includes('index.html') || window.location.pathname === '/') {
-        loadHomePageContent();
+function loadDynamicContent() {
+    // Load introduction text
+    const introText = document.querySelector('.websiteIntro p');
+    if (introText && websiteData.content.intro) {
+        introText.textContent = websiteData.content.intro;
     }
     
+    // Load featured sections
+    loadFeaturedSections();
+    
+    // Load shop content if on shop page
     if (window.location.pathname.includes('shop.html')) {
         loadShopContent();
     }
 }
 
-function loadHomePageContent() {
-    console.log("Loading home page content");
+function loadFeaturedSections() {
+    const featured = websiteData.content.featured;
     
-    // Add click events to carousel slides
-    document.querySelectorAll('.carousel-slide').forEach(slide => {
-        slide.addEventListener('click', function() {
-            const title = this.querySelector('h3')?.textContent || 'Item';
-            const description = this.querySelector('p')?.textContent || 'Description';
-            const priceText = this.querySelector('.shop-price')?.textContent || '$0.00';
-            const price = parseFloat(priceText.replace('$', '')) || 0;
-            const image = this.querySelector('img')?.src || 'https://via.placeholder.com/300x200';
+    // Latest release
+    const latestImg = document.querySelector('#latest-release img');
+    const latestText = document.querySelector('#latest-release + p');
+    
+    if (latestImg && featured.latest) {
+        latestImg.src = featured.latest.image;
+        if (latestText) latestText.textContent = featured.latest.text;
+    }
+    
+    // Upcoming project
+    const upcomingImg = document.querySelector('#upcoming-project img');
+    const upcomingText = document.querySelector('#upcoming-project + p');
+    
+    if (upcomingImg && featured.upcoming) {
+        upcomingImg.src = featured.upcoming.image;
+        if (upcomingText) upcomingText.textContent = featured.upcoming.text;
+    }
+}
+
+// ==========================================================================
+// ADMIN SYSTEM
+// ==========================================================================
+function initAdminSystem() {
+    const adminAccessBtn = document.getElementById('admin-access');
+    const adminLoginModal = document.getElementById('admin-login-modal');
+    const adminLoginForm = document.getElementById('admin-login-form');
+    const adminCancelBtn = document.querySelector('.admin-cancel-btn');
+    const adminLogoutBtn = document.getElementById('admin-logout');
+    const adminPanel = document.getElementById('admin-panel-overlay');
+    
+    if (!adminAccessBtn || !adminLoginModal) {
+        console.warn("Admin elements not found");
+        return;
+    }
+    
+    // Show/hide admin access button based on login status
+    adminAccessBtn.style.display = isAdmin ? 'none' : 'flex';
+    
+    // Admin access button click
+    adminAccessBtn.addEventListener('click', () => {
+        if (isAdmin) {
+            adminPanel?.classList.add('active');
+        } else {
+            adminLoginModal.classList.add('active');
+        }
+    });
+    
+    // Admin login form
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             
-            const item = {
-                id: Math.floor(Math.random() * 1000),
-                title: title,
-                description: description,
-                price: price,
-                image: image
-            };
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
             
-            showItemModal(item);
+            // Default credentials (change in production!)
+            if (username === 'admin' && password === 'dimdesk2025') {
+                isAdmin = true;
+                localStorage.setItem('dimdesk_admin', 'true');
+                adminLoginModal.classList.remove('active');
+                adminPanel?.classList.add('active');
+                adminAccessBtn.style.display = 'none';
+                showNotification('Admin access granted!', 'success');
+            } else {
+                showNotification('Invalid credentials!', 'error');
+            }
         });
+    }
+    
+    // Cancel login
+    if (adminCancelBtn) {
+        adminCancelBtn.addEventListener('click', () => {
+            adminLoginModal.classList.remove('active');
+        });
+    }
+    
+    // Logout
+    if (adminLogoutBtn) {
+        adminLogoutBtn.addEventListener('click', () => {
+            isAdmin = false;
+            localStorage.removeItem('dimdesk_admin');
+            adminPanel?.classList.remove('active');
+            adminAccessBtn.style.display = 'flex';
+            showNotification('Logged out successfully!', 'success');
+        });
+    }
+    
+    // Close admin panel with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isAdmin) {
+            adminPanel?.classList.remove('active');
+        }
+    });
+    
+    // Load admin data
+    if (isAdmin && adminPanel) {
+        loadAdminData();
+    }
+}
+
+function loadAdminData() {
+    // Load content into admin form
+    const introTextarea = document.getElementById('admin-intro-text');
+    if (introTextarea && websiteData.content.intro) {
+        introTextarea.value = websiteData.content.intro;
+    }
+    
+    // Load featured content
+    const featured1Img = document.getElementById('admin-featured-1-img');
+    const featured1Text = document.getElementById('admin-featured-1-text');
+    
+    if (featured1Img && websiteData.content.featured.latest) {
+        featured1Img.value = websiteData.content.featured.latest.image;
+    }
+    if (featured1Text && websiteData.content.featured.latest) {
+        featured1Text.value = websiteData.content.featured.latest.text;
+    }
+    
+    // Load carousel items
+    loadAdminCarouselItems();
+    
+    // Load shop items
+    loadAdminShopItems();
+}
+
+function saveContentChanges() {
+    // Save intro text
+    const introTextarea = document.getElementById('admin-intro-text');
+    if (introTextarea) {
+        websiteData.content.intro = introTextarea.value;
+    }
+    
+    // Save featured content
+    const featured1Img = document.getElementById('admin-featured-1-img');
+    const featured1Text = document.getElementById('admin-featured-1-text');
+    
+    if (featured1Img && featured1Text) {
+        websiteData.content.featured.latest = {
+            image: featured1Img.value,
+            text: featured1Text.value
+        };
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('dimdesk_data', JSON.stringify(websiteData));
+    
+    // Update live content
+    loadDynamicContent();
+    
+    showNotification('Content saved successfully!', 'success');
+}
+
+// ==========================================================================
+// OTHER FUNCTIONS (Navigation, Cart, Modal, etc.)
+// ==========================================================================
+// [Keep all your existing functions from the previous main.js, including:]
+// - initNavigation()
+// - highlightCurrentPage()
+// - initModalSystem()
+// - showModal(), closeModal()
+// - initCartSystem()
+// - addToCart(), removeFromCart(), updateCartDisplay(), etc.
+// - showNotification()
+// - initScrollAnimations()
+
+// ==========================================================================
+// SCROLL ANIMATIONS
+// ==========================================================================
+function initScrollAnimations() {
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    document.querySelectorAll('.featured-card, .portfolio-category, .shop-item').forEach(el => {
+        observer.observe(el);
     });
 }
 
-function loadShopContent() {
-    console.log("Loading shop page content");
-    
-    // Add click events to shop items
-    document.querySelectorAll('.shop-item').forEach(item => {
-        item.addEventListener('click', function() {
-            const title = this.querySelector('h3')?.textContent || 'Item';
-            const description = this.querySelector('p')?.textContent || 'Description';
-            const priceText = this.querySelector('.shop-price')?.textContent || '$0.00';
-            const price = parseFloat(priceText.replace('$', '')) || 0;
-            const image = this.querySelector('img')?.src || 'https://via.placeholder.com/300x200';
-            
-            const itemData = {
-                id: Math.floor(Math.random() * 1000),
-                title: title,
-                description: description,
-                price: price,
-                image: image
-            };
-            
-            showItemModal(itemData);
-        });
-    });
-}
-
 // ==========================================================================
-// NOTIFICATION SYSTEM
-// ==========================================================================
-function showNotification(message, type = 'success') {
-    // Remove existing notification
-    const existing = document.querySelector('.notification');
-    if (existing) existing.remove();
-    
-    // Create notification
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: rgba(240, 128, 128, 0.9);
-        color: #000;
-        padding: 15px 25px;
-        border-radius: 10px;
-        z-index: 10000;
-        animation: slideIn 0.3s ease;
-        font-weight: 600;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-    `;
-    
-    // Add animation style
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    document.body.appendChild(notification);
-    
-    // Auto-remove
-    setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease forwards';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// ==========================================================================
-// EXPORT FUNCTIONS FOR HTML USE
+// EXPORT FUNCTIONS
 // ==========================================================================
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
@@ -717,3 +628,4 @@ window.closeModal = closeModal;
 window.toggleCart = toggleCart;
 window.closeCartSidebar = closeCartSidebar;
 window.showItemModal = showItemModal;
+window.saveContentChanges = saveContentChanges;

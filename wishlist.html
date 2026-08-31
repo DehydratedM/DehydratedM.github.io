@@ -2,791 +2,132 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Contact DimDesk Studios - Game Developer & Artist">
-    <title>DimDesk Studios - Contact</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact DimDesk Studios">
+    <title>Contact - DimDesk.Studios</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
-    <link rel="preload" as="image" href="cat.png">
     <style>
-        /* ==========================================================================
-           CSS Reset & Base Styles
-           ========================================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.5;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        body.menu-open {
-            overflow: hidden;
-        }
-
-        /* ==========================================================================
-           Background Video
-           ========================================================================== */
-        .background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .background-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            filter: brightness(0.25) contrast(1.1);
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 10, 0.9) 0%,
-                rgba(30, 30, 30, 0.7) 50%,
-                rgba(10, 10, 10, 0.9) 100%);
-        }
-
-        /* ==========================================================================
-           Main Container
-           ========================================================================== */
-        .Container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content {
-            flex: 1;
-            position: relative;
-            z-index: 2;
-            padding-bottom: 2rem;
-        }
-
-        /* ==========================================================================
-           Header & Navigation - Industry Standard
-           ========================================================================== */
-        .HE {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 2rem;
-            background: rgba(15, 15, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .lol a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .lol img {
-            width: 45px;
-            height: 45px;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-            object-fit: cover;
-        }
-
-        .lol img:hover {
-            transform: scale(1.05);
-        }
-
-        .nav-links ul {
-            display: flex;
-            list-style: none;
-            gap: 0.5rem;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-links a {
-            color: #b0b0b0;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.85rem;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.current-page {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .nav-links a.current-page::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 2px;
-            background: #ffffff;
-            border-radius: 2px;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            z-index: 1001;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-toggle span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background-color: #ffffff;
-            margin: 2px 0;
-            transition: 0.3s;
-            border-radius: 1px;
-        }
-
-        .mobile-toggle.active span:nth-child(1) { 
-            transform: rotate(45deg) translate(4px, 4px); 
-        }
-        .mobile-toggle.active span:nth-child(2) { 
-            opacity: 0; 
-        }
-        .mobile-toggle.active span:nth-child(3) { 
-            transform: rotate(-45deg) translate(4px, -4px); 
-        }
-
-        /* Mobile Navigation */
+        :root { --bg: #0a0a0a; --bg2: #1a1a1a; --text: #fff; --text2: #b0b0b0; --accent: #f08080; --border: rgba(255,255,255,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
+        .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); }
+        .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
+        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
+        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(255,255,255,0.1); }
+        .contact-header { text-align: center; margin: 40px auto; padding: 0 20px; max-width: 600px; }
+        .contact-title { font-size: 2.5rem; font-weight: 700; }
+        .contact-subtitle { color: var(--text2); }
+        .contact-section { max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .contact-info, .contact-form { background: var(--bg2); border-radius: 8px; padding: 25px; border: 1px solid var(--border); }
+        .contact-info h2, .contact-form h2 { font-size: 1.3rem; margin-bottom: 20px; }
+        .contact-method { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+        .contact-method:last-child { border-bottom: none; }
+        .contact-icon { width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .contact-label { color: #808080; font-size: 0.75rem; text-transform: uppercase; }
+        .contact-value { font-weight: 500; }
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; color: var(--text2); font-size: 0.85rem; margin-bottom: 5px; }
+        .form-input, .form-textarea { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; }
+        .form-textarea { min-height: 120px; resize: vertical; }
+        .form-submit { width: 100%; padding: 12px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .form-submit:hover { background: #e07070; }
+        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid var(--border); text-align: center; }
+        .socialIcons { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
+        .socialIcons a { width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .Oo { color: #808080; font-size: 0.8rem; }
+        .mobile-toggle { display: none; }
         @media (max-width: 768px) {
-            .mobile-toggle { 
-                display: flex !important; 
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 250px;
-                height: 100vh;
-                background: rgba(15, 15, 15, 0.98);
-                backdrop-filter: blur(20px);
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                padding: 80px 15px 20px;
-                z-index: 1000;
-                transition: right 0.3s ease;
-                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
-                overflow-y: auto;
-            }
-            
-            .nav-links.active { 
-                right: 0; 
-            }
-            
-            .nav-links ul { 
-                flex-direction: column; 
-                gap: 5px; 
-                width: 100%; 
-                padding: 0; 
-                margin: 0; 
-            }
-            
-            .nav-links li { 
-                width: 100%; 
-                list-style: none; 
-            }
-            
-            .nav-links a {
-                padding: 12px 15px;
-                margin: 0;
-                justify-content: flex-start;
-                border-radius: 6px;
-                font-size: 14px;
-            }
-            
-            .nav-links a:hover,
-            .nav-links a.current-page {
-                background: rgba(255, 255, 255, 0.1);
-            }
-            
-            .nav-links a.current-page::after { 
-                display: none; 
-            }
-            
-            .HE { 
-                padding: 10px 15px; 
-            }
-            
-            .lol img { 
-                width: 40px; 
-                height: 40px; 
-            }
-        }
-
-        /* ==========================================================================
-           Contact Header
-           ========================================================================== */
-        .contact-header {
-            text-align: center;
-            margin: 40px auto 30px;
-            padding: 0 20px;
-            max-width: 600px;
-        }
-
-        .contact-title {
-            color: #ffffff;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-        }
-
-        .contact-subtitle {
-            color: #b0b0b0;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* ==========================================================================
-           Contact Section
-           ========================================================================== */
-        .contact-section {
-            max-width: 800px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .contact-info {
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 8px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .contact-info h2 {
-            color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .contact-method {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .contact-method:last-child {
-            border-bottom: none;
-        }
-
-        .contact-method:hover {
-            padding-left: 5px;
-        }
-
-        .contact-icon {
-            width: 35px;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .contact-details {
-            flex: 1;
-        }
-
-        .contact-label {
-            color: #808080;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
-        }
-
-        .contact-value {
-            color: #ffffff;
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        /* ==========================================================================
-           Contact Form
-           ========================================================================== */
-        .contact-form {
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 8px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .contact-form h2 {
-            color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            color: #b0b0b0;
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 10px 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 0.9rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .form-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-submit {
-            width: 100%;
-            padding: 12px;
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .form-submit:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
-        }
-
-        /* ==========================================================================
-           Social Links
-           ========================================================================== */
-        .social-section {
-            max-width: 800px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-            text-align: center;
-        }
-
-        .social-title {
-            color: #b0b0b0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            color: #b0b0b0;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        /* ==========================================================================
-           Footer
-           ========================================================================== */
-        footer {
-            background-color: rgba(15, 15, 15, 0.9);
-            padding: 25px 15px;
-            margin-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footerContainer {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .socialIcons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .socialIcons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .socialIcons a:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .Oo {
-            text-align: center;
-            color: #808080;
-            font-size: 0.8rem;
-        }
-
-        .Oo a {
-            color: #808080;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .Oo a:hover {
-            color: #ffffff;
-        }
-
-        .footerBottom {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footerBottom p {
-            color: #606060;
-            font-size: 0.75rem;
-        }
-
-        .designer {
-            color: #ffffff;
-            font-weight: 500;
-        }
-
-        .admin-footer-access {
-            margin-top: 0.8rem;
-            text-align: center;
-        }
-
-        .admin-footer-access a {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: rgba(255, 255, 255, 0.4);
-            text-decoration: none;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .admin-footer-access a:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.1);
+            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; }
+            .nav-links.active { right: 0; }
+            .nav-links ul { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Video -->
     <div class="background-video">
-        <video autoplay muted loop playsinline id="bg-video">
-            <source src="D.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline><source src="D.mp4" type="video/mp4"></video>
     </div>
-
-    <div class="Container">
-        <div class="content">
-            <header>
-                <div class="HE">
-                    <div class="lol">
-                        <a href="index.html" title="DimDesk Studios">
-                            <img alt="DimDesk Studios Logo" src="cat.png" width="45" id="cat-logo" 
-                                 onerror="this.style.display='none'" />
-                        </a>
-                    </div>
-                    
-                    <nav class="nav-links" id="main-nav">
-                        <ul>
-                            <li><a href="index.html" id="home-link">Home</a></li>
-                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
-                            <li><a href="contact.html" id="contact-link" class="current-page">Contact</a></li>
-                        </ul>
-                    </nav>
-                    
-                    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Contact Header -->
-            <div class="contact-header">
-                <h1 class="contact-title">Get In Touch</h1>
-                <p class="contact-subtitle">Interested in collaboration, commissions, or just want to say hi? I'd love to hear from you!</p>
-            </div>
-
-            <main>
-                <!-- Contact Section -->
-                <section class="contact-section">
-                    <div class="contact-grid">
-                        <!-- Contact Info -->
-                        <div class="contact-info">
-                            <h2>Contact Information</h2>
-                            
-                            <a href="mailto:dimdesk.contact@gmail.com" class="contact-method">
-                                <div class="contact-icon">✉️</div>
-                                <div class="contact-details">
-                                    <div class="contact-label">Email</div>
-                                    <div class="contact-value">dimdesk.contact@gmail.com</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://discord.gg/dimdesk" target="_blank" rel="noopener noreferrer" class="contact-method">
-                                <div class="contact-icon">💬</div>
-                                <div class="contact-details">
-                                    <div class="contact-label">Discord</div>
-                                    <div class="contact-value">Join our community</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" class="contact-method">
-                                <div class="contact-icon">🎮</div>
-                                <div class="contact-details">
-                                    <div class="contact-label">Itch.io</div>
-                                    <div class="contact-value">Play our games</div>
-                                </div>
-                            </a>
-                            
-                            <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" class="contact-method">
-                                <div class="contact-icon">⭐</div>
-                                <div class="contact-details">
-                                    <div class="contact-label">Patreon</div>
-                                    <div class="contact-value">Support development</div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <!-- Contact Form -->
-                        <div class="contact-form">
-                            <h2>Send a Message</h2>
-                            <form id="contact-form">
-                                <div class="form-group">
-                                    <label class="form-label" for="name">Name</label>
-                                    <input type="text" id="name" class="form-input" placeholder="Your name" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="email">Email</label>
-                                    <input type="email" id="email" class="form-input" placeholder="Your email" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="subject">Subject</label>
-                                    <input type="text" id="subject" class="form-input" placeholder="What's this about?" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label" for="message">Message</label>
-                                    <textarea id="message" class="form-textarea" placeholder="Your message..." required></textarea>
-                                </div>
-                                
-                                <button type="submit" class="form-submit">Send Message</button>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Social Links -->
-                <section class="social-section">
-                    <h3 class="social-title">Connect on Social Media</h3>
-                    <div class="social-links">
-                        <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">
-                            ☁️ Bluesky
-                        </a>
-                        <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" class="social-link">
-                            ▶️ YouTube
-                        </a>
-                        <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" class="social-link">
-                            ⭐ Patreon
-                        </a>
-                        <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" class="social-link">
-                            🎮 Itch.io
-                        </a>
-                        <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" class="social-link">
-                            🎨 Cara
-                        </a>
-                    </div>
-                </section>
-            </main>
+    <header>
+        <div class="HE">
+            <a href="index.html" class="logo-container">
+                <img src="cat.png" alt="DimDesk" class="logo-img">
+                <span>DimDesk.Studios</span>
+            </a>
+            <nav class="nav-links" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="contact.html" class="current-page">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobile-toggle"><span></span><span></span><span></span></button>
         </div>
+    </header>
+
+    <div class="contact-header">
+        <h1 class="contact-title">Get In Touch</h1>
+        <p class="contact-subtitle">Interested in collaboration or just want to say hi?</p>
     </div>
 
-    <footer>
-        <div class="footerContainer">
-            <div class="socialIcons">
-                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-                    <img alt="Bluesky" src="bluesky-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <img alt="YouTube" src="youtube-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
-                    <img alt="Patreon" src="pathronW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
-                    <img alt="Itch.io" src="itchioW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
-                    <img alt="Cara" src="caraW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-            </div>
-            <div class="Oo">
-                <p style="display: inline-block;">Contact:</p>
-                <a href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
-                <div class="footerBottom">
-                    <p>© 2025 <span class="designer">DimDesk.Studios</span></p>
-                </div>
-                <div class="admin-footer-access">
-                    <a href="admin.html" title="Admin Panel">
-                        <span>⚙️</span>
-                        <span>Admin</span>
+    <main>
+        <section class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Contact Information</h2>
+                    <a href="mailto:dimdesk.contact@gmail.com" class="contact-method">
+                        <div class="contact-icon">✉️</div>
+                        <div><div class="contact-label">Email</div><div class="contact-value">dimdesk.contact@gmail.com</div></div>
+                    </a>
+                    <a href="https://dimdesk.itch.io" target="_blank" class="contact-method">
+                        <div class="contact-icon">🎮</div>
+                        <div><div class="contact-label">Itch.io</div><div class="contact-value">Play our games</div></div>
+                    </a>
+                    <a href="https://www.patreon.com/c/DIMDESK" target="_blank" class="contact-method">
+                        <div class="contact-icon">⭐</div>
+                        <div><div class="contact-label">Patreon</div><div class="contact-value">Support development</div></div>
                     </a>
                 </div>
+                <div class="contact-form">
+                    <h2>Send a Message</h2>
+                    <form id="contact-form">
+                        <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" required></textarea></div>
+                        <button type="submit" class="form-submit">Send Message</button>
+                    </form>
+                </div>
             </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="socialIcons">
+            <a href="https://bsky.app" target="_blank">☁️</a>
+            <a href="https://youtube.com" target="_blank">▶️</a>
+            <a href="https://patreon.com" target="_blank">⭐</a>
+            <a href="https://itch.io" target="_blank">🎮</a>
+        </div>
+        <div class="Oo">
+            <p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p>
+            <p>© 2025 DimDesk.Studios</p>
         </div>
     </footer>
 
     <script>
-        (function() {
-            // Mobile navigation toggle
-            const mobileToggle = document.getElementById('mobile-toggle');
-            const mainNav = document.getElementById('main-nav');
-            
-            if (mobileToggle && mainNav) {
-                mobileToggle.addEventListener('click', function() {
-                    mainNav.classList.toggle('active');
-                    mobileToggle.classList.toggle('active');
-                    document.body.classList.toggle('menu-open');
-                });
-            }
-
-            // Contact form handling
-            const contactForm = document.getElementById('contact-form');
-            if (contactForm) {
-                contactForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById('name').value;
-                    const email = document.getElementById('email').value;
-                    const subject = document.getElementById('subject').value;
-                    const message = document.getElementById('message').value;
-                    
-                    // Here you would typically send this to a backend service
-                    // For now, we'll just show a success message
-                    alert(`Thank you ${name}! Your message has been received. I'll get back to you at ${email} as soon as possible.`);
-                    
-                    // Clear form
-                    contactForm.reset();
-                });
-            }
-
-            console.log('🎮 DimDesk.Studios - Contact Page Loaded');
-        })();
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you! Your message has been sent.');
+            this.reset();
+        });
     </script>
 </body>
 </html>

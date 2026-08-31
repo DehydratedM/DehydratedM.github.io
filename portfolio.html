@@ -2,686 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="DimDesk Studios Portfolio - Game Development Skills & Experience">
-    <title>DimDesk Studios - Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DimDesk Studios Portfolio - Skills & Experience">
+    <title>Portfolio - DimDesk.Studios</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
-    <link rel="preload" as="image" href="cat.png">
     <style>
-        /* ==========================================================================
-           CSS Reset & Base Styles
-           ========================================================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #f5deb3;
-            line-height: 1.6;
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        body.menu-open {
-            overflow: hidden;
-        }
-
-        /* ==========================================================================
-           Background Video
-           ========================================================================== */
-        .background-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .background-video video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            filter: brightness(0.3) contrast(1.1);
-        }
-
-        .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, 
-                rgba(10, 10, 10, 0.85) 0%,
-                rgba(240, 128, 128, 0.15) 50%,
-                rgba(10, 10, 10, 0.85) 100%);
-        }
-
-        /* ==========================================================================
-           Main Container
-           ========================================================================== */
-        .Container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .content {
-            flex: 1;
-            position: relative;
-            z-index: 2;
-            padding-bottom: 2rem;
-        }
-
-        /* ==========================================================================
-           Header & Navigation - Clean Portfolio Style
-           ========================================================================== */
-        .HE {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(240, 128, 128, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .lol a {
-            display: block;
-        }
-
-        .lol img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid lightcoral;
-            object-fit: cover;
-        }
-
-        .lol img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(240, 128, 128, 0.5);
-        }
-
-        .nav-links ul {
-            display: flex;
-            list-style: none;
-            gap: 1rem;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-links a {
-            color: #f5deb3;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.current-page {
-            color: lightcoral;
-            background: rgba(240, 128, 128, 0.1);
-        }
-
-        .nav-links a.current-page::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 2px;
-            background: lightcoral;
-            border-radius: 2px;
-        }
-
-        .mobile-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            z-index: 1001;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(240, 128, 128, 0.1);
-            border-radius: 6px;
-            border: 1px solid rgba(240, 128, 128, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-toggle span {
-            display: block;
-            width: 20px;
-            height: 2px;
-            background-color: antiquewhite;
-            margin: 2px 0;
-            transition: 0.3s;
-            border-radius: 1px;
-        }
-
-        .mobile-toggle.active span:nth-child(1) { 
-            transform: rotate(45deg) translate(4px, 4px); 
-        }
-        .mobile-toggle.active span:nth-child(2) { 
-            opacity: 0; 
-        }
-        .mobile-toggle.active span:nth-child(3) { 
-            transform: rotate(-45deg) translate(5px, -5px); 
-        }
-
-        /* Mobile Navigation */
+        :root { --bg: #0a0a0a; --bg2: #1a1a1a; --text: #fff; --text2: #b0b0b0; --accent: #f08080; --border: rgba(255,255,255,0.1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
+        .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); }
+        .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
+        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
+        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(255,255,255,0.1); }
+        .portfolio-header { text-align: center; margin: 40px auto; padding: 0 20px; }
+        .portfolio-header h1 { font-size: 2.5rem; }
+        .portfolio-header p { color: var(--text2); }
+        .about-section { max-width: 700px; margin: 25px auto; padding: 25px; background: var(--bg2); border-radius: 10px; border: 1px solid var(--border); }
+        .about-section h2 { text-align: center; margin-bottom: 15px; }
+        .about-section p { color: var(--text2); font-size: 0.9rem; margin-bottom: 12px; }
+        .skills-section { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .skills-title { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .skill-card { background: var(--bg2); border-radius: 8px; padding: 15px; border: 1px solid var(--border); transition: all 0.3s; }
+        .skill-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .skill-card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+        .skill-card p { color: var(--text2); font-size: 0.75rem; }
+        .skill-tag { display: inline-block; background: rgba(240,128,128,0.2); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; margin-top: 8px; }
+        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid var(--border); text-align: center; }
+        .socialIcons { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
+        .socialIcons a { width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .Oo { color: #808080; font-size: 0.8rem; }
+        .Oo a { color: #808080; text-decoration: none; }
+        .mobile-toggle { display: none; }
         @media (max-width: 768px) {
-            .mobile-toggle { 
-                display: flex !important; 
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 250px;
-                height: 100vh;
-                background: rgba(10, 10, 10, 0.98);
-                backdrop-filter: blur(20px);
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                padding: 80px 15px 20px;
-                z-index: 1000;
-                transition: right 0.3s ease;
-                box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
-                overflow-y: auto;
-            }
-            
-            .nav-links.active { 
-                right: 0; 
-            }
-            
-            .nav-links ul { 
-                flex-direction: column; 
-                gap: 5px; 
-                width: 100%; 
-                padding: 0; 
-                margin: 0; 
-            }
-            
-            .nav-links li { 
-                width: 100%; 
-                list-style: none; 
-            }
-            
-            .nav-links a {
-                padding: 12px 15px;
-                margin: 0;
-                justify-content: flex-start;
-                border-radius: 6px;
-                font-size: 14px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            
-            .nav-links a:hover,
-            .nav-links a.current-page {
-                border-color: lightcoral;
-                background: rgba(240, 128, 128, 0.1);
-            }
-            
-            .nav-links a.current-page::after { 
-                display: none; 
-            }
-            
-            .HE { 
-                padding: 12px 15px; 
-            }
-            
-            .lol img { 
-                width: 45px; 
-                height: 45px; 
-            }
-        }
-
-        /* ==========================================================================
-           Portfolio Header
-           ========================================================================== */
-        .portfolio-header {
-            text-align: center;
-            margin: 30px 0;
-            padding: 0 20px;
-        }
-
-        .portfolio-header h1 {
-            color: lightcoral;
-            font-size: 2.2rem;
-            margin: 0 0 10px 0;
-            font-weight: 600;
-        }
-
-        .portfolio-header p {
-            color: wheat;
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-
-        /* ==========================================================================
-           About Section - Compact
-           ========================================================================== */
-        .about-section {
-            max-width: 700px;
-            margin: 25px auto;
-            padding: 20px;
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 10px;
-            border: 1px solid rgba(240, 128, 128, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .about-section:hover {
-            border-color: lightcoral;
-            box-shadow: 0 8px 20px rgba(240, 128, 128, 0.2);
-        }
-
-        .about-section h2 {
-            color: lightcoral;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .about-section p {
-            color: wheat;
-            font-size: 0.9rem;
-            line-height: 1.6;
-            text-align: justify;
-            margin-bottom: 12px;
-        }
-
-        /* ==========================================================================
-           Skills Grid - Industry Standard Compact Cards
-           ========================================================================== */
-        .skills-section {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .skills-title {
-            text-align: center;
-            color: lightcoral;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .skill-card {
-            background: rgba(20, 20, 20, 0.9);
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid rgba(240, 128, 128, 0.2);
-            transition: all 0.3s ease;
-            height: 100%;
-            min-height: 140px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-3px);
-            border-color: lightcoral;
-            box-shadow: 0 8px 20px rgba(240, 128, 128, 0.2);
-        }
-
-        .skill-card h3 {
-            color: lightcoral;
-            font-size: 0.95rem;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .skill-card p {
-            color: rgba(245, 222, 179, 0.7);
-            font-size: 0.75rem;
-            line-height: 1.4;
-            flex: 1;
-        }
-
-        .skill-tag {
-            display: inline-block;
-            background: rgba(240, 128, 128, 0.15);
-            color: lightcoral;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            font-weight: 500;
-            margin-top: 8px;
-            align-self: flex-start;
-        }
-
-        /* ==========================================================================
-           Footer - Compact
-           ========================================================================== */
-        footer {
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 25px 15px;
-            margin-top: 40px;
-            border-top: 1px solid rgba(240, 128, 128, 0.2);
-        }
-
-        .footerContainer {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .socialIcons {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .socialIcons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 35px;
-            height: 35px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .socialIcons a:hover {
-            background: lightcoral;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(240, 128, 128, 0.3);
-        }
-
-        .Oo {
-            text-align: center;
-            color: #D8A790;
-            font-size: 0.8rem;
-        }
-
-        .Oo a {
-            color: #D8A790;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .Oo a:hover {
-            color: lightcoral;
-            text-decoration: underline;
-        }
-
-        .footerBottom {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .footerBottom p {
-            color: moccasin;
-            font-size: 0.75rem;
-        }
-
-        .designer {
-            color: lightcoral;
-            font-weight: 600;
-        }
-
-        .admin-footer-access {
-            margin-top: 0.8rem;
-            text-align: center;
-        }
-
-        .admin-footer-access a {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            color: rgba(240, 128, 128, 0.6);
-            text-decoration: none;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .admin-footer-access a:hover {
-            color: lightcoral;
-            background: rgba(240, 128, 128, 0.08);
+            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; }
+            .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; }
+            .nav-links.active { right: 0; }
+            .nav-links ul { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- Background Video -->
     <div class="background-video">
-        <video autoplay muted loop playsinline id="bg-video">
-            <source src="D.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline><source src="D.mp4" type="video/mp4"></video>
     </div>
-
-    <div class="Container">
-        <div class="content">
-            <header>
-                <div class="HE">
-                    <div class="lol">
-                        <a href="index.html" title="Return to Home">
-                            <h1 style="color:lightcoral">
-                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="50" id="cat-logo" 
-                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
-                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
-                            </h1>
-                        </a>
-                    </div>
-                    
-                    <nav class="nav-links" id="main-nav">
-                        <ul>
-                            <li><a href="index.html" id="home-link">Home</a></li>
-                            <li><a href="portfolio.html" id="portfolio-link" class="current-page">Portfolio</a></li>
-                            <li><a href="contact.html" id="contact-link">Contact</a></li>
-                        </ul>
-                    </nav>
-                    
-                    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- Portfolio Header -->
-            <div class="portfolio-header">
-                <h1>My Portfolio</h1>
-                <p>Game Developer & Artist</p>
-            </div>
-
-            <main>
-                <!-- About Section -->
-                <div class="about-section">
-                    <h2>About Me</h2>
-                    <p>
-                        Hi there, I'm M! I've always been passionate about games and art for as long as I can remember. These two things have shaped who I am, and I dream of building something meaningful in these fields, even with the challenges they come with.
-                    </p>
-                    <p>
-                        Your support would mean the world to me, in being part of this journey. As of now I'm on YouTube, Blue-sky, Cara and Patreon! I hope to see you around!
-                        I'm the sole person currently working in Dimdesk. studios, an indie studio producing Games, art and more (as much as a single person can do, lol)
-                    </p>
-                    <p>
-                        Thank you so much for taking the time to read this, and even more if you choose to help!
-                        —M
-                    </p>
-                </div>
-
-                <!-- Skills Section -->
-                <section class="skills-section">
-                    <h2 class="skills-title">Skills & Technologies</h2>
-                    <div class="portfolio-grid" id="portfolio-skills">
-                        <!-- Dynamic content will be loaded here -->
-                    </div>
-                </section>
-            </main>
+    <header>
+        <div class="HE">
+            <a href="index.html" class="logo-container">
+                <img src="cat.png" alt="DimDesk" class="logo-img">
+                <span>DimDesk.Studios</span>
+            </a>
+            <nav class="nav-links" id="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html" class="current-page">Portfolio</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobile-toggle"><span></span><span></span><span></span></button>
         </div>
+    </header>
+
+    <div class="portfolio-header">
+        <h1>My Portfolio</h1>
+        <p>Game Developer & Artist</p>
     </div>
+
+    <main>
+        <div class="about-section">
+            <h2>About Me</h2>
+            <p>Hi, I'm M! I'm an indie game developer and artist passionate about creating unique gaming experiences.</p>
+            <p>I work with Unity, Unreal, and Godot to bring creative visions to life.</p>
+        </div>
+
+        <section class="skills-section">
+            <h2 class="skills-title">Skills & Technologies</h2>
+            <div class="portfolio-grid" id="portfolio-skills"></div>
+        </section>
+    </main>
 
     <footer>
-        <div class="footerContainer">
-            <div class="socialIcons">
-                <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-                    <img alt="Bluesky" src="bluesky-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <img alt="YouTube" src="youtube-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
-                    <img alt="Patreon" src="pathronW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
-                    <img alt="Itch.io" src="itchioW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-                <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
-                    <img alt="Cara" src="caraW.png" width="20" height="20" onerror="this.style.display='none'" />
-                </a>
-            </div>
+        <div class="socialIcons">
+            <a href="https://bsky.app" target="_blank">☁️</a>
+            <a href="https://youtube.com" target="_blank">▶️</a>
+            <a href="https://patreon.com" target="_blank">⭐</a>
+            <a href="https://itch.io" target="_blank">🎮</a>
         </div>
         <div class="Oo">
-            <p style="color: #D8A790; display: inline-block;">contact us:</p>
-            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
-            <div class="footerBottom">
-                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
-            </div>
-            <div class="admin-footer-access">
-                <a href="admin.html" title="Admin Panel">
-                    <span>⚙️</span>
-                    <span>Admin Access</span>
-                </a>
-            </div>
+            <p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p>
+            <p>© 2025 DimDesk.Studios</p>
         </div>
     </footer>
 
     <script>
-        (function() {
-            // Mobile navigation toggle
-            const mobileToggle = document.getElementById('mobile-toggle');
-            const mainNav = document.getElementById('main-nav');
-            
-            if (mobileToggle && mainNav) {
-                mobileToggle.addEventListener('click', function() {
-                    mainNav.classList.toggle('active');
-                    mobileToggle.classList.toggle('active');
-                    document.body.classList.toggle('menu-open');
-                });
-            }
+        // EASY UPDATE: Edit this array to change skills
+        const skills = [
+            { name: "Unity Engine", desc: "2D/3D game development, C#", tag: "Engine" },
+            { name: "Unreal Engine", desc: "Blueprint & C++", tag: "Engine" },
+            { name: "Godot", desc: "GDScript & lightweight games", tag: "Engine" },
+            { name: "C# Programming", desc: "Game logic, systems", tag: "Language" },
+            { name: "3D Modeling", desc: "Blender, asset creation", tag: "Art" },
+            { name: "2D Art", desc: "Sprites, UI, effects", tag: "Art" },
+            { name: "Game Design", desc: "Mechanics, level design", tag: "Design" },
+            { name: "Sound Design", desc: "Audio implementation", tag: "Audio" }
+        ];
 
-            // Skills data - Industry standard format
-            const skills = [
-                { 
-                    name: "Unity Engine",
-                    description: "2D/3D game development, C# programming",
-                    tag: "Engine"
-                },
-                { 
-                    name: "Unreal Engine",
-                    description: "Blueprint & C++ development",
-                    tag: "Engine"
-                },
-                { 
-                    name: "Godot",
-                    description: "GDScript & lightweight games",
-                    tag: "Engine"
-                },
-                { 
-                    name: "C# Programming",
-                    description: "Game logic, systems architecture",
-                    tag: "Language"
-                },
-                { 
-                    name: "C++ Programming",
-                    description: "Performance-critical systems",
-                    tag: "Language"
-                },
-                { 
-                    name: "3D Modeling",
-                    description: "Blender, Maya, asset creation",
-                    tag: "Art"
-                },
-                { 
-                    name: "2D Art & Animation",
-                    description: "Sprites, UI, visual effects",
-                    tag: "Art"
-                },
-                { 
-                    name: "Game Design",
-                    description: "Mechanics, level design, balancing",
-                    tag: "Design"
-                },
-                { 
-                    name: "Shader Programming",
-                    description: "HLSL, GLSL, visual effects",
-                    tag: "Technical"
-                },
-                { 
-                    name: "Sound Design",
-                    description: "Audio implementation, mixing",
-                    tag: "Audio"
-                }
-            ];
+        document.getElementById('portfolio-skills').innerHTML = skills.map(s => 
+            `<div class="skill-card"><h3>${s.name}</h3><p>${s.desc}</p><span class="skill-tag">${s.tag}</span></div>`
+        ).join('');
 
-            // Load skills dynamically
-            const skillsGrid = document.getElementById('portfolio-skills');
-            if (skillsGrid) {
-                skills.forEach(skill => {
-                    const card = document.createElement('div');
-                    card.className = 'skill-card';
-                    card.innerHTML = `
-                        <h3>${skill.name}</h3>
-                        <p>${skill.description}</p>
-                        <span class="skill-tag">${skill.tag}</span>
-                    `;
-                    skillsGrid.appendChild(card);
-                });
-            }
-
-            console.log('🎮 DimDesk.Studios Portfolio - Loaded');
-        })();
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
     </script>
 </body>
 </html>

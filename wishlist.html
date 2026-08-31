@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="DimDesk Studios Portfolio - Game Development Skills & Experience">
-    <title>DimDesk Studios - Portfolio</title>
+    <meta name="description" content="Contact DimDesk Studios - Game Developer & Artist">
+    <title>DimDesk Studios - Contact</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <link rel="preload" as="image" href="cat.png">
     <style>
@@ -23,10 +23,10 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0a0a0a;
-            color: #f5deb3;
-            line-height: 1.6;
+            color: #e0e0e0;
+            line-height: 1.5;
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
@@ -54,7 +54,7 @@
             height: 100%;
             object-fit: cover;
             object-position: center;
-            filter: brightness(0.3) contrast(1.1);
+            filter: brightness(0.25) contrast(1.1);
         }
 
         .video-overlay {
@@ -64,9 +64,9 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, 
-                rgba(10, 10, 10, 0.85) 0%,
-                rgba(240, 128, 128, 0.15) 50%,
-                rgba(10, 10, 10, 0.85) 100%);
+                rgba(10, 10, 10, 0.9) 0%,
+                rgba(30, 30, 30, 0.7) 50%,
+                rgba(10, 10, 10, 0.9) 100%);
         }
 
         /* ==========================================================================
@@ -88,94 +88,77 @@
         }
 
         /* ==========================================================================
-           Header & Navigation
+           Header & Navigation - Industry Standard
            ========================================================================== */
         .HE {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 2rem;
-            background: rgba(10, 10, 10, 0.95);
+            padding: 0.75rem 2rem;
+            background: rgba(15, 15, 15, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid rgba(240, 128, 128, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         .lol a {
-            display: block;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
         }
 
         .lol img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 2px solid lightcoral;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
             object-fit: cover;
         }
 
         .lol img:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(240, 128, 128, 0.5);
         }
 
         .nav-links ul {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 0.5rem;
             align-items: center;
             margin: 0;
             padding: 0;
         }
 
         .nav-links a {
-            color: #f5deb3;
+            color: #b0b0b0;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 0.85rem;
             padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 6px;
+            transition: all 0.2s ease;
             position: relative;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
         }
 
         .nav-links a:hover,
         .nav-links a.current-page {
-            color: lightcoral;
-            background: rgba(240, 128, 128, 0.1);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .nav-links a.current-page::after {
             content: '';
             position: absolute;
-            bottom: -5px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;
-            height: 3px;
-            background: lightcoral;
+            width: 20px;
+            height: 2px;
+            background: #ffffff;
             border-radius: 2px;
-        }
-
-        .wishlist-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: lightcoral;
-            color: #000;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            font-size: 0.7rem;
-            font-weight: bold;
-            display: none;
-            align-items: center;
-            justify-content: center;
         }
 
         .mobile-toggle {
@@ -183,37 +166,35 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 10px;
+            padding: 8px;
             z-index: 1001;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 44px;
-            height: 44px;
-            background: rgba(240, 128, 128, 0.1);
-            border-radius: 8px;
-            border: 1px solid rgba(240, 128, 128, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
             transition: all 0.3s ease;
         }
 
         .mobile-toggle span {
             display: block;
-            width: 22px;
+            width: 20px;
             height: 2px;
-            background-color: antiquewhite;
-            margin: 3px 0;
+            background-color: #ffffff;
+            margin: 2px 0;
             transition: 0.3s;
             border-radius: 1px;
         }
 
         .mobile-toggle.active span:nth-child(1) { 
-            transform: rotate(45deg) translate(5px, 5px); 
+            transform: rotate(45deg) translate(4px, 4px); 
         }
         .mobile-toggle.active span:nth-child(2) { 
             opacity: 0; 
         }
         .mobile-toggle.active span:nth-child(3) { 
-            transform: rotate(-45deg) translate(7px, -6px); 
+            transform: rotate(-45deg) translate(4px, -4px); 
         }
 
         /* Mobile Navigation */
@@ -226,16 +207,16 @@
                 position: fixed;
                 top: 0;
                 right: -100%;
-                width: 280px;
+                width: 250px;
                 height: 100vh;
-                background: rgba(10, 10, 10, 0.98);
+                background: rgba(15, 15, 15, 0.98);
                 backdrop-filter: blur(20px);
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                padding: 100px 20px 30px;
+                padding: 80px 15px 20px;
                 z-index: 1000;
-                transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transition: right 0.3s ease;
                 box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
                 overflow-y: auto;
             }
@@ -246,7 +227,7 @@
             
             .nav-links ul { 
                 flex-direction: column; 
-                gap: 10px; 
+                gap: 5px; 
                 width: 100%; 
                 padding: 0; 
                 margin: 0; 
@@ -258,21 +239,16 @@
             }
             
             .nav-links a {
-                padding: 15px 20px;
+                padding: 12px 15px;
                 margin: 0;
                 justify-content: flex-start;
-                border-radius: 10px;
-                font-size: 16px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                display: flex;
-                align-items: center;
-                gap: 12px;
+                border-radius: 6px;
+                font-size: 14px;
             }
             
             .nav-links a:hover,
             .nav-links a.current-page {
-                border-color: lightcoral;
-                background: rgba(240, 128, 128, 0.1);
+                background: rgba(255, 255, 255, 0.1);
             }
             
             .nav-links a.current-page::after { 
@@ -280,157 +256,253 @@
             }
             
             .HE { 
-                padding: 15px 20px; 
+                padding: 10px 15px; 
             }
             
             .lol img { 
-                width: 50px; 
-                height: 50px; 
+                width: 40px; 
+                height: 40px; 
             }
         }
 
         /* ==========================================================================
-           Portfolio Header
+           Contact Header
            ========================================================================== */
-        .portfolio-header {
+        .contact-header {
             text-align: center;
-            margin: 30px 0;
+            margin: 40px auto 30px;
             padding: 0 20px;
+            max-width: 600px;
         }
 
-        .portfolio-header h1 {
-            color: lightcoral;
+        .contact-title {
+            color: #ffffff;
             font-size: 2.5rem;
-            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
         }
 
-        .portfolio-header p {
-            color: wheat;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* ==========================================================================
-           About Section
-           ========================================================================== */
-        .about-section {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 25px;
-            background: rgba(20, 20, 20, 0.8);
-            border-radius: 15px;
-            border: 1px solid rgba(240, 128, 128, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .about-section:hover {
-            border-color: lightcoral;
-            box-shadow: 0 10px 30px rgba(240, 128, 128, 0.2);
-        }
-
-        .about-section h2 {
-            color: lightcoral;
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .about-section p {
-            color: wheat;
+        .contact-subtitle {
+            color: #b0b0b0;
             font-size: 1rem;
-            line-height: 1.7;
-            text-align: justify;
-            margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         /* ==========================================================================
-           Skills Grid - Smaller Cards
+           Contact Section
            ========================================================================== */
-        .skills-section {
-            max-width: 1200px;
-            margin: 40px auto;
+        .contact-section {
+            max-width: 800px;
+            margin: 0 auto 40px;
             padding: 0 20px;
         }
 
-        .skills-title {
-            text-align: center;
-            color: lightcoral;
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            font-weight: 700;
-        }
-
-        .portfolio-grid {
+        .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
-            margin-top: 20px;
         }
 
-        .skill-card {
-            background: rgba(20, 20, 20, 0.9);
-            border-radius: 12px;
-            padding: 18px;
-            border: 2px solid rgba(240, 128, 128, 0.2);
-            transition: all 0.3s ease;
-            height: 100%;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
+        .contact-info {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .skill-card:hover {
-            transform: translateY(-5px);
-            border-color: lightcoral;
-            box-shadow: 0 10px 25px rgba(240, 128, 128, 0.3);
-        }
-
-        .skill-card h3 {
-            color: lightcoral;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+        .contact-info h2 {
+            color: #ffffff;
+            font-size: 1.3rem;
             font-weight: 600;
+            margin-bottom: 20px;
         }
 
-        .skill-card p {
-            color: rgba(245, 222, 179, 0.8);
-            font-size: 0.85rem;
-            line-height: 1.5;
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:last-child {
+            border-bottom: none;
+        }
+
+        .contact-method:hover {
+            padding-left: 5px;
+        }
+
+        .contact-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .contact-details {
             flex: 1;
         }
 
-        .skill-tag {
-            display: inline-block;
-            background: rgba(240, 128, 128, 0.2);
-            color: lightcoral;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
+        .contact-label {
+            color: #808080;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .contact-value {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Contact Form
+           ========================================================================== */
+        .contact-form {
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 8px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .contact-form h2 {
+            color: #ffffff;
+            font-size: 1.3rem;
             font-weight: 600;
-            margin-top: 10px;
-            align-self: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            color: #b0b0b0;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           Social Links
+           ========================================================================== */
+        .social-section {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .social-title {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            color: #b0b0b0;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateY(-2px);
         }
 
         /* ==========================================================================
            Footer
            ========================================================================== */
         footer {
-            background-color: rgba(0, 0, 0, 0.9);
-            padding: 30px 20px;
-            margin-top: 50px;
-            border-top: 2px solid rgba(240, 128, 128, 0.2);
+            background-color: rgba(15, 15, 15, 0.9);
+            padding: 25px 15px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .footerContainer {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
+            text-align: center;
         }
 
         .socialIcons {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
 
@@ -438,72 +510,70 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
             transition: all 0.3s ease;
         }
 
         .socialIcons a:hover {
-            background: lightcoral;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(240, 128, 128, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .Oo {
             text-align: center;
-            color: #D8A790;
-            font-size: 0.9rem;
+            color: #808080;
+            font-size: 0.8rem;
         }
 
         .Oo a {
-            color: #D8A790;
+            color: #808080;
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         .Oo a:hover {
-            color: lightcoral;
-            text-decoration: underline;
+            color: #ffffff;
         }
 
         .footerBottom {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .footerBottom p {
-            color: moccasin;
-            font-size: 0.85rem;
+            color: #606060;
+            font-size: 0.75rem;
         }
 
         .designer {
-            color: lightcoral;
-            font-weight: 600;
+            color: #ffffff;
+            font-weight: 500;
         }
 
         .admin-footer-access {
-            margin-top: 1rem;
+            margin-top: 0.8rem;
             text-align: center;
         }
 
         .admin-footer-access a {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            color: rgba(240, 128, 128, 0.7);
+            gap: 4px;
+            color: rgba(255, 255, 255, 0.4);
             text-decoration: none;
-            font-size: 0.85rem;
-            padding: 5px 10px;
+            font-size: 0.7rem;
+            padding: 4px 8px;
             border-radius: 4px;
             transition: all 0.3s ease;
         }
 
         .admin-footer-access a:hover {
-            color: lightcoral;
-            background: rgba(240, 128, 128, 0.1);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -522,24 +592,17 @@
             <header>
                 <div class="HE">
                     <div class="lol">
-                        <a href="index.html" title="Return to Home">
-                            <h1 style="color:lightcoral">
-                                <img alt="DimDesk Studios Cat Logo" src="cat.png" width="60" id="cat-logo" 
-                                     onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" />
-                                <span id="logo-fallback" class="logo-fallback" style="display:none;">DIMDESK</span>
-                            </h1>
+                        <a href="index.html" title="DimDesk Studios">
+                            <img alt="DimDesk Studios Logo" src="cat.png" width="45" id="cat-logo" 
+                                 onerror="this.style.display='none'" />
                         </a>
                     </div>
                     
                     <nav class="nav-links" id="main-nav">
                         <ul>
                             <li><a href="index.html" id="home-link">Home</a></li>
-                            <li><a href="portfolio.html" id="portfolio-link" class="current-page">Portfolio</a></li>
-                            <li class="wishlist-nav-item">
-                                <a href="wishlist.html" id="wishlist-link">❤️ Wishlist 
-                                    <span class="wishlist-badge" id="wishlist-badge">0</span>
-                                </a>
-                            </li>
+                            <li><a href="portfolio.html" id="portfolio-link">Portfolio</a></li>
+                            <li><a href="contact.html" id="contact-link" class="current-page">Contact</a></li>
                         </ul>
                     </nav>
                     
@@ -551,34 +614,102 @@
                 </div>
             </header>
 
-            <!-- Portfolio Header -->
-            <div class="portfolio-header">
-                <h1>My Portfolio</h1>
-                <p>Skills, Experiences & Creative Journey</p>
+            <!-- Contact Header -->
+            <div class="contact-header">
+                <h1 class="contact-title">Get In Touch</h1>
+                <p class="contact-subtitle">Interested in collaboration, commissions, or just want to say hi? I'd love to hear from you!</p>
             </div>
 
             <main>
-                <!-- About Section -->
-                <div class="about-section">
-                    <h2>About Me</h2>
-                    <p>
-                        Hi there, I'm M! I've always been passionate about games and art for as long as I can remember. These two things have shaped who I am, and I dream of building something meaningful in these fields, even with the challenges they come with.
-                    </p>
-                    <p>
-                        Your support would mean the world to me, in being part of this journey. As of now I'm on YouTube, Blue-sky, Cara and Patreon! I hope to see you around!
-                        I'm the sole person currently working in Dimdesk. studios, an indie studio producing Games, art and more (as much as a single person can do, lol)
-                    </p>
-                    <p>
-                        Thank you so much for taking the time to read this, and even more if you choose to help!
-                        —M
-                    </p>
-                </div>
+                <!-- Contact Section -->
+                <section class="contact-section">
+                    <div class="contact-grid">
+                        <!-- Contact Info -->
+                        <div class="contact-info">
+                            <h2>Contact Information</h2>
+                            
+                            <a href="mailto:dimdesk.contact@gmail.com" class="contact-method">
+                                <div class="contact-icon">✉️</div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Email</div>
+                                    <div class="contact-value">dimdesk.contact@gmail.com</div>
+                                </div>
+                            </a>
+                            
+                            <a href="https://discord.gg/dimdesk" target="_blank" rel="noopener noreferrer" class="contact-method">
+                                <div class="contact-icon">💬</div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Discord</div>
+                                    <div class="contact-value">Join our community</div>
+                                </div>
+                            </a>
+                            
+                            <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" class="contact-method">
+                                <div class="contact-icon">🎮</div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Itch.io</div>
+                                    <div class="contact-value">Play our games</div>
+                                </div>
+                            </a>
+                            
+                            <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" class="contact-method">
+                                <div class="contact-icon">⭐</div>
+                                <div class="contact-details">
+                                    <div class="contact-label">Patreon</div>
+                                    <div class="contact-value">Support development</div>
+                                </div>
+                            </a>
+                        </div>
 
-                <!-- Skills Section -->
-                <section class="skills-section">
-                    <h2 class="skills-title">Skills & Experiences</h2>
-                    <div class="portfolio-grid" id="portfolio-skills">
-                        <!-- Dynamic content will be loaded here -->
+                        <!-- Contact Form -->
+                        <div class="contact-form">
+                            <h2>Send a Message</h2>
+                            <form id="contact-form">
+                                <div class="form-group">
+                                    <label class="form-label" for="name">Name</label>
+                                    <input type="text" id="name" class="form-input" placeholder="Your name" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="email">Email</label>
+                                    <input type="email" id="email" class="form-input" placeholder="Your email" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="subject">Subject</label>
+                                    <input type="text" id="subject" class="form-input" placeholder="What's this about?" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="message">Message</label>
+                                    <textarea id="message" class="form-textarea" placeholder="Your message..." required></textarea>
+                                </div>
+                                
+                                <button type="submit" class="form-submit">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Social Links -->
+                <section class="social-section">
+                    <h3 class="social-title">Connect on Social Media</h3>
+                    <div class="social-links">
+                        <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" class="social-link">
+                            ☁️ Bluesky
+                        </a>
+                        <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" class="social-link">
+                            ▶️ YouTube
+                        </a>
+                        <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" class="social-link">
+                            ⭐ Patreon
+                        </a>
+                        <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" class="social-link">
+                            🎮 Itch.io
+                        </a>
+                        <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" class="social-link">
+                            🎨 Cara
+                        </a>
                     </div>
                 </section>
             </main>
@@ -589,33 +720,33 @@
         <div class="footerContainer">
             <div class="socialIcons">
                 <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
-                    <img alt="Bluesky" src="bluesky-fillW.png" width="25" height="25" onerror="this.style.display='none'" />
+                    <img alt="Bluesky" src="bluesky-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://www.youtube.com/@fubiereal" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                    <img alt="YouTube" src="youtube-fillW.png" width="25" height="25" onerror="this.style.display='none'" />
+                    <img alt="YouTube" src="youtube-fillW.png" width="20" height="20" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://www.patreon.com/c/DIMDESK" target="_blank" rel="noopener noreferrer" aria-label="Patreon">
-                    <img alt="Patreon" src="pathronW.png" width="25" height="25" onerror="this.style.display='none'" />
+                    <img alt="Patreon" src="pathronW.png" width="20" height="20" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://dimdesk.itch.io" target="_blank" rel="noopener noreferrer" aria-label="Itch.io">
-                    <img alt="Itch.io" src="itchioW.png" width="25" height="25" onerror="this.style.display='none'" />
+                    <img alt="Itch.io" src="itchioW.png" width="20" height="20" onerror="this.style.display='none'" />
                 </a>
                 <a href="https://cara.app/fubie/all" target="_blank" rel="noopener noreferrer" aria-label="Cara">
-                    <img alt="Cara" src="caraW.png" width="25" height="25" onerror="this.style.display='none'" />
+                    <img alt="Cara" src="caraW.png" width="20" height="20" onerror="this.style.display='none'" />
                 </a>
             </div>
-        </div>
-        <div class="Oo">
-            <p style="color: #D8A790; display: inline-block;">contact us:</p>
-            <a style="color: #D8A790" href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
-            <div class="footerBottom">
-                <p style="color:moccasin">Copyright &copy;2025; <span class="designer">DimDesk.Studios</span></p>
-            </div>
-            <div class="admin-footer-access">
-                <a href="admin.html" title="Admin Panel">
-                    <span>⚙️</span>
-                    <span>Admin Access</span>
-                </a>
+            <div class="Oo">
+                <p style="display: inline-block;">Contact:</p>
+                <a href="mailto:dimdesk.contact@gmail.com">dimdesk.Contact@gmail.com</a>
+                <div class="footerBottom">
+                    <p>© 2025 <span class="designer">DimDesk.Studios</span></p>
+                </div>
+                <div class="admin-footer-access">
+                    <a href="admin.html" title="Admin Panel">
+                        <span>⚙️</span>
+                        <span>Admin</span>
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
@@ -634,77 +765,27 @@
                 });
             }
 
-            // Update wishlist badge
-            function updateWishlistBadge() {
-                const badge = document.getElementById('wishlist-badge');
-                if (badge) {
-                    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-                    badge.textContent = wishlist.length;
-                    badge.style.display = wishlist.length > 0 ? 'flex' : 'none';
-                }
-            }
-            updateWishlistBadge();
-
-            // Skills data for portfolio
-            const skills = [
-                { 
-                    name: "Game Development",
-                    description: "Experienced in creating complete games from concept to release.",
-                    tag: "Core Skill"
-                },
-                { 
-                    name: "Unity Engine",
-                    description: "Proficient in Unity for 2D and 3D game development.",
-                    tag: "Engine"
-                },
-                { 
-                    name: "Unreal Engine",
-                    description: "Working knowledge of Unreal Engine for high-fidelity games.",
-                    tag: "Engine"
-                },
-                { 
-                    name: "Godot Engine",
-                    description: "Experience with Godot for lightweight and efficient games.",
-                    tag: "Engine"
-                },
-                { 
-                    name: "3D Modeling",
-                    description: "Creating 3D assets and environments for games.",
-                    tag: "Art"
-                },
-                { 
-                    name: "2D Art & Animation",
-                    description: "Hand-drawn 2D art, sprites, and animation for games.",
-                    tag: "Art"
-                },
-                { 
-                    name: "Game Design",
-                    description: "Designing engaging gameplay mechanics and systems.",
-                    tag: "Design"
-                },
-                { 
-                    name: "Sound Design",
-                    description: "Creating audio effects and ambient sounds for games.",
-                    tag: "Audio"
-                }
-            ];
-
-            // Load skills dynamically
-            const skillsGrid = document.getElementById('portfolio-skills');
-            if (skillsGrid) {
-                skills.forEach(skill => {
-                    const card = document.createElement('div');
-                    card.className = 'skill-card';
-                    card.innerHTML = `
-                        <h3>${skill.name}</h3>
-                        <p>${skill.description}</p>
-                        <span class="skill-tag">${skill.tag}</span>
-                    `;
-                    skillsGrid.appendChild(card);
+            // Contact form handling
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+                    
+                    // Here you would typically send this to a backend service
+                    // For now, we'll just show a success message
+                    alert(`Thank you ${name}! Your message has been received. I'll get back to you at ${email} as soon as possible.`);
+                    
+                    // Clear form
+                    contactForm.reset();
                 });
             }
 
-            console.log('🎮 DimDesk.Studios Portfolio - Skills Loaded');
+            console.log('🎮 DimDesk.Studios - Contact Page Loaded');
         })();
     </script>
 </body>

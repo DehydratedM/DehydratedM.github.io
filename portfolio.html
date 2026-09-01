@@ -166,38 +166,50 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // ============================================================
-        // YOUTUBE PLAYLIST BGM SYSTEM
-        // ============================================================
-        let youtubePlayer = null;
-        let bgmEnabled = true;
-        let shuffleEnabled = false;
-        
-        const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
-        
-        const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
-        if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
-        
-        const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
-        if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
-        
-     function onYouTubeIframeAPIReady() {
+    // ============================================================
+// PERSISTENT YOUTUBE PLAYLIST BGM - Continues Across Pages
+// ============================================================
+let youtubePlayer = null;
+let bgmEnabled = true;
+let shuffleEnabled = false;
+let isPlayerReady = false;
+
+const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
+const BGM_VOLUME = 8; // Soft background volume
+
+// ============================================================
+// LOAD SAVED STATES FROM LOCALSTORAGE
+// ============================================================
+const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
+if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
+
+const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
+if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
+
+const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
+const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
+
+// ============================================================
+// YOUTUBE PLAYER INITIALIZATION
+// ============================================================
+function onYouTubeIframeAPIReady() {
     youtubePlayer = new YT.Player('youtube-bgm-player', {
         height: '1',
         width: '1',
         playerVars: {
-            autoplay: bgmEnabled ? 1 : 0,
+            autoplay: 0, // Don't auto-play, we control it manually
             controls: 0,
             disablekb: 1,
             fs: 0,
             iv_load_policy: 3,
             listType: 'playlist',
             list: PLAYLIST_ID,
+            index: savedVideoIndex, // Start from saved video index
             loop: 1,
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
-            volume: 7  // ← Changed from 10 to 5 (softer)
+            volume: BGM_VOLUME
         },
         events: {
             onReady: onPlayerReady,
@@ -205,136 +217,232 @@
         }
     });
 }
-        
-     function onPlayerReady(event) {
+
+function onPlayerReady(event) {
+    isPlayerReady = true;
     applySoundState();
     applyShuffleState();
     
-    // Set BGM volume to 3 (very soft)
-    event.target.setVolume(7);
+    // Set volume
+    event.target.setVolume(BGM_VOLUME);
     
+    // Seek to saved position after a short delay
+    if (savedVideoTime > 0) {
+        setTimeout(() => {
+            try {
+                event.target.seekTo(savedVideoTime, true);
+            } catch(e) {}
+        }, 1000);
+    }
+    
+    // Play if enabled and page is visible
     if (bgmEnabled && !document.hidden) {
-        event.target.playVideo();
+        setTimeout(() => {
+            event.target.playVideo();
+            // Seek again after play starts
+            if (savedVideoTime > 0) {
+                setTimeout(() => {
+                    try {
+                        event.target.seekTo(savedVideoTime, true);
+                    } catch(e) {}
+                }, 500);
+            }
+        }, 1500);
+    } else {
+        event.target.pauseVideo();
     }
     
     // Show shuffle button
     document.getElementById('shuffle-toggle').style.display = 'flex';
+    
+    // Start periodic position saving
+    setInterval(savePlaybackPosition, 1000);
 }
+
+function onPlayerStateChange(event) {
+    // When video ends
+    if (event.data === YT.PlayerState.ENDED) {
+        // Reset saved time for next video
+        localStorage.setItem('dimdesk_bgm_time', '0');
         
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED && shuffleEnabled && bgmEnabled) {
-                event.target.nextVideo();
-            }
-            
-            if (event.data === YT.PlayerState.PLAYING && document.hidden) {
-                event.target.pauseVideo();
-            }
+        if (shuffleEnabled && bgmEnabled && !document.hidden) {
+            event.target.nextVideo();
         }
-        
-        function applySoundState() {
-            const soundIconOn = document.getElementById('sound-icon-on');
-            const soundIconOff = document.getElementById('sound-icon-off');
+    }
+    
+    // Pause if tab hidden while playing
+    if (event.data === YT.PlayerState.PLAYING && document.hidden) {
+        event.target.pauseVideo();
+    }
+    
+    // Save position when paused
+    if (event.data === YT.PlayerState.PAUSED) {
+        savePlaybackPosition();
+    }
+    
+    // Save position when video changes
+    if (event.data === YT.PlayerState.CUED) {
+        savePlaybackPosition();
+    }
+}
+
+// ============================================================
+// SAVE PLAYBACK POSITION
+// ============================================================
+function savePlaybackPosition() {
+    if (youtubePlayer && isPlayerReady) {
+        try {
+            const currentTime = youtubePlayer.getCurrentTime();
+            const currentIndex = youtubePlayer.getPlaylistIndex();
             
-            if (bgmEnabled) {
-                if (soundIconOn) soundIconOn.style.display = 'block';
-                if (soundIconOff) soundIconOff.style.display = 'none';
-            } else {
-                if (soundIconOn) soundIconOn.style.display = 'none';
-                if (soundIconOff) soundIconOff.style.display = 'block';
+            if (currentTime > 0) {
+                localStorage.setItem('dimdesk_bgm_time', currentTime.toString());
             }
+            if (currentIndex >= 0) {
+                localStorage.setItem('dimdesk_bgm_index', currentIndex.toString());
+            }
+        } catch(e) {}
+    }
+}
+
+// ============================================================
+// APPLY UI STATES
+// ============================================================
+function applySoundState() {
+    const soundIconOn = document.getElementById('sound-icon-on');
+    const soundIconOff = document.getElementById('sound-icon-off');
+    
+    if (bgmEnabled) {
+        if (soundIconOn) soundIconOn.style.display = 'block';
+        if (soundIconOff) soundIconOff.style.display = 'none';
+    } else {
+        if (soundIconOn) soundIconOn.style.display = 'none';
+        if (soundIconOff) soundIconOff.style.display = 'block';
+    }
+}
+
+function applyShuffleState() {
+    const shuffleBtn = document.getElementById('shuffle-toggle');
+    if (shuffleBtn) {
+        if (shuffleEnabled) {
+            shuffleBtn.classList.add('active');
+        } else {
+            shuffleBtn.classList.remove('active');
         }
-        
-        function applyShuffleState() {
-            const shuffleBtn = document.getElementById('shuffle-toggle');
-            if (shuffleBtn) {
-                if (shuffleEnabled) {
-                    shuffleBtn.classList.add('active');
-                } else {
-                    shuffleBtn.classList.remove('active');
-                }
-            }
+    }
+}
+
+// ============================================================
+// SOUND TOGGLE
+// ============================================================
+document.getElementById('sound-toggle').addEventListener('click', function(e) {
+    e.stopPropagation();
+    bgmEnabled = !bgmEnabled;
+    localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
+    applySoundState();
+    
+    if (youtubePlayer) {
+        if (bgmEnabled && !document.hidden) {
+            youtubePlayer.playVideo();
+        } else {
+            youtubePlayer.pauseVideo();
+            savePlaybackPosition();
         }
-        
-        document.getElementById('sound-toggle').addEventListener('click', function(e) {
-            e.stopPropagation();
-            bgmEnabled = !bgmEnabled;
-            localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
-            applySoundState();
-            
-            if (youtubePlayer) {
-                if (bgmEnabled && !document.hidden) {
-                    youtubePlayer.playVideo();
-                } else {
-                    youtubePlayer.pauseVideo();
-                }
-            }
-        });
-        
-        document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
-            e.stopPropagation();
-            shuffleEnabled = !shuffleEnabled;
-            localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
-            applyShuffleState();
-            
-            if (youtubePlayer && shuffleEnabled && bgmEnabled) {
+    }
+});
+
+// ============================================================
+// SHUFFLE TOGGLE
+// ============================================================
+document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
+    e.stopPropagation();
+    shuffleEnabled = !shuffleEnabled;
+    localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
+    applyShuffleState();
+    
+    if (youtubePlayer) {
+        try {
+            if (shuffleEnabled) {
                 youtubePlayer.setShuffle(true);
-                youtubePlayer.nextVideo();
-            } else if (youtubePlayer) {
+            } else {
                 youtubePlayer.setShuffle(false);
             }
-        });
-        
-        document.addEventListener('visibilitychange', () => {
-            if (youtubePlayer) {
-                if (document.hidden) {
-                    youtubePlayer.pauseVideo();
-                } else if (bgmEnabled) {
-                    youtubePlayer.playVideo();
-                }
-            }
-        });
-        
-        window.addEventListener('beforeunload', () => {
-            if (youtubePlayer) {
-                youtubePlayer.pauseVideo();
-            }
-        });
-        
-        applySoundState();
-        applyShuffleState();
+        } catch(e) {}
+    }
+});
 
-        // ============================================================
-        // CUTE CLICK SOUND
-        // ============================================================
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        document.addEventListener('click', (e) => {
-            if (bgmEnabled && e.target.closest('a, button, .skill-card, .socialIcons a')) {
-                playCuteClick();
+// ============================================================
+// SAVE POSITION WHEN LEAVING PAGE
+// ============================================================
+window.addEventListener('beforeunload', () => {
+    savePlaybackPosition();
+    if (youtubePlayer) {
+        try {
+            youtubePlayer.pauseVideo();
+        } catch(e) {}
+    }
+});
+
+// ============================================================
+// PAUSE/RESUME ON TAB VISIBILITY CHANGE
+// ============================================================
+document.addEventListener('visibilitychange', () => {
+    if (youtubePlayer) {
+        if (document.hidden) {
+            savePlaybackPosition();
+            youtubePlayer.pauseVideo();
+        } else if (bgmEnabled) {
+            youtubePlayer.playVideo();
+            // Seek to saved position
+            if (savedVideoTime > 0) {
+                setTimeout(() => {
+                    try {
+                        youtubePlayer.seekTo(savedVideoTime, true);
+                    } catch(e) {}
+                }, 500);
             }
-        });
-        
-        function playCuteClick() {
-            if (audioContext.state === 'suspended') audioContext.resume();
-            
-            const now = audioContext.currentTime;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, now);
-            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
-            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
-            
-            gain.gain.setValueAtTime(0.04, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-            
-            osc.start(now);
-            osc.stop(now + 0.1);
         }
+    }
+});
+
+// ============================================================
+// INITIALIZE STATES
+// ============================================================
+applySoundState();
+applyShuffleState();
+
+// ============================================================
+// CUTE CLICK SOUND
+// ============================================================
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+document.addEventListener('click', (e) => {
+    if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
+        playCuteClick();
+    }
+});
+
+function playCuteClick() {
+    if (audioContext.state === 'suspended') audioContext.resume();
+    
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(880, now);
+    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+    osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+    
+    gain.gain.setValueAtTime(0.04, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    
+    osc.start(now);
+    osc.stop(now + 0.1);
+}
 
         // ============================================================
         // CUSTOM CURSOR

@@ -84,18 +84,17 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        /* Cute Sound Toggle Button */
         .sound-toggle {
             position: fixed; bottom: 20px; right: 20px; z-index: 10000;
             width: 55px; height: 55px; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(240,128,128,0.4), rgba(255,182,193,0.3));
+            background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3));
             border: 2px solid #ffb6c1;
             display: flex; align-items: center; justify-content: center;
             cursor: none; transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(240,128,128,0.2);
+            box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2);
         }
-        .sound-toggle:hover { background: linear-gradient(135deg, rgba(240,128,128,0.6), rgba(255,182,193,0.5)); transform: scale(1.1); box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(240,128,128,0.3); }
-        .sound-toggle svg { width: 24px; height: 24px; fill: #fff; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
+        .sound-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
+        .sound-toggle svg { width: 24px; height: 24px; fill: #fff; }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -108,7 +107,6 @@
     </style>
 </head>
 <body>
-    <!-- Cute Sound Toggle Button with SVG Icons -->
     <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
         <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
         <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
@@ -166,30 +164,38 @@
 
     <script>
         // ============================================================
-        // COZY SOUND SYSTEM - Light BGM + Cute Click Sounds
+        // PERSISTENT SOUND SYSTEM - Continues across page navigation
         // ============================================================
         const SoundSystem = {
-            bgmEnabled: true,
-            sfxEnabled: true,
             bgmElement: null,
             audioContext: null,
             
             init() {
-                // Create BGM audio element with copyright-free cozy music
-                // Using Kevin MacLeod's "Clear Air" from incompetech (royalty-free)
+                // Get saved sound state from localStorage
+                const savedState = localStorage.getItem('dimdesk_sound_enabled');
+                this.bgmEnabled = savedState === null ? true : savedState === 'true';
+                this.sfxEnabled = this.bgmEnabled;
+                
+                // Create BGM element - Cozy Lofi R&B type
                 this.bgmElement = new Audio();
-                this.bgmElement.src = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Clear%20Air.mp3';
+                // Using Lofi Study music from pixabay (copyright-free)
+                this.bgmElement.src = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
                 this.bgmElement.loop = true;
-                this.bgmElement.volume = 0.08; // Very low volume
+                this.bgmElement.volume = 0.06; // Very low, cozy
                 this.bgmElement.preload = 'auto';
                 
-                // Initialize AudioContext for click sounds
+                // Initialize AudioContext
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Try to play BGM automatically
-                this.playBGM();
+                // Apply saved state
+                this.applySoundState();
                 
-                // Resume on first user interaction if needed
+                // Try to play BGM
+                if (this.bgmEnabled) {
+                    this.playBGM();
+                }
+                
+                // Resume on user interaction
                 document.addEventListener('click', () => {
                     if (this.audioContext.state === 'suspended') {
                         this.audioContext.resume();
@@ -199,14 +205,14 @@
                     }
                 }, { once: true });
                 
-                // Add cute click sound to all clickable elements
+                // Cute click sound on all interactive elements
                 document.addEventListener('click', (e) => {
-                    if (e.target.closest('a, button, .game-link, .socialIcons a, .sound-toggle')) {
+                    if (e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
                         this.playCuteClick();
                     }
                 });
                 
-                // Sound toggle button
+                // Sound toggle
                 const soundToggle = document.getElementById('sound-toggle');
                 if (soundToggle) {
                     soundToggle.addEventListener('click', (e) => {
@@ -216,11 +222,22 @@
                 }
             },
             
+            applySoundState() {
+                const soundIconOn = document.getElementById('sound-icon-on');
+                const soundIconOff = document.getElementById('sound-icon-off');
+                
+                if (this.bgmEnabled) {
+                    if (soundIconOn) soundIconOn.style.display = 'block';
+                    if (soundIconOff) soundIconOff.style.display = 'none';
+                } else {
+                    if (soundIconOn) soundIconOn.style.display = 'none';
+                    if (soundIconOff) soundIconOff.style.display = 'block';
+                }
+            },
+            
             playBGM() {
                 if (this.bgmEnabled && this.bgmElement) {
-                    this.bgmElement.play().catch(() => {
-                        console.log('BGM autoplay blocked, will play on interaction');
-                    });
+                    this.bgmElement.play().catch(() => {});
                 }
             },
             
@@ -234,17 +251,15 @@
                 this.bgmEnabled = !this.bgmEnabled;
                 this.sfxEnabled = this.bgmEnabled;
                 
-                const soundIconOn = document.getElementById('sound-icon-on');
-                const soundIconOff = document.getElementById('sound-icon-off');
+                // Save state
+                localStorage.setItem('dimdesk_sound_enabled', this.bgmEnabled);
+                
+                this.applySoundState();
                 
                 if (this.bgmEnabled) {
                     this.playBGM();
-                    if (soundIconOn) soundIconOn.style.display = 'block';
-                    if (soundIconOff) soundIconOff.style.display = 'none';
                 } else {
                     this.pauseBGM();
-                    if (soundIconOn) soundIconOn.style.display = 'none';
-                    if (soundIconOff) soundIconOff.style.display = 'block';
                 }
             },
             
@@ -257,35 +272,27 @@
                 
                 const now = this.audioContext.currentTime;
                 
-                // Create cute "pop" sound using two oscillators
-                const osc1 = this.audioContext.createOscillator();
-                const osc2 = this.audioContext.createOscillator();
-                const gainNode = this.audioContext.createGain();
+                // Cute "bubble pop" sound
+                const osc = this.audioContext.createOscillator();
+                const gain = this.audioContext.createGain();
                 
-                osc1.connect(gainNode);
-                osc2.connect(gainNode);
-                gainNode.connect(this.audioContext.destination);
+                osc.connect(gain);
+                gain.connect(this.audioContext.destination);
                 
-                // Cute high-pitched "pop"
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(1200, now);
-                osc1.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+                // Cute bubble pop - higher frequency with quick decay
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, now);
+                osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+                osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
                 
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(1800, now);
-                osc2.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
                 
-                gainNode.gain.setValueAtTime(0.06, now);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-                
-                osc1.start(now);
-                osc2.start(now);
-                osc1.stop(now + 0.1);
-                osc2.stop(now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
             }
         };
         
-        // Initialize sound system
         SoundSystem.init();
 
         // ============================================================
@@ -308,11 +315,9 @@
             init() {
                 document.addEventListener('mousemove', (e) => this.onMouseMove(e));
                 document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
-                document.addEventListener('visibilitychange', () => { this.enabled = !document.hidden; });
-                setInterval(() => { if (this.enabled && !document.hidden && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 200);
+                setInterval(() => { if (this.enabled && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 200);
             },
-            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; if (!this.enabled || document.hidden) return; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 2 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
-            onTouchMove(e) { this.lastMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY }; if (!this.enabled) return; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval * 1.5) return; this.lastSparkleTime = now; this.createSparkle(e.touches[0].clientX, e.touches[0].clientY); },
+            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 2 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
             createSparkle(x, y) { const type = Math.random(); if (type < 0.35) this.createParticle(x, y); else if (type < 0.65) this.createStar(x, y); else this.createDiamond(x, y); },
             createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 40; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 600); },
             createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 35; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 700); },
@@ -320,7 +325,6 @@
         };
         SparkleSystem.init();
 
-        // Video looping
         const bgVideo = document.getElementById('bg-video');
         if (bgVideo) { bgVideo.addEventListener('timeupdate', () => { if (bgVideo.currentTime >= bgVideo.duration - 0.15) { bgVideo.currentTime = 0; bgVideo.play(); } }); bgVideo.addEventListener('ended', () => { bgVideo.currentTime = 0; bgVideo.play(); }); bgVideo.addEventListener('stalled', () => bgVideo.play()); }
 
@@ -328,22 +332,21 @@
 
         const gameData = {
             featured: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound manipulation", img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#", "2D"], platforms: ["Steam", "itch.io", "Google Play", "App Store"], links: { "Steam": "#", "itch.io": "#", "Google Play": "#", "App Store": "#" } },
-                { title: "Project: Chronos", desc: "Time-bending action RPG", img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#", "RPG"], platforms: ["Coming Soon"], links: { "Wishlist": "#" } }
+                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound manipulation", img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#", "2D"], platforms: ["Steam", "itch.io"], links: { "Steam": "#", "itch.io": "#" } },
+                { title: "Project: Chronos", desc: "Time-bending action RPG", img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["Coming Soon"], links: { "Wishlist": "#" } }
             ],
             released: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound manipulation", img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#", "2D"], platforms: ["Steam", "itch.io", "Google Play", "App Store"], links: { "Steam": "#", "itch.io": "#", "Google Play": "#", "App Store": "#" } },
-                { title: "Neon Runner", desc: "Cyberpunk endless runner", img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["Google Play", "App Store"], links: { "Google Play": "#", "App Store": "#" } }
+                { title: "Echoes of Aether", desc: "Puzzle-platformer", img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["Steam", "itch.io"], links: { "Steam": "#", "itch.io": "#" } },
+                { title: "Neon Runner", desc: "Cyberpunk runner", img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity"], platforms: ["Google Play"], links: { "Google Play": "#" } }
             ],
             upcoming: [
-                { title: "Project: Chronos", desc: "Time-bending RPG", img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["TBA"], links: {} },
                 { title: "Paper Lanterns", desc: "Cozy management sim", img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["TBA"], links: {} }
             ]
         };
 
         function createCard(game, isFeatured = false) {
             const mediaHTML = game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
-            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
+            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="SoundSystem.playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
         }
 
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');

@@ -78,14 +78,49 @@
         .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
+        
+        /* Music Credits Section */
+        .music-credits {
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 0.7rem;
+            color: #808080;
+        }
+        .music-credits a {
+            color: #d4a5b5;
+            text-decoration: none;
+            font-style: italic;
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        .music-credits a:hover {
+            color: #ffb6c1;
+            text-shadow: 0 0 10px rgba(255,182,193,0.5);
+            letter-spacing: 0.5px;
+        }
+        .music-credits span {
+            color: #666;
+            font-style: normal;
+        }
+        
         .Oo { color: #808080; font-size: 0.8rem; }
         .Oo a { color: #808080; text-decoration: none; }
         .Oo a:hover { color: var(--text); }
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        .sound-toggle {
-            position: fixed; bottom: 20px; right: 20px; z-index: 10000;
+        /* Sound Controls */
+        .sound-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+        }
+        .sound-toggle, .shuffle-toggle {
             width: 55px; height: 55px; border-radius: 50%;
             background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3));
             border: 2px solid #ffb6c1;
@@ -93,8 +128,17 @@
             cursor: none; transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2);
         }
-        .sound-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
-        .sound-toggle svg { width: 24px; height: 24px; fill: #fff; }
+        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
+        .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
+        .shuffle-toggle.active {
+            background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6));
+            box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(173,216,230,0.4);
+            animation: shuffleGlow 2s ease-in-out infinite;
+        }
+        @keyframes shuffleGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); }
+            50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); }
+        }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -107,10 +151,19 @@
     </style>
 </head>
 <body>
-    <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
-        <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-        <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-    </button>
+    <!-- Hidden YouTube Player -->
+    <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
+    
+    <!-- Sound Controls -->
+    <div class="sound-controls">
+        <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
+            <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+        </button>
+        <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+            <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+    </div>
     
     <div class="background-video"><video autoplay muted loop playsinline id="bg-video"><source src="D.mp4" type="video/mp4"></video></div>
     <div class="custom-cursor" id="custom-cursor"></div>
@@ -159,133 +212,194 @@
             <a href="https://dimdesk.itch.io" target="_blank" title="Itch.io"><img src="itchioW.png" alt="Itch.io" onerror="this.style.display='none'"></a>
             <a href="https://cara.app/fubie/all" target="_blank" title="Cara"><img src="caraW.png" alt="Cara" onerror="this.style.display='none'"></a>
         </div>
+        
+        <!-- Music Credits -->
+        <div class="music-credits">
+            <span>♪ Music by</span>
+            <a href="https://www.youtube.com/@dani_hz" target="_blank">ᴅᴀɴɪ.ʜᴢ</a>
+            <span>and</span>
+            <a href="https://www.youtube.com/@shushubobo" target="_blank">shushubobo</a>
+            <span>♫</span>
+        </div>
+        
         <div class="Oo"><p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p><p>© 2025 DimDesk.Studios</p></div>
     </footer>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         // ============================================================
-        // PERSISTENT SOUND SYSTEM - Plays only when on site
+        // YOUTUBE PLAYLIST BGM SYSTEM
         // ============================================================
-        const SoundSystem = {
-            bgmElement: null,
-            audioContext: null,
-            
-            init() {
-                const savedState = localStorage.getItem('dimdesk_sound_enabled');
-                this.bgmEnabled = savedState === null ? true : savedState === 'true';
-                this.sfxEnabled = this.bgmEnabled;
-                
-                // NewJeans-style dreamy R&B lofi (copyright-free from Pixabay)
-                this.bgmElement = new Audio();
-                this.bgmElement.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_2c8b9c2c7e.mp3?filename=chill-abstract-lofi-115058.mp3';
-                this.bgmElement.loop = true;
-                this.bgmElement.volume = 0.06;
-                this.bgmElement.preload = 'auto';
-                
-                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                this.applySoundState();
-                
-                if (this.bgmEnabled) {
-                    this.playBGM();
-                }
-                
-                // Play/Pause BGM when tab visibility changes
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        this.pauseBGM();
-                    } else if (this.bgmEnabled) {
-                        this.playBGM();
-                    }
-                });
-                
-                // Pause when leaving the page
-                window.addEventListener('beforeunload', () => {
-                    this.pauseBGM();
-                });
-                
-                // Resume on user interaction
-                document.addEventListener('click', () => {
-                    if (this.audioContext.state === 'suspended') {
-                        this.audioContext.resume();
-                    }
-                    if (this.bgmElement.paused && this.bgmEnabled && !document.hidden) {
-                        this.playBGM();
-                    }
-                }, { once: true });
-                
-                // Cute click sound
-                document.addEventListener('click', (e) => {
-                    if (e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
-                        this.playCuteClick();
-                    }
-                });
-                
-                const soundToggle = document.getElementById('sound-toggle');
-                if (soundToggle) {
-                    soundToggle.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.toggleSound();
-                    });
-                }
-            },
-            
-            applySoundState() {
-                const soundIconOn = document.getElementById('sound-icon-on');
-                const soundIconOff = document.getElementById('sound-icon-off');
-                if (this.bgmEnabled) {
-                    if (soundIconOn) soundIconOn.style.display = 'block';
-                    if (soundIconOff) soundIconOff.style.display = 'none';
-                } else {
-                    if (soundIconOn) soundIconOn.style.display = 'none';
-                    if (soundIconOff) soundIconOff.style.display = 'block';
-                }
-            },
-            
-            playBGM() {
-                if (this.bgmEnabled && this.bgmElement && !document.hidden) {
-                    this.bgmElement.play().catch(() => {});
-                }
-            },
-            
-            pauseBGM() {
-                if (this.bgmElement) this.bgmElement.pause();
-            },
-            
-            toggleSound() {
-                this.bgmEnabled = !this.bgmEnabled;
-                this.sfxEnabled = this.bgmEnabled;
-                localStorage.setItem('dimdesk_sound_enabled', this.bgmEnabled);
-                this.applySoundState();
-                if (this.bgmEnabled) this.playBGM();
-                else this.pauseBGM();
-            },
-            
-            playCuteClick() {
-                if (!this.sfxEnabled || !this.audioContext) return;
-                if (this.audioContext.state === 'suspended') this.audioContext.resume();
-                
-                const now = this.audioContext.currentTime;
-                const osc = this.audioContext.createOscillator();
-                const gain = this.audioContext.createGain();
-                
-                osc.connect(gain);
-                gain.connect(this.audioContext.destination);
-                
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(880, now);
-                osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
-                osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
-                
-                gain.gain.setValueAtTime(0.04, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-                
-                osc.start(now);
-                osc.stop(now + 0.1);
-            }
-        };
+        let youtubePlayer = null;
+        let bgmEnabled = true;
+        let shuffleEnabled = false;
         
-        SoundSystem.init();
+        const PLAYLIST_ID = 'PLUmFF7Wbo1Gw'; // Your playlist ID
+        
+        // Load saved states
+        const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
+        if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
+        
+        const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
+        if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
+        
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtube-bgm-player', {
+                height: '1',
+                width: '1',
+                playerVars: {
+                    autoplay: bgmEnabled ? 1 : 0,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    iv_load_policy: 3,
+                    listType: 'playlist',
+                    list: PLAYLIST_ID,
+                    loop: 1,
+                    modestbranding: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    volume: 15
+                },
+                events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                }
+            });
+        }
+        
+        function onPlayerReady(event) {
+            applySoundState();
+            applyShuffleState();
+            
+            if (bgmEnabled && !document.hidden) {
+                event.target.playVideo();
+            }
+            
+            // Show shuffle button
+            document.getElementById('shuffle-toggle').style.display = 'flex';
+        }
+        
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED && shuffleEnabled && bgmEnabled) {
+                // YouTube handles playlist looping, but we can shuffle manually
+                event.target.nextVideo();
+            }
+            
+            if (event.data === YT.PlayerState.PLAYING && document.hidden) {
+                event.target.pauseVideo();
+            }
+        }
+        
+        function applySoundState() {
+            const soundIconOn = document.getElementById('sound-icon-on');
+            const soundIconOff = document.getElementById('sound-icon-off');
+            
+            if (bgmEnabled) {
+                if (soundIconOn) soundIconOn.style.display = 'block';
+                if (soundIconOff) soundIconOff.style.display = 'none';
+            } else {
+                if (soundIconOn) soundIconOn.style.display = 'none';
+                if (soundIconOff) soundIconOff.style.display = 'block';
+            }
+        }
+        
+        function applyShuffleState() {
+            const shuffleBtn = document.getElementById('shuffle-toggle');
+            if (shuffleBtn) {
+                if (shuffleEnabled) {
+                    shuffleBtn.classList.add('active');
+                } else {
+                    shuffleBtn.classList.remove('active');
+                }
+            }
+        }
+        
+        // Sound toggle
+        document.getElementById('sound-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            bgmEnabled = !bgmEnabled;
+            localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
+            applySoundState();
+            
+            if (youtubePlayer) {
+                if (bgmEnabled && !document.hidden) {
+                    youtubePlayer.playVideo();
+                } else {
+                    youtubePlayer.pauseVideo();
+                }
+            }
+        });
+        
+        // Shuffle toggle
+        document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            shuffleEnabled = !shuffleEnabled;
+            localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
+            applyShuffleState();
+            
+            if (youtubePlayer && shuffleEnabled && bgmEnabled) {
+                youtubePlayer.setShuffle(true);
+                youtubePlayer.nextVideo();
+            } else if (youtubePlayer) {
+                youtubePlayer.setShuffle(false);
+            }
+        });
+        
+        // Pause when tab hidden
+        document.addEventListener('visibilitychange', () => {
+            if (youtubePlayer) {
+                if (document.hidden) {
+                    youtubePlayer.pauseVideo();
+                } else if (bgmEnabled) {
+                    youtubePlayer.playVideo();
+                }
+            }
+        });
+        
+        // Pause before leaving page
+        window.addEventListener('beforeunload', () => {
+            if (youtubePlayer) {
+                youtubePlayer.pauseVideo();
+            }
+        });
+        
+        // Apply states
+        applySoundState();
+        applyShuffleState();
+
+        // ============================================================
+        // CUTE CLICK SOUND
+        // ============================================================
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        document.addEventListener('click', (e) => {
+            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
+                playCuteClick();
+            }
+        });
+        
+        function playCuteClick() {
+            if (audioContext.state === 'suspended') audioContext.resume();
+            
+            const now = audioContext.currentTime;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+            
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
 
         // ============================================================
         // CUSTOM CURSOR
@@ -338,7 +452,7 @@
 
         function createCard(game, isFeatured = false) {
             const mediaHTML = game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
-            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="SoundSystem.playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
+            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
         }
 
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');

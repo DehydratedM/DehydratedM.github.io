@@ -568,26 +568,35 @@ function playCuteClick() {
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
-      const gameData = {
+    const gameData = {
     featured: [
         { 
             title: "Bloomy Delivery Adventures", 
             desc: "A cozy delivery adventure game where you help Bloomy deliver packages in a charming world", 
-            img: "https://play-lh.googleusercontent.com/YOUR_ICON_ID=w512", 
-            video: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID", 
+            img: "https://play-lh.googleusercontent.com/REPLACE_WITH_ACTUAL_ICON_URL=w512", 
+            video: "", // Add YouTube trailer URL if you have one
             tags: ["Unity", "C#", "Android", "Cozy", "Adventure"],
             platforms: ["Google Play"],
             links: { 
                 "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
             }
+        },
+        { 
+            title: "Project: Chronos", 
+            desc: "Time-bending action RPG", 
+            img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+            tags: ["Unity", "C#"], 
+            platforms: ["Coming Soon"], 
+            links: { "Wishlist": "#" } 
         }
     ],
     released: [
         { 
             title: "Bloomy Delivery Adventures", 
             desc: "A cozy delivery adventure game for Android devices", 
-            img: "https://play-lh.googleusercontent.com/YOUR_ICON_ID=w512", 
-            video: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID", 
+            img: "https://play-lh.googleusercontent.com/REPLACE_WITH_ACTUAL_ICON_URL=w512", 
+            video: "", // Add YouTube trailer URL if you have one
             tags: ["Unity", "C#", "Android", "Cozy"],
             platforms: ["Google Play"],
             links: { 
@@ -595,7 +604,26 @@ function playCuteClick() {
             }
         }
     ],
-    upcoming: []
+    upcoming: [
+        { 
+            title: "Project: Chronos", 
+            desc: "Time-bending RPG", 
+            img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos", 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+            tags: ["Unity", "C#"], 
+            platforms: ["TBA"], 
+            links: {} 
+        },
+        { 
+            title: "Paper Lanterns", 
+            desc: "Cozy management sim", 
+            img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns", 
+            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+            tags: ["Unity", "C#"], 
+            platforms: ["TBA"], 
+            links: {} 
+        }
+    ]
 };
         function createCard(game, isFeatured = false) {
             const mediaHTML = game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;

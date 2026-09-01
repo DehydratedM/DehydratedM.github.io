@@ -164,56 +164,63 @@
 
     <script>
         // ============================================================
-        // PERSISTENT SOUND SYSTEM - Continues across page navigation
+        // PERSISTENT SOUND SYSTEM - Plays only when on site
         // ============================================================
         const SoundSystem = {
             bgmElement: null,
             audioContext: null,
             
             init() {
-                // Get saved sound state from localStorage
                 const savedState = localStorage.getItem('dimdesk_sound_enabled');
                 this.bgmEnabled = savedState === null ? true : savedState === 'true';
                 this.sfxEnabled = this.bgmEnabled;
                 
-                // Create BGM element - Cozy Lofi R&B type
+                // NewJeans-style dreamy R&B lofi (copyright-free from Pixabay)
                 this.bgmElement = new Audio();
-                // Using Lofi Study music from pixabay (copyright-free)
-                //this.bgmElement.src = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3';
                 this.bgmElement.src = 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_2c8b9c2c7e.mp3?filename=chill-abstract-lofi-115058.mp3';
                 this.bgmElement.loop = true;
-                this.bgmElement.volume = 0.06; // Very low, cozy
+                this.bgmElement.volume = 0.06;
                 this.bgmElement.preload = 'auto';
                 
-                // Initialize AudioContext
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 
-                // Apply saved state
                 this.applySoundState();
                 
-                // Try to play BGM
                 if (this.bgmEnabled) {
                     this.playBGM();
                 }
+                
+                // Play/Pause BGM when tab visibility changes
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        this.pauseBGM();
+                    } else if (this.bgmEnabled) {
+                        this.playBGM();
+                    }
+                });
+                
+                // Pause when leaving the page
+                window.addEventListener('beforeunload', () => {
+                    this.pauseBGM();
+                });
                 
                 // Resume on user interaction
                 document.addEventListener('click', () => {
                     if (this.audioContext.state === 'suspended') {
                         this.audioContext.resume();
                     }
-                    if (this.bgmElement.paused && this.bgmEnabled) {
+                    if (this.bgmElement.paused && this.bgmEnabled && !document.hidden) {
                         this.playBGM();
                     }
                 }, { once: true });
                 
-                // Cute click sound on all interactive elements
+                // Cute click sound
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
                         this.playCuteClick();
                     }
                 });
                 
-                // Sound toggle
                 const soundToggle = document.getElementById('sound-toggle');
                 if (soundToggle) {
                     soundToggle.addEventListener('click', (e) => {
@@ -226,7 +233,6 @@
             applySoundState() {
                 const soundIconOn = document.getElementById('sound-icon-on');
                 const soundIconOff = document.getElementById('sound-icon-off');
-                
                 if (this.bgmEnabled) {
                     if (soundIconOn) soundIconOn.style.display = 'block';
                     if (soundIconOff) soundIconOff.style.display = 'none';
@@ -237,50 +243,35 @@
             },
             
             playBGM() {
-                if (this.bgmEnabled && this.bgmElement) {
+                if (this.bgmEnabled && this.bgmElement && !document.hidden) {
                     this.bgmElement.play().catch(() => {});
                 }
             },
             
             pauseBGM() {
-                if (this.bgmElement) {
-                    this.bgmElement.pause();
-                }
+                if (this.bgmElement) this.bgmElement.pause();
             },
             
             toggleSound() {
                 this.bgmEnabled = !this.bgmEnabled;
                 this.sfxEnabled = this.bgmEnabled;
-                
-                // Save state
                 localStorage.setItem('dimdesk_sound_enabled', this.bgmEnabled);
-                
                 this.applySoundState();
-                
-                if (this.bgmEnabled) {
-                    this.playBGM();
-                } else {
-                    this.pauseBGM();
-                }
+                if (this.bgmEnabled) this.playBGM();
+                else this.pauseBGM();
             },
             
             playCuteClick() {
                 if (!this.sfxEnabled || !this.audioContext) return;
-                
-                if (this.audioContext.state === 'suspended') {
-                    this.audioContext.resume();
-                }
+                if (this.audioContext.state === 'suspended') this.audioContext.resume();
                 
                 const now = this.audioContext.currentTime;
-                
-                // Cute "bubble pop" sound
                 const osc = this.audioContext.createOscillator();
                 const gain = this.audioContext.createGain();
                 
                 osc.connect(gain);
                 gain.connect(this.audioContext.destination);
                 
-                // Cute bubble pop - higher frequency with quick decay
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(880, now);
                 osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);

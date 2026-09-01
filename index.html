@@ -243,7 +243,7 @@
         const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
         if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
         
-     function onYouTubeIframeAPIReady() {
+  function onYouTubeIframeAPIReady() {
     youtubePlayer = new YT.Player('youtube-bgm-player', {
         height: '1',
         width: '1',
@@ -259,7 +259,7 @@
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
-            volume: 10  // ← CHANGE THIS NUMBER (currently 10)
+            volume: 3  // ← Changed from 10 to 3 (much softer)
         },
         events: {
             onReady: onPlayerReady,

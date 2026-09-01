@@ -114,6 +114,58 @@ function playVideo() {
     }
 }
 
+// Mouse-following sparkle effect
+document.addEventListener('mousemove', function(e) {
+    // Create sparkle element
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle-trail';
+    
+    // Random sparkle character
+    const sparkles = ['✨', '⭐', '💫', '🌟', '✨', '⚡'];
+    sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    
+    // Random position offset
+    const offsetX = (Math.random() - 0.5) * 20;
+    const offsetY = (Math.random() - 0.5) * 20;
+    
+    // Set position
+    sparkle.style.left = (e.clientX + offsetX) + 'px';
+    sparkle.style.top = (e.clientY + offsetY) + 'px';
+    
+    // Random size
+    const size = 10 + Math.random() * 15;
+    sparkle.style.fontSize = size + 'px';
+    
+    // Random rotation
+    sparkle.style.transform = `rotate(${Math.random() * 360}deg)`;
+    
+    // Add to body
+    document.body.appendChild(sparkle);
+    
+    // Remove after animation
+    setTimeout(() => {
+        sparkle.remove();
+    }, 1000);
+});
+
+// Throttle sparkle creation for performance
+let lastSparkleTime = 0;
+document.addEventListener('mousemove', function(e) {
+    const now = Date.now();
+    if (now - lastSparkleTime < 150) return; // Only create sparkle every 150ms
+    lastSparkleTime = now;
+    
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle-trail';
+    const sparkles = ['✨', '⭐', '💫', '🌟'];
+    sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+    sparkle.style.left = (e.clientX + (Math.random() - 0.5) * 15) + 'px';
+    sparkle.style.top = (e.clientY + (Math.random() - 0.5) * 15) + 'px';
+    sparkle.style.fontSize = (8 + Math.random() * 12) + 'px';
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 800);
+});
+
 // ==========================================================================
 // SMOOTH CAROUSEL CLASS WITH IMPROVED PERFORMANCE
 // ==========================================================================

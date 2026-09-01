@@ -131,7 +131,7 @@
     
     <header>
         <div class="HE">
-            <a href="index.html" class="logo-container"><img src="cat.png" alt="DimDesk" class="logo-img"><span>EchoDream.Studio</span></a>
+            <a href="index.html" class="logo-container"><img src="cat.png" alt="EchoDream" class="logo-img"><span>EchoDream.Studio</span></a>
             <nav class="nav-links" id="main-nav">
                 <ul>
                     <li><a href="index.html" class="current-page">Home</a></li>
@@ -144,7 +144,7 @@
     </header>
 
     <div class="hero-section">
-        <img src="logo2.png" alt="DimDesk Studios" class="hero-logo">
+        <img src="logo2.png" alt="EchoDream.Studio" class="hero-logo">
         <h1 class="hero-title">EchoDream.Studio</h1>
         <p class="hero-subtitle">Independent Game Developer & Artist</p>
     </div>
@@ -181,7 +181,7 @@
             <span>♫</span>
         </div>
         
-        <div class="Oo"><p>Contact: <a href="mailto:echodreamcontact@gmail.com">echodreamcontact@gmail.com</a></p><p>© 2025 EchoDream.Studio</p></div>
+        <div class="Oo"><p>Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a></p><p>© 2025 EchoDream.Studio</p></div>
     </footer>
 
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -202,14 +202,14 @@
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 9;
 
-        const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
+        const savedSoundState = localStorage.getItem('echodream_sound_enabled');
         if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
 
-        const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
+        const savedShuffleState = localStorage.getItem('echodream_shuffle_enabled');
         if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
 
-        const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
-        const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
+        const savedVideoTime = parseFloat(localStorage.getItem('echodream_bgm_time') || '0');
+        const savedVideoIndex = parseInt(localStorage.getItem('echodream_bgm_index') || '0');
         currentVideoIndex = savedVideoIndex;
 
         function onYouTubeIframeAPIReady() {
@@ -299,7 +299,7 @@
             }
             
             if (event.data === YT.PlayerState.ENDED) {
-                localStorage.setItem('dimdesk_bgm_time', '0');
+                localStorage.setItem('echodream_bgm_time', '0');
                 pendingSeekTime = 0;
                 
                 if (bgmEnabled && !document.hidden) {
@@ -338,8 +338,8 @@
                     } while (randomIndex === currentVideoIndex && playlistVideos.length > 1);
                     
                     currentVideoIndex = randomIndex;
-                    localStorage.setItem('dimdesk_bgm_index', randomIndex.toString());
-                    localStorage.setItem('dimdesk_bgm_time', '0');
+                    localStorage.setItem('echodream_bgm_index', randomIndex.toString());
+                    localStorage.setItem('echodream_bgm_time', '0');
                     
                     youtubePlayer.playVideoAt(randomIndex);
                     console.log('Playing random video at index:', randomIndex);
@@ -359,10 +359,10 @@
                     const currentIndex = youtubePlayer.getPlaylistIndex();
                     
                     if (currentTime > 0.5) {
-                        localStorage.setItem('dimdesk_bgm_time', currentTime.toString());
+                        localStorage.setItem('echodream_bgm_time', currentTime.toString());
                     }
                     if (currentIndex >= 0) {
-                        localStorage.setItem('dimdesk_bgm_index', currentIndex.toString());
+                        localStorage.setItem('echodream_bgm_index', currentIndex.toString());
                         currentVideoIndex = currentIndex;
                     }
                 } catch(e) {}
@@ -396,7 +396,7 @@
         document.getElementById('sound-toggle').addEventListener('click', function(e) {
             e.stopPropagation();
             bgmEnabled = !bgmEnabled;
-            localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
+            localStorage.setItem('echodream_sound_enabled', bgmEnabled);
             applySoundState();
             
             if (youtubePlayer) {
@@ -415,7 +415,7 @@
         document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
             e.stopPropagation();
             shuffleEnabled = !shuffleEnabled;
-            localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
+            localStorage.setItem('echodream_shuffle_enabled', shuffleEnabled);
             applyShuffleState();
             console.log('Shuffle ' + (shuffleEnabled ? 'enabled' : 'disabled'));
             

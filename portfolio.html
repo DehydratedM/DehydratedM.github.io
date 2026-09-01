@@ -31,9 +31,9 @@
         .sparkle-diamond { position: fixed; pointer-events: none; z-index: 99997; width: 6px; height: 6px; background: white; transform: rotate(45deg); animation: diamondFade 0.5s ease-out forwards; box-shadow: 0 0 8px 2px rgba(255,255,255,0.7); }
         @keyframes diamondFade { 0% { transform: rotate(45deg) scale(0); opacity: 1; } 100% { transform: rotate(135deg) scale(2); opacity: 0; } }
         
-        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
-        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(240,128,128,0.15) 50%, rgba(10,10,10,0.85) 100%); animation: glowPulse 8s ease-in-out infinite; }
+        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
+        .background-video iframe { position: absolute; top: 50%; left: 50%; width: 130vw; height: 130vh; transform: translate(-50%, -50%); pointer-events: none; border: none; filter: brightness(0.3); }
+        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(240,128,128,0.18) 50%, rgba(10,10,10,0.88) 100%); animation: glowPulse 8s ease-in-out infinite; }
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
@@ -108,7 +108,10 @@
         </button>
     </div>
     
-    <div class="background-video"><video autoplay muted loop playsinline id="bg-video"><source src="D.mp4" type="video/mp4"></video></div>
+    <!-- Background video using YouTube iframe -->
+    <div class="background-video">
+        <iframe src="https://www.youtube.com/embed/P8DQjFX8OB8?autoplay=1&mute=1&controls=0&loop=1&playlist=P8DQjFX8OB8&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
     <div class="custom-cursor" id="custom-cursor"></div>
     <div class="cursor-sparkle-ring" id="cursor-ring"></div>
     
@@ -506,13 +509,6 @@
             createDiamond(x, y) { const d = document.createElement('div'); d.className = 'sparkle-diamond'; const size = 3 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; d.style.left = (x + Math.cos(angle) * dist) + 'px'; d.style.top = (y + Math.sin(angle) * dist) + 'px'; d.style.width = size + 'px'; d.style.height = size + 'px'; document.body.appendChild(d); setTimeout(() => { if (d.parentNode) d.remove(); }, 500); }
         };
         SparkleSystem.init();
-
-        const bgVideo = document.getElementById('bg-video');
-        if (bgVideo) { 
-            bgVideo.addEventListener('timeupdate', () => { if (bgVideo.currentTime >= bgVideo.duration - 0.15) { bgVideo.currentTime = 0; bgVideo.play(); } }); 
-            bgVideo.addEventListener('ended', () => { bgVideo.currentTime = 0; bgVideo.play(); }); 
-            bgVideo.addEventListener('stalled', () => bgVideo.play()); 
-        }
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 

@@ -12,18 +12,10 @@ let videoRetryCount = 0;
 const MAX_VIDEO_RETRIES = 3;
 
 // ==========================================================================
-// BACKGROUND VIDEO SOURCES - Cute but formal looping backgrounds (Online)
+// BACKGROUND VIDEO - YouTube Video ID (P8DQjFX8OB8)
 // ==========================================================================
-const BACKGROUND_VIDEO_SOURCES = [
-    // Soft white and gold particles floating - elegant and cute
-    'https://cdn.pixabay.com/video/2024/03/18/204245-923456789_large.mp4',
-    // Gentle pastel bokeh lights - warm and formal
-    'https://cdn.pixabay.com/video/2023/11/15/190234-876543210_large.mp4',
-    // Soft pink shimmer with sparkles - cute and delicate
-    'https://cdn.pixabay.com/video/2024/01/22/195678-891234567_large.mp4',
-    // Fallback local video
-    'D.mp4'
-];
+const YOUTUBE_BG_VIDEO_ID = 'P8DQjFX8OB8';
+const LOCAL_BG_VIDEO = 'D.mp4'; // Fallback local video
 
 // ==========================================================================
 // WHITE SPARKLE PARTICLE SYSTEM
@@ -140,47 +132,89 @@ const SparkleSystem = {
 SparkleSystem.init();
 
 // ==========================================================================
-// ENHANCED VIDEO SYSTEM - SMOOTH LOOPING WITH FALLBACK
+// ENHANCED VIDEO SYSTEM - YouTube Background with Fallback
 // ==========================================================================
 function initVideoSystem() {
-    videoElement = document.getElementById('bg-video');
+    const bgContainer = document.querySelector('.background-video');
+    if (!bgContainer) return;
     
-    if (!videoElement) return;
+    // Clear existing content
+    bgContainer.innerHTML = '';
     
-    // Set up multiple source elements for fallback
-    const videoContainer = videoElement.parentElement;
-    if (videoContainer) {
-        // Clear existing sources
-        videoElement.innerHTML = '';
-        
-        // Add all sources
-        BACKGROUND_VIDEO_SOURCES.forEach((src) => {
-            const sourceElement = document.createElement('source');
-            sourceElement.src = src;
-            sourceElement.type = 'video/mp4';
-            videoElement.appendChild(sourceElement);
-        });
-    }
+    // Create YouTube iframe for background video
+    const iframe = document.createElement('iframe');
+    iframe.id = 'bg-youtube-video';
+    iframe.src = `https://www.youtube.com/embed/${YOUTUBE_BG_VIDEO_ID}?autoplay=1&mute=1&controls=0&loop=1&playlist=${YOUTUBE_BG_VIDEO_ID}&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1`;
+    iframe.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 100vh;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        border: none;
+        object-fit: cover;
+    `;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allow', 'autoplay; encrypted-media');
+    iframe.setAttribute('allowfullscreen', '');
     
-    videoElement.preload = 'auto';
-    videoElement.muted = true;
-    videoElement.playsInline = true;
-    videoElement.autoplay = true;
-    videoElement.loop = true;
+    // Also create a local video fallback
+    const fallbackVideo = document.createElement('video');
+    fallbackVideo.id = 'bg-video';
+    fallbackVideo.muted = true;
+    fallbackVideo.autoplay = true;
+    fallbackVideo.loop = true;
+    fallbackVideo.playsInline = true;
+    fallbackVideo.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    `;
     
-    videoElement.removeEventListener('timeupdate', handleVideoTimeUpdate);
-    videoElement.removeEventListener('ended', handleVideoEnded);
-    videoElement.removeEventListener('stalled', handleVideoStalled);
-    videoElement.removeEventListener('waiting', handleVideoWaiting);
-    videoElement.removeEventListener('error', handleVideoError);
+    const sourceElement = document.createElement('source');
+    sourceElement.src = LOCAL_BG_VIDEO;
+    sourceElement.type = 'video/mp4';
+    fallbackVideo.appendChild(sourceElement);
     
-    videoElement.addEventListener('timeupdate', handleVideoTimeUpdate);
-    videoElement.addEventListener('ended', handleVideoEnded);
-    videoElement.addEventListener('stalled', handleVideoStalled);
-    videoElement.addEventListener('waiting', handleVideoWaiting);
-    videoElement.addEventListener('error', handleVideoError);
+    bgContainer.appendChild(iframe);
+    bgContainer.appendChild(fallbackVideo);
     
-    playVideo();
+    // Set videoElement reference for fallback
+    videoElement = fallbackVideo;
+    
+    // Add error handling to iframe
+    iframe.addEventListener('error', () => {
+        console.log('YouTube background failed, using fallback video');
+        iframe.style.display = 'none';
+        fallbackVideo.style.display = 'block';
+        videoElement = fallbackVideo;
+        playVideo();
+    });
+    
+    // Add load event to iframe
+    iframe.addEventListener('load', () => {
+        console.log('YouTube background video loaded');
+        videoRetryCount = 0;
+    });
+    
+    // Initialize fallback video event listeners
+    fallbackVideo.removeEventListener('timeupdate', handleVideoTimeUpdate);
+    fallbackVideo.removeEventListener('ended', handleVideoEnded);
+    fallbackVideo.removeEventListener('stalled', handleVideoStalled);
+    fallbackVideo.removeEventListener('waiting', handleVideoWaiting);
+    fallbackVideo.removeEventListener('error', handleVideoError);
+    
+    fallbackVideo.addEventListener('timeupdate', handleVideoTimeUpdate);
+    fallbackVideo.addEventListener('ended', handleVideoEnded);
+    fallbackVideo.addEventListener('stalled', handleVideoStalled);
+    fallbackVideo.addEventListener('waiting', handleVideoWaiting);
+    fallbackVideo.addEventListener('error', handleVideoError);
 }
 
 function handleVideoTimeUpdate() {
@@ -680,4 +714,4 @@ window.toggleCarousels = toggleCarousels;
 window.initCarousels = initCarousels;
 window.playVideo = playVideo;
 window.SparkleSystem = SparkleSystem;
-window.BACKGROUND_VIDEO_SOURCES = BACKGROUND_VIDEO_SOURCES;
+window.YOUTUBE_BG_VIDEO_ID = YOUTUBE_BG_VIDEO_ID;

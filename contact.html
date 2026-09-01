@@ -7,52 +7,309 @@
     <title>Contact - DimDesk.Studios</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <style>
-        :root { --bg: #0a0a0a; --bg2: #1a1a1a; --text: #fff; --text2: #b0b0b0; --accent: #f08080; --border: rgba(255,255,255,0.1); }
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #1a1a1a;
+            --text: #fff;
+            --text2: #b0b0b0;
+            --accent: #f08080;
+            --border: rgba(255,255,255,0.1);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
-        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
-        .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); }
-        .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
-        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
-        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(255,255,255,0.1); }
-        .contact-header { text-align: center; margin: 40px auto; padding: 0 20px; max-width: 600px; }
-        .contact-title { font-size: 2.5rem; font-weight: 700; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Sparkle overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255,215,0,0.3), transparent),
+                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 80% 60%, rgba(255,215,0,0.2), transparent),
+                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 70% 90%, rgba(255,215,0,0.3), transparent);
+            animation: sparkleTwinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkleTwinkle {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        .background-video { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+        }
+        .background-video video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            filter: brightness(0.25);
+        }
+        .background-video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 10, 0.85) 0%,
+                rgba(240, 128, 128, 0.15) 50%,
+                rgba(10, 10, 10, 0.85) 100%);
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+        
+        .HE { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.75rem 2rem; 
+            background: rgba(15,15,15,0.95); 
+            border-bottom: 1px solid rgba(240, 128, 128, 0.2); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(240, 128, 128, 0.1);
+        }
+        .logo-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            text-decoration: none; 
+            color: var(--text); 
+        }
+        .logo-img { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 8px; 
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 15px rgba(240, 128, 128, 0.3);
+        }
+        .nav-links ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 0.5rem; 
+        }
+        .nav-links a { 
+            color: var(--text2); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.current-page { 
+            color: var(--text); 
+            background: rgba(240, 128, 128, 0.1);
+            box-shadow: 0 0 10px rgba(240, 128, 128, 0.2);
+        }
+        
+        .contact-header { 
+            text-align: center; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+            max-width: 600px; 
+        }
+        .contact-title { 
+            font-size: 2.5rem; 
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(240, 128, 128, 0.5);
+        }
         .contact-subtitle { color: var(--text2); }
-        .contact-section { max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
-        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .contact-info, .contact-form { background: var(--bg2); border-radius: 8px; padding: 25px; border: 1px solid var(--border); }
-        .contact-info h2, .contact-form h2 { font-size: 1.3rem; margin-bottom: 20px; }
-        .contact-method { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); }
+        
+        .contact-section { 
+            max-width: 800px; 
+            margin: 0 auto 40px; 
+            padding: 0 20px; 
+        }
+        .contact-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        .contact-info, .contact-form { 
+            background: var(--bg2); 
+            border-radius: 8px; 
+            padding: 25px; 
+            border: 1px solid rgba(240, 128, 128, 0.2);
+            box-shadow: 0 0 20px rgba(240, 128, 128, 0.1);
+        }
+        .contact-info h2, .contact-form h2 { 
+            font-size: 1.3rem; 
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(240, 128, 128, 0.4);
+        }
+        .contact-method { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 12px 0; 
+            border-bottom: 1px solid var(--border); 
+            text-decoration: none; 
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+        .contact-method:hover {
+            padding-left: 10px;
+            color: var(--accent);
+        }
         .contact-method:last-child { border-bottom: none; }
-        .contact-icon { width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .contact-label { color: #808080; font-size: 0.75rem; text-transform: uppercase; }
+        .contact-icon { 
+            width: 35px; 
+            height: 35px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .contact-label { 
+            color: #808080; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+        }
         .contact-value { font-weight: 500; }
+        
         .form-group { margin-bottom: 15px; }
-        .form-label { display: block; color: var(--text2); font-size: 0.85rem; margin-bottom: 5px; }
-        .form-input, .form-textarea { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; }
+        .form-label { 
+            display: block; 
+            color: var(--text2); 
+            font-size: 0.85rem; 
+            margin-bottom: 5px; 
+        }
+        .form-input, .form-textarea { 
+            width: 100%; 
+            padding: 10px 12px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            color: var(--text); 
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(240, 128, 128, 0.3);
+        }
         .form-textarea { min-height: 120px; resize: vertical; }
-        .form-submit { width: 100%; padding: 12px; background: var(--accent); color: #000; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
-        .form-submit:hover { background: #e07070; }
-        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid var(--border); text-align: center; }
-        .socialIcons { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
-        .socialIcons a { width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .form-submit { 
+            width: 100%; 
+            padding: 12px; 
+            background: var(--accent); 
+            color: #000; 
+            border: none; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .form-submit:hover { 
+            background: #e07070;
+            box-shadow: 0 0 20px rgba(240, 128, 128, 0.4);
+        }
+        
+        footer { 
+            background: rgba(15,15,15,0.9); 
+            padding: 25px 15px; 
+            margin-top: 40px; 
+            border-top: 1px solid rgba(240, 128, 128, 0.2); 
+            text-align: center; 
+        }
+        .socialIcons { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+        }
+        .socialIcons a { 
+            width: 40px; 
+            height: 40px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .socialIcons a:hover {
+            background: rgba(240, 128, 128, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(240, 128, 128, 0.3);
+        }
         .Oo { color: #808080; font-size: 0.8rem; }
+        .Oo a { color: #808080; text-decoration: none; }
+        .Oo a:hover { color: var(--text); }
+        
         .mobile-toggle { display: none; }
         @media (max-width: 768px) {
-            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; }
-            .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; }
+            .mobile-toggle { 
+                display: flex !important; 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                width: 40px; 
+                height: 40px; 
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+            .mobile-toggle span {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background: var(--text);
+                margin: 2px 0;
+            }
+            .nav-links { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 250px; 
+                height: 100vh; 
+                background: rgba(15,15,15,0.98); 
+                padding: 80px 15px 20px; 
+                transition: right 0.3s; 
+                z-index: 999;
+            }
             .nav-links.active { right: 0; }
             .nav-links ul { flex-direction: column; }
+            .nav-links li { width: 100%; list-style: none; }
+            .nav-links a { display: block; padding: 12px 15px; }
         }
     </style>
 </head>
 <body>
     <div class="background-video">
-        <video autoplay muted loop playsinline><source src="D.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+        </video>
     </div>
+    
     <header>
         <div class="HE">
             <a href="index.html" class="logo-container">
@@ -108,10 +365,11 @@
 
     <footer>
         <div class="socialIcons">
-            <a href="https://bsky.app" target="_blank">☁️</a>
-            <a href="https://youtube.com" target="_blank">▶️</a>
-            <a href="https://patreon.com" target="_blank">⭐</a>
-            <a href="https://itch.io" target="_blank">🎮</a>
+            <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" title="Bluesky">☁️</a>
+            <a href="https://www.youtube.com/@fubiereal" target="_blank" title="YouTube">▶️</a>
+            <a href="https://www.patreon.com/c/DIMDESK" target="_blank" title="Patreon">⭐</a>
+            <a href="https://dimdesk.itch.io" target="_blank" title="Itch.io">🎮</a>
+            <a href="https://cara.app/fubie/all" target="_blank" title="Cara">🎨</a>
         </div>
         <div class="Oo">
             <p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p>
@@ -120,9 +378,30 @@
     </footer>
 
     <script>
+        // Smooth video looping
+        const video = document.getElementById('bg-video');
+        if (video) {
+            video.addEventListener('timeupdate', function() {
+                if (video.currentTime >= video.duration - 0.15) {
+                    video.currentTime = 0;
+                    video.play();
+                }
+            });
+            video.addEventListener('ended', function() {
+                video.currentTime = 0;
+                video.play();
+            });
+            video.addEventListener('stalled', function() {
+                video.play();
+            });
+        }
+
+        // Mobile navigation
         document.getElementById('mobile-toggle').addEventListener('click', function() {
             document.getElementById('main-nav').classList.toggle('active');
         });
+
+        // Contact form
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Thank you! Your message has been sent.');

@@ -183,7 +183,7 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-               // ============================================================
+        // ============================================================
         // PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
         // ============================================================
         let youtubePlayer = null;
@@ -192,6 +192,7 @@
         let isPlayerReady = false;
         let isSeekingComplete = false;
         let pendingSeekTime = 0;
+        let clickAudioContext = null;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 8;
@@ -245,11 +246,13 @@
             if (bgmEnabled && !document.hidden) {
                 setTimeout(() => {
                     if (youtubePlayer && bgmEnabled) {
+                        youtubePlayer.unMute();
                         youtubePlayer.playVideo();
                     }
                 }, 2000);
             } else {
                 event.target.pauseVideo();
+                event.target.mute();
             }
             
             document.getElementById('shuffle-toggle').style.display = 'flex';
@@ -354,6 +357,7 @@
             if (youtubePlayer) {
                 if (bgmEnabled && !document.hidden) {
                     youtubePlayer.unMute();
+                    youtubePlayer.setVolume(BGM_VOLUME);
                     youtubePlayer.playVideo();
                 } else {
                     youtubePlayer.pauseVideo();
@@ -369,14 +373,19 @@
             localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
             applyShuffleState();
             
-            if (youtubePlayer) {
+            if (youtubePlayer && isPlayerReady) {
                 try {
+                    youtubePlayer.setShuffle(shuffleEnabled);
+                    // Force shuffle state
                     if (shuffleEnabled) {
                         youtubePlayer.setShuffle(true);
+                        youtubePlayer.playVideo();
                     } else {
                         youtubePlayer.setShuffle(false);
                     }
-                } catch(e) {}
+                } catch(e) {
+                    console.log('Shuffle API not available, using manual shuffle');
+                }
             }
         });
 
@@ -401,6 +410,7 @@
                     if (bgmEnabled) {
                         setTimeout(() => {
                             youtubePlayer.unMute();
+                            youtubePlayer.setVolume(BGM_VOLUME);
                             youtubePlayer.playVideo();
                         }, 500);
                     } else {
@@ -415,25 +425,33 @@
         applyShuffleState();
 
         // ============================================================
-        // CUTE CLICK SOUND - Only plays when sound is enabled
+        // CUTE CLICK SOUND - Now properly muted when sound is off
         // ============================================================
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        function initClickAudio() {
+            if (!clickAudioContext) {
+                clickAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (clickAudioContext.state === 'suspended') {
+                clickAudioContext.resume();
+            }
+        }
 
         document.addEventListener('click', (e) => {
             if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
+                initClickAudio();
                 playCuteClick();
             }
         });
 
         function playCuteClick() {
-            if (audioContext.state === 'suspended') audioContext.resume();
+            if (!clickAudioContext) return;
             
-            const now = audioContext.currentTime;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
+            const now = clickAudioContext.currentTime;
+            const osc = clickAudioContext.createOscillator();
+            const gain = clickAudioContext.createGain();
             
             osc.connect(gain);
-            gain.connect(audioContext.destination);
+            gain.connect(clickAudioContext.destination);
             
             osc.type = 'sine';
             osc.frequency.setValueAtTime(880, now);
@@ -446,6 +464,7 @@
             osc.start(now);
             osc.stop(now + 0.1);
         }
+
         // ============================================================
         // CUSTOM CURSOR
         // ============================================================

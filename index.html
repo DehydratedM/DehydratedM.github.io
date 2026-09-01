@@ -194,6 +194,7 @@
         let pendingSeekTime = 0;
         let playlistVideos = [];
         let currentVideoIndex = 0;
+        let clickAudioContext = null;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 8;
@@ -241,7 +242,6 @@
             
             event.target.setVolume(BGM_VOLUME);
             
-            // Get playlist videos
             try {
                 playlistVideos = event.target.getPlaylist();
                 console.log('Playlist loaded:', playlistVideos.length, 'videos');
@@ -301,12 +301,10 @@
                 
                 if (bgmEnabled && !document.hidden) {
                     if (shuffleEnabled) {
-                        // Manual shuffle - play random video
                         setTimeout(() => {
                             playRandomVideo();
                         }, 500);
                     } else {
-                        // Normal sequential play
                         setTimeout(() => {
                             event.target.nextVideo();
                         }, 500);
@@ -343,7 +341,6 @@
                     youtubePlayer.playVideoAt(randomIndex);
                     console.log('Playing random video at index:', randomIndex);
                 } else {
-                    // Fallback to nextVideo if playlist not loaded
                     youtubePlayer.nextVideo();
                 }
             } catch(e) {
@@ -420,7 +417,6 @@
             console.log('Shuffle ' + (shuffleEnabled ? 'enabled' : 'disabled'));
             
             if (shuffleEnabled && youtubePlayer && isPlayerReady) {
-                // Play a random video immediately when shuffle is enabled
                 playRandomVideo();
             }
         });
@@ -459,6 +455,47 @@
 
         applySoundState();
         applyShuffleState();
+
+        // ============================================================
+        // CUTE CLICK SOUND - Plays when sound is enabled
+        // ============================================================
+        function initClickAudio() {
+            if (!clickAudioContext) {
+                clickAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (clickAudioContext.state === 'suspended') {
+                clickAudioContext.resume();
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
+                initClickAudio();
+                playCuteClick();
+            }
+        });
+
+        function playCuteClick() {
+            if (!clickAudioContext) return;
+            
+            const now = clickAudioContext.currentTime;
+            const osc = clickAudioContext.createOscillator();
+            const gain = clickAudioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(clickAudioContext.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+            
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
 
         // ============================================================
         // CUSTOM CURSOR

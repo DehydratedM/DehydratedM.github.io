@@ -568,20 +568,35 @@ function playCuteClick() {
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
-        const gameData = {
-            featured: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound manipulation", img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#", "2D"], platforms: ["Steam", "itch.io"], links: { "Steam": "#", "itch.io": "#" } },
-                { title: "Project: Chronos", desc: "Time-bending action RPG", img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["Coming Soon"], links: { "Wishlist": "#" } }
-            ],
-            released: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer", img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["Steam", "itch.io"], links: { "Steam": "#", "itch.io": "#" } },
-                { title: "Neon Runner", desc: "Cyberpunk runner", img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity"], platforms: ["Google Play"], links: { "Google Play": "#" } }
-            ],
-            upcoming: [
-                { title: "Paper Lanterns", desc: "Cozy management sim", img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns", video: "https://www.w3schools.com/html/mov_bbb.mp4", tags: ["Unity", "C#"], platforms: ["TBA"], links: {} }
-            ]
-        };
-
+      const gameData = {
+    featured: [
+        { 
+            title: "Bloomy Delivery Adventures", 
+            desc: "A cozy delivery adventure game where you help Bloomy deliver packages in a charming world", 
+            img: "https://play-lh.googleusercontent.com/YOUR_ICON_ID=w512", 
+            video: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID", 
+            tags: ["Unity", "C#", "Android", "Cozy", "Adventure"],
+            platforms: ["Google Play"],
+            links: { 
+                "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+            }
+        }
+    ],
+    released: [
+        { 
+            title: "Bloomy Delivery Adventures", 
+            desc: "A cozy delivery adventure game for Android devices", 
+            img: "https://play-lh.googleusercontent.com/YOUR_ICON_ID=w512", 
+            video: "https://www.youtube.com/watch?v=YOUR_VIDEO_ID", 
+            tags: ["Unity", "C#", "Android", "Cozy"],
+            platforms: ["Google Play"],
+            links: { 
+                "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+            }
+        }
+    ],
+    upcoming: []
+};
         function createCard(game, isFeatured = false) {
             const mediaHTML = game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
             return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;

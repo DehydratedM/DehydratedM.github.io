@@ -268,17 +268,20 @@
     });
 }
         
-        function onPlayerReady(event) {
-            applySoundState();
-            applyShuffleState();
-            
-            if (bgmEnabled && !document.hidden) {
-                event.target.playVideo();
-            }
-            
-            // Show shuffle button
-            document.getElementById('shuffle-toggle').style.display = 'flex';
-        }
+    function onPlayerReady(event) {
+    applySoundState();
+    applyShuffleState();
+    
+    // Set BGM volume to 3 (very soft)
+    event.target.setVolume(3);
+    
+    if (bgmEnabled && !document.hidden) {
+        event.target.playVideo();
+    }
+    
+    // Show shuffle button
+    document.getElementById('shuffle-toggle').style.display = 'flex';
+}
         
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED && shuffleEnabled && bgmEnabled) {

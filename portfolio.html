@@ -7,49 +7,281 @@
     <title>Portfolio - DimDesk.Studios</title>
     <link rel="icon" type="image/ico" href="Icon.ico" />
     <style>
-        :root { --bg: #0a0a0a; --bg2: #1a1a1a; --text: #fff; --text2: #b0b0b0; --accent: #f08080; --border: rgba(255,255,255,0.1); }
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #1a1a1a;
+            --text: #fff;
+            --text2: #b0b0b0;
+            --accent: #f08080;
+            --border: rgba(255,255,255,0.1);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
-        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
-        .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); }
-        .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
-        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; }
-        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(255,255,255,0.1); }
-        .portfolio-header { text-align: center; margin: 40px auto; padding: 0 20px; }
-        .portfolio-header h1 { font-size: 2.5rem; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+        
+        /* Sparkle overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255,215,0,0.3), transparent),
+                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 80% 60%, rgba(255,215,0,0.2), transparent),
+                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 70% 90%, rgba(255,215,0,0.3), transparent);
+            animation: sparkleTwinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes sparkleTwinkle {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        .background-video { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: -1; 
+        }
+        .background-video video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            filter: brightness(0.25);
+        }
+        .background-video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(10, 10, 10, 0.85) 0%,
+                rgba(240, 128, 128, 0.15) 50%,
+                rgba(10, 10, 10, 0.85) 100%);
+            animation: glowPulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+        
+        .HE { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 0.75rem 2rem; 
+            background: rgba(15,15,15,0.95); 
+            border-bottom: 1px solid rgba(240, 128, 128, 0.2); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(240, 128, 128, 0.1);
+        }
+        .logo-container { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            text-decoration: none; 
+            color: var(--text); 
+        }
+        .logo-img { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 8px; 
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 15px rgba(240, 128, 128, 0.3);
+        }
+        .nav-links ul { 
+            display: flex; 
+            list-style: none; 
+            gap: 0.5rem; 
+        }
+        .nav-links a { 
+            color: var(--text2); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 6px; 
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover, .nav-links a.current-page { 
+            color: var(--text); 
+            background: rgba(240, 128, 128, 0.1);
+            box-shadow: 0 0 10px rgba(240, 128, 128, 0.2);
+        }
+        
+        .portfolio-header { 
+            text-align: center; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+        }
+        .portfolio-header h1 { 
+            font-size: 2.5rem; 
+            text-shadow: 0 0 20px rgba(240, 128, 128, 0.5);
+        }
         .portfolio-header p { color: var(--text2); }
-        .about-section { max-width: 700px; margin: 25px auto; padding: 25px; background: var(--bg2); border-radius: 10px; border: 1px solid var(--border); }
-        .about-section h2 { text-align: center; margin-bottom: 15px; }
-        .about-section p { color: var(--text2); font-size: 0.9rem; margin-bottom: 12px; }
-        .skills-section { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
-        .skills-title { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .skill-card { background: var(--bg2); border-radius: 8px; padding: 15px; border: 1px solid var(--border); transition: all 0.3s; }
-        .skill-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-        .skill-card h3 { font-size: 0.95rem; margin-bottom: 8px; }
-        .skill-card p { color: var(--text2); font-size: 0.75rem; }
-        .skill-tag { display: inline-block; background: rgba(240,128,128,0.2); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; margin-top: 8px; }
-        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid var(--border); text-align: center; }
-        .socialIcons { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
-        .socialIcons a { width: 35px; height: 35px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        
+        .about-section { 
+            max-width: 700px; 
+            margin: 25px auto; 
+            padding: 25px; 
+            background: var(--bg2); 
+            border-radius: 10px; 
+            border: 1px solid rgba(240, 128, 128, 0.2);
+            box-shadow: 0 0 20px rgba(240, 128, 128, 0.1);
+        }
+        .about-section h2 { 
+            text-align: center; 
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(240, 128, 128, 0.4);
+        }
+        .about-section p { 
+            color: var(--text2); 
+            font-size: 0.9rem; 
+            margin-bottom: 12px; 
+        }
+        
+        .skills-section { 
+            max-width: 1000px; 
+            margin: 30px auto; 
+            padding: 0 20px; 
+        }
+        .skills-title { 
+            text-align: center; 
+            font-size: 1.5rem; 
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(240, 128, 128, 0.4);
+        }
+        .portfolio-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 15px; 
+        }
+        .skill-card { 
+            background: var(--bg2); 
+            border-radius: 8px; 
+            padding: 15px; 
+            border: 1px solid rgba(240, 128, 128, 0.2); 
+            transition: all 0.3s ease;
+        }
+        .skill-card:hover { 
+            transform: translateY(-3px); 
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(240, 128, 128, 0.2);
+        }
+        .skill-card h3 { 
+            font-size: 0.95rem; 
+            margin-bottom: 8px; 
+        }
+        .skill-card p { 
+            color: var(--text2); 
+            font-size: 0.75rem; 
+        }
+        .skill-tag { 
+            display: inline-block; 
+            background: rgba(240, 128, 128, 0.2); 
+            color: var(--accent); 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-size: 0.65rem; 
+            margin-top: 8px; 
+        }
+        
+        footer { 
+            background: rgba(15,15,15,0.9); 
+            padding: 25px 15px; 
+            margin-top: 40px; 
+            border-top: 1px solid rgba(240, 128, 128, 0.2); 
+            text-align: center; 
+        }
+        .socialIcons { 
+            display: flex; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+        }
+        .socialIcons a { 
+            width: 40px; 
+            height: 40px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .socialIcons a:hover {
+            background: rgba(240, 128, 128, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(240, 128, 128, 0.3);
+        }
         .Oo { color: #808080; font-size: 0.8rem; }
         .Oo a { color: #808080; text-decoration: none; }
+        .Oo a:hover { color: var(--text); }
+        
         .mobile-toggle { display: none; }
         @media (max-width: 768px) {
-            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; }
-            .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; }
+            .mobile-toggle { 
+                display: flex !important; 
+                flex-direction: column; 
+                justify-content: center; 
+                align-items: center; 
+                width: 40px; 
+                height: 40px; 
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+            .mobile-toggle span {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background: var(--text);
+                margin: 2px 0;
+            }
+            .nav-links { 
+                position: fixed; 
+                top: 0; 
+                right: -100%; 
+                width: 250px; 
+                height: 100vh; 
+                background: rgba(15,15,15,0.98); 
+                padding: 80px 15px 20px; 
+                transition: right 0.3s; 
+                z-index: 999;
+            }
             .nav-links.active { right: 0; }
             .nav-links ul { flex-direction: column; }
+            .nav-links li { width: 100%; list-style: none; }
+            .nav-links a { display: block; padding: 12px 15px; }
         }
     </style>
 </head>
 <body>
     <div class="background-video">
-        <video autoplay muted loop playsinline><source src="D.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline id="bg-video">
+            <source src="D.mp4" type="video/mp4">
+        </video>
     </div>
+    
     <header>
         <div class="HE">
             <a href="index.html" class="logo-container">
@@ -87,10 +319,11 @@
 
     <footer>
         <div class="socialIcons">
-            <a href="https://bsky.app" target="_blank">☁️</a>
-            <a href="https://youtube.com" target="_blank">▶️</a>
-            <a href="https://patreon.com" target="_blank">⭐</a>
-            <a href="https://itch.io" target="_blank">🎮</a>
+            <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" title="Bluesky">☁️</a>
+            <a href="https://www.youtube.com/@fubiereal" target="_blank" title="YouTube">▶️</a>
+            <a href="https://www.patreon.com/c/DIMDESK" target="_blank" title="Patreon">⭐</a>
+            <a href="https://dimdesk.itch.io" target="_blank" title="Itch.io">🎮</a>
+            <a href="https://cara.app/fubie/all" target="_blank" title="Cara">🎨</a>
         </div>
         <div class="Oo">
             <p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p>
@@ -99,7 +332,30 @@
     </footer>
 
     <script>
-        // EASY UPDATE: Edit this array to change skills
+        // Smooth video looping
+        const video = document.getElementById('bg-video');
+        if (video) {
+            video.addEventListener('timeupdate', function() {
+                if (video.currentTime >= video.duration - 0.15) {
+                    video.currentTime = 0;
+                    video.play();
+                }
+            });
+            video.addEventListener('ended', function() {
+                video.currentTime = 0;
+                video.play();
+            });
+            video.addEventListener('stalled', function() {
+                video.play();
+            });
+        }
+
+        // Mobile navigation
+        document.getElementById('mobile-toggle').addEventListener('click', function() {
+            document.getElementById('main-nav').classList.toggle('active');
+        });
+
+        // Skills data
         const skills = [
             { name: "Unity Engine", desc: "2D/3D game development, C#", tag: "Engine" },
             { name: "Unreal Engine", desc: "Blueprint & C++", tag: "Engine" },
@@ -114,10 +370,6 @@
         document.getElementById('portfolio-skills').innerHTML = skills.map(s => 
             `<div class="skill-card"><h3>${s.name}</h3><p>${s.desc}</p><span class="skill-tag">${s.tag}</span></div>`
         ).join('');
-
-        document.getElementById('mobile-toggle').addEventListener('click', function() {
-            document.getElementById('main-nav').classList.toggle('active');
-        });
     </script>
 </body>
 </html>

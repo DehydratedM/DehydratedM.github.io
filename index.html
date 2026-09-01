@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
         
-        /* Sparkle overlay */
+        /* Static sparkle overlay - WHITE PARTICLES */
         body::before {
             content: '';
             position: fixed;
@@ -35,37 +35,92 @@
             pointer-events: none;
             z-index: 9999;
             background-image: 
-                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.4), transparent),
-                radial-gradient(2px 2px at 40% 70%, rgba(255,215,0,0.3), transparent),
-                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.3), transparent),
-                radial-gradient(2px 2px at 80% 60%, rgba(255,215,0,0.2), transparent),
-                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.4), transparent),
-                radial-gradient(3px 3px at 70% 90%, rgba(255,215,0,0.3), transparent),
-                radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.3), transparent),
-                radial-gradient(2px 2px at 90% 30%, rgba(255,215,0,0.2), transparent),
-                radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.2), transparent),
-                radial-gradient(2px 2px at 15% 60%, rgba(255,215,0,0.3), transparent),
-                radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.2), transparent),
-                radial-gradient(2px 2px at 45% 90%, rgba(255,215,0,0.3), transparent);
+                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent);
             animation: sparkleTwinkle 2.5s ease-in-out infinite;
         }
         
         @keyframes sparkleTwinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.7; }
         }
         
-        /* Mouse-following sparkle trail */
-        .sparkle-trail {
+        /* WHITE Sparkle particles - Mouse trail */
+        .sparkle-particle {
             position: fixed;
             pointer-events: none;
             z-index: 99999;
-            animation: sparkleFade 0.8s ease-out forwards;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 70%);
+            animation: particleFade 0.8s ease-out forwards;
+            box-shadow: 
+                0 0 6px 2px rgba(255,255,255,0.8),
+                0 0 12px 4px rgba(255,255,255,0.4);
+            will-change: transform, opacity;
         }
         
-        @keyframes sparkleFade {
-            0% { transform: scale(1) rotate(0deg); opacity: 1; }
-            100% { transform: scale(0) rotate(180deg); opacity: 0; }
+        @keyframes particleFade {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+        
+        .sparkle-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99998;
+            width: 4px;
+            height: 4px;
+            animation: starFade 0.9s ease-out forwards;
+            will-change: transform, opacity;
+        }
+        
+        .sparkle-star::before,
+        .sparkle-star::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,255,0.9);
+        }
+        
+        .sparkle-star::before { width: 10px; height: 2px; }
+        .sparkle-star::after { width: 2px; height: 10px; }
+        
+        @keyframes starFade {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(2) rotate(90deg); opacity: 0; }
+        }
+        
+        .sparkle-diamond {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99997;
+            width: 6px;
+            height: 6px;
+            background: white;
+            transform: rotate(45deg);
+            animation: diamondFade 0.7s ease-out forwards;
+            box-shadow: 0 0 8px 2px rgba(255,255,255,0.7);
+            will-change: transform, opacity;
+        }
+        
+        @keyframes diamondFade {
+            0% { transform: rotate(45deg) scale(0); opacity: 1; }
+            100% { transform: rotate(135deg) scale(2); opacity: 0; }
         }
         
         .background-video { 
@@ -219,7 +274,6 @@
             box-shadow: 0 10px 30px rgba(240, 128, 128, 0.3);
         }
         
-        /* Game media styles */
         .game-media {
             position: relative;
             width: 100%;
@@ -469,25 +523,114 @@
     </footer>
 
     <script>
-        // Smooth video looping
-        const video = document.getElementById('bg-video');
-        if (video) {
-            video.addEventListener('timeupdate', function() {
-                if (video.currentTime >= video.duration - 0.15) {
-                    video.currentTime = 0;
-                    video.play();
+        // ============================================================
+        // WHITE SPARKLE PARTICLE SYSTEM
+        // ============================================================
+        const SparkleSystem = {
+            enabled: true,
+            lastSparkleTime: 0,
+            sparkleInterval: 100,
+            
+            init() {
+                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
+                document.addEventListener('visibilitychange', () => {
+                    this.enabled = !document.hidden;
+                });
+            },
+            
+            onMouseMove(e) {
+                if (!this.enabled || document.hidden) return;
+                const now = performance.now();
+                if (now - this.lastSparkleTime < this.sparkleInterval) return;
+                this.lastSparkleTime = now;
+                this.createSparkle(e.clientX, e.clientY);
+            },
+            
+            onTouchMove(e) {
+                if (!this.enabled) return;
+                const now = performance.now();
+                if (now - this.lastSparkleTime < this.sparkleInterval * 2) return;
+                this.lastSparkleTime = now;
+                const touch = e.touches[0];
+                this.createSparkle(touch.clientX, touch.clientY);
+            },
+            
+            createSparkle(x, y) {
+                const type = Math.random();
+                if (type < 0.4) this.createParticle(x, y);
+                else if (type < 0.7) this.createStar(x, y);
+                else this.createDiamond(x, y);
+            },
+            
+            createParticle(x, y) {
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-particle';
+                const size = 3 + Math.random() * 5;
+                const offsetX = (Math.random() - 0.5) * 30;
+                const offsetY = (Math.random() - 0.5) * 30;
+                particle.style.left = (x + offsetX) + 'px';
+                particle.style.top = (y + offsetY) + 'px';
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                document.body.appendChild(particle);
+                setTimeout(() => { if (particle.parentNode) particle.remove(); }, 800);
+            },
+            
+            createStar(x, y) {
+                const star = document.createElement('div');
+                star.className = 'sparkle-star';
+                const size = 4 + Math.random() * 6;
+                const offsetX = (Math.random() - 0.5) * 25;
+                const offsetY = (Math.random() - 0.5) * 25;
+                star.style.left = (x + offsetX) + 'px';
+                star.style.top = (y + offsetY) + 'px';
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                document.body.appendChild(star);
+                setTimeout(() => { if (star.parentNode) star.remove(); }, 900);
+            },
+            
+            createDiamond(x, y) {
+                const diamond = document.createElement('div');
+                diamond.className = 'sparkle-diamond';
+                const size = 4 + Math.random() * 4;
+                const offsetX = (Math.random() - 0.5) * 20;
+                const offsetY = (Math.random() - 0.5) * 20;
+                diamond.style.left = (x + offsetX) + 'px';
+                diamond.style.top = (y + offsetY) + 'px';
+                diamond.style.width = size + 'px';
+                diamond.style.height = size + 'px';
+                document.body.appendChild(diamond);
+                setTimeout(() => { if (diamond.parentNode) diamond.remove(); }, 700);
+            }
+        };
+        
+        SparkleSystem.init();
+
+        // ============================================================
+        // SMOOTH VIDEO LOOPING
+        // ============================================================
+        const bgVideo = document.getElementById('bg-video');
+        if (bgVideo) {
+            bgVideo.addEventListener('timeupdate', function() {
+                if (bgVideo.currentTime >= bgVideo.duration - 0.15) {
+                    bgVideo.currentTime = 0;
+                    bgVideo.play();
                 }
             });
-            video.addEventListener('ended', function() {
-                video.currentTime = 0;
-                video.play();
+            bgVideo.addEventListener('ended', function() {
+                bgVideo.currentTime = 0;
+                bgVideo.play();
             });
-            video.addEventListener('stalled', function() {
-                video.play();
+            bgVideo.addEventListener('stalled', function() {
+                bgVideo.play();
             });
         }
 
-        // Mobile navigation
+        // ============================================================
+        // MOBILE NAVIGATION
+        // ============================================================
         document.getElementById('mobile-toggle').addEventListener('click', function() {
             document.getElementById('main-nav').classList.toggle('active');
         });
@@ -501,7 +644,7 @@
                     title: "Echoes of Aether", 
                     desc: "Puzzle-platformer with sound manipulation mechanics", 
                     img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes+of+Aether",
-                    video: "", // Add video URL here: "https://example.com/trailer.mp4"
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unity", "C#", "2D", "Puzzle"],
                     platforms: ["Steam", "itch.io"],
                     links: {
@@ -513,7 +656,7 @@
                     title: "Project: Chronos", 
                     desc: "Time-bending action RPG with branching narrative", 
                     img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unreal 5", "C++", "RPG"],
                     platforms: ["Coming Soon"],
                     links: {
@@ -526,7 +669,7 @@
                     title: "Echoes of Aether", 
                     desc: "Puzzle-platformer with sound manipulation", 
                     img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unity", "C#", "2D"],
                     platforms: ["Steam", "itch.io"],
                     links: {
@@ -538,7 +681,7 @@
                     title: "Starlight Drifter", 
                     desc: "Space exploration with narrative focus", 
                     img: "https://via.placeholder.com/280x160/8e44ad/fff?text=Starlight",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unreal", "C++", "3D"],
                     platforms: ["Steam"],
                     links: {
@@ -549,7 +692,7 @@
                     title: "Neon Abyss", 
                     desc: "Cyberpunk roguelike shooter", 
                     img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Godot", "Action"],
                     platforms: ["itch.io"],
                     links: {
@@ -562,7 +705,7 @@
                     title: "Project: Chronos", 
                     desc: "Time-bending RPG with branching narrative", 
                     img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unreal 5", "RPG"],
                     platforms: ["TBA"],
                     links: {}
@@ -571,7 +714,7 @@
                     title: "Paper Lanterns", 
                     desc: "Cozy management sim in a floating village", 
                     img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns",
-                    video: "", // Add video URL here
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",
                     tags: ["Unity", "Simulation"],
                     platforms: ["TBA"],
                     links: {}
@@ -579,10 +722,9 @@
             ]
         };
         // ============================================================
-        // END OF GAME DATA - STOP EDITING HERE
+        // END OF GAME DATA
         // ============================================================
 
-        // Enhanced createCard function with video support
         function createCard(game, isFeatured = false) {
             const mediaHTML = game.video ? `
                 <div class="game-media">
@@ -617,112 +759,9 @@
                 </div>`;
         }
 
-        // Show game details in modal
-        function showGameDetails(game) {
-            const modalOverlay = document.createElement('div');
-            modalOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.9);
-                z-index: 10000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-                animation: fadeIn 0.3s ease;
-            `;
-            
-            const modalContent = document.createElement('div');
-            modalContent.style.cssText = `
-                background: #1a1a1a;
-                border-radius: 12px;
-                padding: 25px;
-                max-width: 600px;
-                width: 100%;
-                max-height: 90vh;
-                overflow-y: auto;
-                border: 2px solid #f08080;
-                box-shadow: 0 0 30px rgba(240, 128, 128, 0.3);
-                position: relative;
-            `;
-            
-            modalContent.innerHTML = `
-                <button onclick="this.closest('div').parentElement.remove()" 
-                        style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 10001;">
-                    &times;
-                </button>
-                <h2 style="color: #fff; margin-bottom: 15px;">${game.title}</h2>
-                ${game.video ? `
-                    <video src="${game.video}" controls autoplay 
-                           style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
-                    </video>
-                ` : `
-                    <img src="${game.img}" alt="${game.title}" 
-                         style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
-                `}
-                <p style="color: #b0b0b0; margin-bottom: 15px;">${game.desc}</p>
-                <div style="margin-bottom: 15px;">
-                    ${game.tags.map(t => `<span style="background: rgba(240,128,128,0.2); color: #f08080; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 5px;">${t}</span>`).join('')}
-                </div>
-                ${game.platforms ? `
-                    <div style="margin-bottom: 15px;">
-                        <strong style="color: #fff;">Platforms:</strong>
-                        ${game.platforms.map(p => `<span style="color: #b0b0b0; margin-left: 5px;">${p}</span>`).join('')}
-                    </div>
-                ` : ''}
-                ${game.links && Object.keys(game.links).length > 0 ? `
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        ${Object.entries(game.links).map(([name, url]) => 
-                            `<a href="${url}" target="_blank" 
-                                style="padding: 8px 15px; background: #f08080; color: #000; text-decoration: none; border-radius: 6px; font-weight: 600;">
-                                ${name}
-                            </a>`
-                        ).join('')}
-                    </div>
-                ` : ''}
-            `;
-            
-            modalOverlay.appendChild(modalContent);
-            document.body.appendChild(modalOverlay);
-            
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    modalOverlay.remove();
-                }
-            });
-            
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    modalOverlay.remove();
-                }
-            });
-        }
-
-        // Render cards
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');
         document.getElementById('released-games').innerHTML = gameData.released.map(g => createCard(g)).join('');
         document.getElementById('upcoming-projects').innerHTML = gameData.upcoming.map(g => createCard(g)).join('');
-
-        // Mouse-following sparkle effect
-        let lastSparkleTime = 0;
-        document.addEventListener('mousemove', function(e) {
-            const now = Date.now();
-            if (now - lastSparkleTime < 150) return;
-            lastSparkleTime = now;
-            
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle-trail';
-            const sparkles = ['✨', '⭐', '💫', '🌟'];
-            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-            sparkle.style.left = (e.clientX + (Math.random() - 0.5) * 15) + 'px';
-            sparkle.style.top = (e.clientY + (Math.random() - 0.5) * 15) + 'px';
-            sparkle.style.fontSize = (8 + Math.random() * 12) + 'px';
-            document.body.appendChild(sparkle);
-            setTimeout(() => sparkle.remove(), 800);
-        });
     </script>
 </body>
 </html>

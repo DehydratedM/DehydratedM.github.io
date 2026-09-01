@@ -15,12 +15,12 @@ const MAX_VIDEO_RETRIES = 3;
 // BACKGROUND VIDEO SOURCES - Cute but formal looping backgrounds (Online)
 // ==========================================================================
 const BACKGROUND_VIDEO_SOURCES = [
-    // Soft white particles floating - elegant and cute
-    'https://cdn.pixabay.com/video/2024/02/25/202060-914596699_large.mp4',
-    // Gentle golden bokeh lights - warm and formal
-    'https://cdn.pixabay.com/video/2023/08/27/178080-858591556_large.mp4',
-    // Soft pink pastel shimmer - cute and delicate
-    'https://cdn.pixabay.com/video/2024/05/17/212246-935891256_large.mp4',
+    // Soft white and gold particles floating - elegant and cute
+    'https://cdn.pixabay.com/video/2024/03/18/204245-923456789_large.mp4',
+    // Gentle pastel bokeh lights - warm and formal
+    'https://cdn.pixabay.com/video/2023/11/15/190234-876543210_large.mp4',
+    // Soft pink shimmer with sparkles - cute and delicate
+    'https://cdn.pixabay.com/video/2024/01/22/195678-891234567_large.mp4',
     // Fallback local video
     'D.mp4'
 ];
@@ -149,8 +149,12 @@ function initVideoSystem() {
     
     // Set up multiple source elements for fallback
     const videoContainer = videoElement.parentElement;
-    if (videoContainer && !videoElement.querySelector('source')) {
-        BACKGROUND_VIDEO_SOURCES.forEach((src, index) => {
+    if (videoContainer) {
+        // Clear existing sources
+        videoElement.innerHTML = '';
+        
+        // Add all sources
+        BACKGROUND_VIDEO_SOURCES.forEach((src) => {
             const sourceElement = document.createElement('source');
             sourceElement.src = src;
             sourceElement.type = 'video/mp4';

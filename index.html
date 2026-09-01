@@ -183,7 +183,7 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // ============================================================
+               // ============================================================
         // PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
         // ============================================================
         let youtubePlayer = null;
@@ -353,6 +353,7 @@
             
             if (youtubePlayer) {
                 if (bgmEnabled && !document.hidden) {
+                    youtubePlayer.unMute();
                     youtubePlayer.playVideo();
                 } else {
                     youtubePlayer.pauseVideo();
@@ -399,10 +400,12 @@
                 } else {
                     if (bgmEnabled) {
                         setTimeout(() => {
+                            youtubePlayer.unMute();
                             youtubePlayer.playVideo();
                         }, 500);
                     } else {
                         youtubePlayer.pauseVideo();
+                        youtubePlayer.mute();
                     }
                 }
             }
@@ -412,12 +415,12 @@
         applyShuffleState();
 
         // ============================================================
-        // CUTE CLICK SOUND
+        // CUTE CLICK SOUND - Only plays when sound is enabled
         // ============================================================
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         document.addEventListener('click', (e) => {
-            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
+            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
                 playCuteClick();
             }
         });
@@ -443,7 +446,6 @@
             osc.start(now);
             osc.stop(now + 0.1);
         }
-
         // ============================================================
         // CUSTOM CURSOR
         // ============================================================

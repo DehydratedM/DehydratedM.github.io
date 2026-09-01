@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
         
-        /* Sparkle overlay */
+        /* Static white sparkle overlay */
         body::before {
             content: '';
             position: fixed;
@@ -35,18 +35,92 @@
             pointer-events: none;
             z-index: 9999;
             background-image: 
-                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.4), transparent),
-                radial-gradient(2px 2px at 40% 70%, rgba(255,215,0,0.3), transparent),
-                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.3), transparent),
-                radial-gradient(2px 2px at 80% 60%, rgba(255,215,0,0.2), transparent),
-                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.4), transparent),
-                radial-gradient(3px 3px at 70% 90%, rgba(255,215,0,0.3), transparent);
-            animation: sparkleTwinkle 3s ease-in-out infinite;
+                radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent),
+                radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent),
+                radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent),
+                radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent);
+            animation: sparkleTwinkle 2.5s ease-in-out infinite;
         }
         
         @keyframes sparkleTwinkle {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* White mouse-following sparkle particles */
+        .sparkle-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 70%);
+            animation: particleFade 0.8s ease-out forwards;
+            box-shadow: 
+                0 0 6px 2px rgba(255,255,255,0.8),
+                0 0 12px 4px rgba(255,255,255,0.4);
+            will-change: transform, opacity;
+        }
+        
+        @keyframes particleFade {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0) rotate(360deg); opacity: 0; }
+        }
+        
+        .sparkle-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99998;
+            width: 4px;
+            height: 4px;
+            animation: starFade 0.9s ease-out forwards;
+            will-change: transform, opacity;
+        }
+        
+        .sparkle-star::before,
+        .sparkle-star::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 4px 1px rgba(255,255,255,0.9);
+        }
+        
+        .sparkle-star::before { width: 10px; height: 2px; }
+        .sparkle-star::after { width: 2px; height: 10px; }
+        
+        @keyframes starFade {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(2) rotate(90deg); opacity: 0; }
+        }
+        
+        .sparkle-diamond {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99997;
+            width: 6px;
+            height: 6px;
+            background: white;
+            transform: rotate(45deg);
+            animation: diamondFade 0.7s ease-out forwards;
+            box-shadow: 0 0 8px 2px rgba(255,255,255,0.7);
+            will-change: transform, opacity;
+        }
+        
+        @keyframes diamondFade {
+            0% { transform: rotate(45deg) scale(0); opacity: 1; }
+            100% { transform: rotate(135deg) scale(2); opacity: 0; }
         }
         
         .background-video { 
@@ -307,8 +381,9 @@
     <main>
         <div class="about-section">
             <h2>About Me</h2>
-            <p>Hi, I'm M! I'm an indie game developer and artist passionate about creating unique gaming experiences.</p>
-            <p>I work with Unity, Unreal, and Godot to bring creative visions to life.</p>
+            <p>Hi, I'm M! I'm an indie game developer and artist passionate about creating unique 2D gaming experiences.</p>
+            <p>I specialize in Unity with C# programming, creating engaging 2D games with hand-drawn art and animation.</p>
+            <p>My focus is on crafting memorable experiences through creative game design and artistic expression.</p>
         </div>
 
         <section class="skills-section">
@@ -332,39 +407,134 @@
     </footer>
 
     <script>
-        // Smooth video looping
-        const video = document.getElementById('bg-video');
-        if (video) {
-            video.addEventListener('timeupdate', function() {
-                if (video.currentTime >= video.duration - 0.15) {
-                    video.currentTime = 0;
-                    video.play();
+        // ============================================================
+        // WHITE SPARKLE PARTICLE SYSTEM
+        // ============================================================
+        const SparkleSystem = {
+            enabled: true,
+            lastSparkleTime: 0,
+            sparkleInterval: 100,
+            
+            init() {
+                document.addEventListener('mousemove', (e) => this.onMouseMove(e));
+                document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
+                document.addEventListener('visibilitychange', () => {
+                    this.enabled = !document.hidden;
+                });
+            },
+            
+            onMouseMove(e) {
+                if (!this.enabled || document.hidden) return;
+                const now = performance.now();
+                if (now - this.lastSparkleTime < this.sparkleInterval) return;
+                this.lastSparkleTime = now;
+                this.createSparkle(e.clientX, e.clientY);
+            },
+            
+            onTouchMove(e) {
+                if (!this.enabled) return;
+                const now = performance.now();
+                if (now - this.lastSparkleTime < this.sparkleInterval * 2) return;
+                this.lastSparkleTime = now;
+                const touch = e.touches[0];
+                this.createSparkle(touch.clientX, touch.clientY);
+            },
+            
+            createSparkle(x, y) {
+                const type = Math.random();
+                if (type < 0.4) this.createParticle(x, y);
+                else if (type < 0.7) this.createStar(x, y);
+                else this.createDiamond(x, y);
+            },
+            
+            createParticle(x, y) {
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-particle';
+                const size = 3 + Math.random() * 5;
+                const offsetX = (Math.random() - 0.5) * 30;
+                const offsetY = (Math.random() - 0.5) * 30;
+                particle.style.left = (x + offsetX) + 'px';
+                particle.style.top = (y + offsetY) + 'px';
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                document.body.appendChild(particle);
+                setTimeout(() => { if (particle.parentNode) particle.remove(); }, 800);
+            },
+            
+            createStar(x, y) {
+                const star = document.createElement('div');
+                star.className = 'sparkle-star';
+                const size = 4 + Math.random() * 6;
+                const offsetX = (Math.random() - 0.5) * 25;
+                const offsetY = (Math.random() - 0.5) * 25;
+                star.style.left = (x + offsetX) + 'px';
+                star.style.top = (y + offsetY) + 'px';
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                document.body.appendChild(star);
+                setTimeout(() => { if (star.parentNode) star.remove(); }, 900);
+            },
+            
+            createDiamond(x, y) {
+                const diamond = document.createElement('div');
+                diamond.className = 'sparkle-diamond';
+                const size = 4 + Math.random() * 4;
+                const offsetX = (Math.random() - 0.5) * 20;
+                const offsetY = (Math.random() - 0.5) * 20;
+                diamond.style.left = (x + offsetX) + 'px';
+                diamond.style.top = (y + offsetY) + 'px';
+                diamond.style.width = size + 'px';
+                diamond.style.height = size + 'px';
+                document.body.appendChild(diamond);
+                setTimeout(() => { if (diamond.parentNode) diamond.remove(); }, 700);
+            }
+        };
+        
+        SparkleSystem.init();
+
+        // ============================================================
+        // SMOOTH VIDEO LOOPING
+        // ============================================================
+        const bgVideo = document.getElementById('bg-video');
+        if (bgVideo) {
+            bgVideo.addEventListener('timeupdate', function() {
+                if (bgVideo.currentTime >= bgVideo.duration - 0.15) {
+                    bgVideo.currentTime = 0;
+                    bgVideo.play();
                 }
             });
-            video.addEventListener('ended', function() {
-                video.currentTime = 0;
-                video.play();
+            bgVideo.addEventListener('ended', function() {
+                bgVideo.currentTime = 0;
+                bgVideo.play();
             });
-            video.addEventListener('stalled', function() {
-                video.play();
+            bgVideo.addEventListener('stalled', function() {
+                bgVideo.play();
             });
         }
 
-        // Mobile navigation
+        // ============================================================
+        // MOBILE NAVIGATION
+        // ============================================================
         document.getElementById('mobile-toggle').addEventListener('click', function() {
             document.getElementById('main-nav').classList.toggle('active');
         });
 
-        // Skills data
+        // ============================================================
+        // SKILLS DATA - UPDATED TO YOUR ACTUAL SKILLS
+        // ============================================================
         const skills = [
-            { name: "Unity Engine", desc: "2D/3D game development, C#", tag: "Engine" },
-            { name: "Unreal Engine", desc: "Blueprint & C++", tag: "Engine" },
-            { name: "Godot", desc: "GDScript & lightweight games", tag: "Engine" },
-            { name: "C# Programming", desc: "Game logic, systems", tag: "Language" },
-            { name: "3D Modeling", desc: "Blender, asset creation", tag: "Art" },
-            { name: "2D Art", desc: "Sprites, UI, effects", tag: "Art" },
-            { name: "Game Design", desc: "Mechanics, level design", tag: "Design" },
-            { name: "Sound Design", desc: "Audio implementation", tag: "Audio" }
+            { name: "Unity Engine", desc: "2D game development with C#", tag: "Engine" },
+            { name: "C# Programming", desc: "Game logic, systems architecture", tag: "Language" },
+            { name: "2D Art & Animation", desc: "Sprites, UI, visual effects", tag: "Art" },
+            { name: "Game Design", desc: "Mechanics, level design, balancing", tag: "Design" },
+            { name: "Photoshop", desc: "Asset creation, illustrations, UI design", tag: "Art" },
+            { name: "Traditional Art", desc: "Painting, drawing, sketching", tag: "Art" },
+            { name: "Digital Illustration", desc: "Character design, concept art", tag: "Art" },
+            { name: "Premiere Pro", desc: "Video editing, trailers, playthroughs", tag: "Video" },
+            { name: "After Effects", desc: "Motion graphics, visual effects", tag: "Video" },
+            { name: "Sound Design", desc: "Audio implementation, mixing", tag: "Audio" },
+            { name: "FL Studio", desc: "Music composition, sound design", tag: "Audio" },
+            { name: "HTML & CSS", desc: "Web development for game promotion", tag: "Web" }
         ];
 
         document.getElementById('portfolio-skills').innerHTML = skills.map(s => 

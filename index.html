@@ -227,19 +227,21 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-       // ============================================================
-// PERSISTENT YOUTUBE PLAYLIST BGM - Continues Across Pages
+   // ============================================================
+// PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
 // ============================================================
 let youtubePlayer = null;
 let bgmEnabled = true;
 let shuffleEnabled = false;
 let isPlayerReady = false;
+let isSeekingComplete = false;
+let pendingSeekTime = 0;
 
 const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
-const BGM_VOLUME = 8; // Soft background volume
+const BGM_VOLUME = 8;
 
 // ============================================================
-// LOAD SAVED STATES FROM LOCALSTORAGE
+// LOAD SAVED STATES
 // ============================================================
 const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
 if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
@@ -258,14 +260,14 @@ function onYouTubeIframeAPIReady() {
         height: '1',
         width: '1',
         playerVars: {
-            autoplay: 0, // Don't auto-play, we control it manually
+            autoplay: 0,
             controls: 0,
             disablekb: 1,
             fs: 0,
             iv_load_policy: 3,
             listType: 'playlist',
             list: PLAYLIST_ID,
-            index: savedVideoIndex, // Start from saved video index
+            index: savedVideoIndex,
             loop: 1,
             modestbranding: 1,
             rel: 0,
@@ -284,56 +286,73 @@ function onPlayerReady(event) {
     applySoundState();
     applyShuffleState();
     
-    // Set volume
     event.target.setVolume(BGM_VOLUME);
     
-    // Seek to saved position after a short delay
-    if (savedVideoTime > 0) {
-        setTimeout(() => {
-            try {
-                event.target.seekTo(savedVideoTime, true);
-            } catch(e) {}
-        }, 1000);
+    // Set pending seek time
+    if (savedVideoTime > 1) {
+        pendingSeekTime = savedVideoTime;
     }
     
-    // Play if enabled and page is visible
+    // ONLY play if sound is enabled AND page is visible
     if (bgmEnabled && !document.hidden) {
+        // Use a longer delay to ensure player is fully ready
         setTimeout(() => {
-            event.target.playVideo();
-            // Seek again after play starts
-            if (savedVideoTime > 0) {
-                setTimeout(() => {
-                    try {
-                        event.target.seekTo(savedVideoTime, true);
-                    } catch(e) {}
-                }, 500);
+            if (youtubePlayer && bgmEnabled) {
+                youtubePlayer.playVideo();
             }
-        }, 1500);
+        }, 2000);
     } else {
+        // If muted or hidden, ensure it's paused
         event.target.pauseVideo();
     }
     
     // Show shuffle button
     document.getElementById('shuffle-toggle').style.display = 'flex';
     
-    // Start periodic position saving
-    setInterval(savePlaybackPosition, 1000);
+    // Start periodic position saving (only if playing)
+    setInterval(() => {
+        if (bgmEnabled && !document.hidden && isPlayerReady) {
+            savePlaybackPosition();
+        }
+    }, 2000);
 }
 
 function onPlayerStateChange(event) {
-    // When video ends
-    if (event.data === YT.PlayerState.ENDED) {
-        // Reset saved time for next video
-        localStorage.setItem('dimdesk_bgm_time', '0');
+    // When video starts playing
+    if (event.data === YT.PlayerState.PLAYING) {
+        isSeekingComplete = false;
         
-        if (shuffleEnabled && bgmEnabled && !document.hidden) {
-            event.target.nextVideo();
+        // If seeking is needed
+        if (pendingSeekTime > 0 && !isSeekingComplete) {
+            setTimeout(() => {
+                try {
+                    if (youtubePlayer && pendingSeekTime > 0) {
+                        youtubePlayer.seekTo(pendingSeekTime, true);
+                        pendingSeekTime = 0;
+                        isSeekingComplete = true;
+                    }
+                } catch(e) {}
+            }, 800);
+        }
+        
+        // If hidden or muted, pause immediately
+        if (document.hidden || !bgmEnabled) {
+            event.target.pauseVideo();
         }
     }
     
-    // Pause if tab hidden while playing
-    if (event.data === YT.PlayerState.PLAYING && document.hidden) {
-        event.target.pauseVideo();
+    // When video ends
+    if (event.data === YT.PlayerState.ENDED) {
+        localStorage.setItem('dimdesk_bgm_time', '0');
+        pendingSeekTime = 0;
+        
+        if (shuffleEnabled && bgmEnabled && !document.hidden) {
+            setTimeout(() => {
+                event.target.nextVideo();
+            }, 500);
+        } else if (!bgmEnabled) {
+            event.target.pauseVideo();
+        }
     }
     
     // Save position when paused
@@ -341,9 +360,10 @@ function onPlayerStateChange(event) {
         savePlaybackPosition();
     }
     
-    // Save position when video changes
+    // When video is cued (new video loaded)
     if (event.data === YT.PlayerState.CUED) {
         savePlaybackPosition();
+        isSeekingComplete = false;
     }
 }
 
@@ -356,7 +376,7 @@ function savePlaybackPosition() {
             const currentTime = youtubePlayer.getCurrentTime();
             const currentIndex = youtubePlayer.getPlaylistIndex();
             
-            if (currentTime > 0) {
+            if (currentTime > 0.5) {
                 localStorage.setItem('dimdesk_bgm_time', currentTime.toString());
             }
             if (currentIndex >= 0) {
@@ -394,7 +414,7 @@ function applyShuffleState() {
 }
 
 // ============================================================
-// SOUND TOGGLE
+// SOUND TOGGLE - FIXED: Mute properly pauses
 // ============================================================
 document.getElementById('sound-toggle').addEventListener('click', function(e) {
     e.stopPropagation();
@@ -406,7 +426,9 @@ document.getElementById('sound-toggle').addEventListener('click', function(e) {
         if (bgmEnabled && !document.hidden) {
             youtubePlayer.playVideo();
         } else {
+            // When muted, properly pause and save position
             youtubePlayer.pauseVideo();
+            youtubePlayer.mute(); // Extra safety
             savePlaybackPosition();
         }
     }
@@ -436,31 +458,35 @@ document.getElementById('shuffle-toggle').addEventListener('click', function(e) 
 // SAVE POSITION WHEN LEAVING PAGE
 // ============================================================
 window.addEventListener('beforeunload', () => {
-    savePlaybackPosition();
+    if (bgmEnabled) {
+        savePlaybackPosition();
+    }
     if (youtubePlayer) {
         try {
             youtubePlayer.pauseVideo();
+            youtubePlayer.mute();
         } catch(e) {}
     }
 });
 
 // ============================================================
-// PAUSE/RESUME ON TAB VISIBILITY CHANGE
+// TAB VISIBILITY - Fixed: muted stays muted
 // ============================================================
 document.addEventListener('visibilitychange', () => {
-    if (youtubePlayer) {
+    if (youtubePlayer && isPlayerReady) {
         if (document.hidden) {
+            // Save position and pause when tab hidden
             savePlaybackPosition();
             youtubePlayer.pauseVideo();
-        } else if (bgmEnabled) {
-            youtubePlayer.playVideo();
-            // Seek to saved position
-            if (savedVideoTime > 0) {
+        } else {
+            // Only resume if sound is enabled
+            if (bgmEnabled) {
                 setTimeout(() => {
-                    try {
-                        youtubePlayer.seekTo(savedVideoTime, true);
-                    } catch(e) {}
+                    youtubePlayer.playVideo();
                 }, 500);
+            } else {
+                // Keep paused if muted
+                youtubePlayer.pauseVideo();
             }
         }
     }
@@ -504,6 +530,8 @@ function playCuteClick() {
     osc.start(now);
     osc.stop(now + 0.1);
 }
+
+// Rest of your existing code (cursor, sparkles, video, cards, skills, etc.)
 
         // ============================================================
         // CUSTOM CURSOR

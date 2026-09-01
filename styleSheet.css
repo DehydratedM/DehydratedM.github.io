@@ -10,6 +10,8 @@
 html {
     font-size: 16px;
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -32,20 +34,131 @@ body.menu-open {
     overflow: hidden;
 }
 
-/* Mouse-following sparkle trail */
-.sparkle-trail {
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(240, 128, 128, 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(240, 128, 128, 0.5);
+}
+
+::selection {
+    background: rgba(240, 128, 128, 0.3);
+    color: #fff;
+}
+
+/* ==========================================================================
+   WHITE SPARKLE PARTICLES - MOUSE TRAIL
+   ========================================================================== */
+.sparkle-particle {
     position: fixed;
     pointer-events: none;
     z-index: 99999;
-    animation: sparkleFade 1s ease-out forwards;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 40%, transparent 70%);
+    animation: sparkleParticleFade 0.8s ease-out forwards;
+    box-shadow: 
+        0 0 6px 2px rgba(255, 255, 255, 0.8),
+        0 0 12px 4px rgba(255, 255, 255, 0.4),
+        0 0 20px 8px rgba(255, 215, 0, 0.2);
+    will-change: transform, opacity;
 }
 
-@keyframes sparkleFade {
-    0% { transform: scale(1) rotate(0deg); opacity: 1; }
-    100% { transform: scale(0) rotate(180deg); opacity: 0; }
+@keyframes sparkleParticleFade {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+    }
 }
 
-/* Enhanced sparkle overlay - more particles */
+/* Star-shaped sparkle */
+.sparkle-star {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99998;
+    width: 4px;
+    height: 4px;
+    animation: sparkleStarFade 0.9s ease-out forwards;
+    will-change: transform, opacity;
+}
+
+.sparkle-star::before,
+.sparkle-star::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.9);
+}
+
+.sparkle-star::before {
+    width: 10px;
+    height: 2px;
+}
+
+.sparkle-star::after {
+    width: 2px;
+    height: 10px;
+}
+
+@keyframes sparkleStarFade {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2) rotate(90deg);
+        opacity: 0;
+    }
+}
+
+/* Diamond sparkle */
+.sparkle-diamond {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99997;
+    width: 6px;
+    height: 6px;
+    background: white;
+    transform: rotate(45deg);
+    animation: sparkleDiamondFade 0.7s ease-out forwards;
+    box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7);
+    will-change: transform, opacity;
+}
+
+@keyframes sparkleDiamondFade {
+    0% {
+        transform: rotate(45deg) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(135deg) scale(2);
+        opacity: 0;
+    }
+}
+
+/* Enhanced sparkle overlay - static particles */
 body::before {
     content: '';
     position: fixed;
@@ -56,24 +169,26 @@ body::before {
     pointer-events: none;
     z-index: 9999;
     background-image: 
-        radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.5), transparent),
-        radial-gradient(2px 2px at 35% 65%, rgba(255,215,0,0.4), transparent),
-        radial-gradient(3px 3px at 55% 15%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(2px 2px at 75% 55%, rgba(255,215,0,0.3), transparent),
-        radial-gradient(3px 3px at 5% 75%, rgba(255,255,255,0.5), transparent),
-        radial-gradient(2px 2px at 65% 85%, rgba(255,215,0,0.4), transparent),
-        radial-gradient(2px 2px at 25% 45%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(3px 3px at 85% 25%, rgba(255,215,0,0.3), transparent),
-        radial-gradient(2px 2px at 45% 85%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(2px 2px at 95% 65%, rgba(255,215,0,0.3), transparent),
-        radial-gradient(3px 3px at 50% 50%, rgba(255,255,255,0.2), transparent),
-        radial-gradient(2px 2px at 10% 15%, rgba(255,215,0,0.3), transparent);
+        radial-gradient(2px 2px at 15% 25%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(3px 3px at 35% 65%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 55% 15%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(3px 3px at 75% 55%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 5% 75%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(3px 3px at 65% 85%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 25% 45%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(3px 3px at 85% 25%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 45% 85%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(3px 3px at 95% 65%, rgba(255,255,255,0.3), transparent),
+        radial-gradient(2px 2px at 50% 50%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(3px 3px at 10% 15%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 30% 90%, rgba(255,255,255,0.4), transparent),
+        radial-gradient(2px 2px at 70% 10%, rgba(255,255,255,0.5), transparent);
     animation: sparkleTwinkle 2.5s ease-in-out infinite;
 }
 
 @keyframes sparkleTwinkle {
     0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+    50% { opacity: 0.8; }
 }
 
 /* ==========================================================================
@@ -101,7 +216,8 @@ body::before {
     transition: filter 0.5s ease;
 }
 
-.video-overlay {
+.background-video::after {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
@@ -117,29 +233,6 @@ body::before {
 @keyframes overlayPulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.85; }
-}
-
-/* Sparkle particles overlay */
-.background-video::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(2px 2px at 40% 70%, rgba(255,215,0,0.2), transparent),
-        radial-gradient(2px 2px at 60% 20%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(2px 2px at 80% 60%, rgba(255,215,0,0.2), transparent),
-        radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(2px 2px at 70% 90%, rgba(255,215,0,0.2), transparent);
-    animation: twinkle 3s ease-in-out infinite;
-}
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
 }
 
 /* ==========================================================================
@@ -167,7 +260,7 @@ body::before {
 }
 
 /* ==========================================================================
-   Header & Navigation - SMOOTH & AESTHETIC
+   Header & Navigation
    ========================================================================== */
 .HE {
     display: flex;
@@ -220,27 +313,6 @@ body::before {
     box-shadow: 0 0 30px rgba(240, 128, 128, 0.5);
 }
 
-/* Sparkle on logo */
-.lol::after {
-    content: '✨';
-    position: absolute;
-    top: -10px;
-    right: -15px;
-    font-size: 1.2rem;
-    animation: sparkleFloat 2s ease-in-out infinite;
-    opacity: 0;
-}
-
-.lol:hover::after {
-    opacity: 1;
-}
-
-@keyframes sparkleFloat {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-5px) rotate(180deg); }
-}
-
-/* Desktop Navigation */
 .nav-links {
     display: flex;
 }
@@ -315,7 +387,7 @@ body::before {
 }
 
 /* ==========================================================================
-   CAROUSEL - SMOOTHER & SPARKLIER
+   CAROUSEL
    ========================================================================== */
 .carousel-container {
     position: relative;
@@ -355,29 +427,6 @@ body::before {
     flex-direction: column;
 }
 
-.carousel-slide::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(240, 128, 128, 0.1), transparent);
-    transform: rotate(45deg);
-    transition: all 0.5s ease;
-    opacity: 0;
-}
-
-.carousel-slide:hover::before {
-    opacity: 1;
-    animation: shimmer 1.5s ease infinite;
-}
-
-@keyframes shimmer {
-    0% { transform: rotate(45deg) translateX(-100%); }
-    100% { transform: rotate(45deg) translateX(100%); }
-}
-
 .carousel-slide:hover {
     transform: translateY(-10px) scale(1.02);
     border-color: lightcoral;
@@ -391,10 +440,6 @@ body::before {
     border-bottom: 2px solid rgba(240, 128, 128, 0.2);
     display: block;
     transition: all 0.5s ease;
-}
-
-.carousel-slide:hover img {
-    filter: brightness(1.2) saturate(1.2);
 }
 
 .carousel-btn {
@@ -422,143 +467,10 @@ body::before {
     color: #000;
     transform: translateY(-50%) scale(1.2);
     box-shadow: 0 0 25px rgba(240, 128, 128, 0.7);
-    animation: btnPulse 1s ease infinite;
-}
-
-@keyframes btnPulse {
-    0%, 100% { box-shadow: 0 0 15px rgba(240, 128, 128, 0.5); }
-    50% { box-shadow: 0 0 30px rgba(240, 128, 128, 0.8); }
-}
-
-.carousel-indicator {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.carousel-indicator.active {
-    background: lightcoral;
-    border-color: lightcoral;
-    transform: scale(1.3);
-    box-shadow: 0 0 15px rgba(240, 128, 128, 0.7);
-    animation: dotGlow 2s ease-in-out infinite;
-}
-
-@keyframes dotGlow {
-    0%, 100% { box-shadow: 0 0 10px rgba(240, 128, 128, 0.5); }
-    50% { box-shadow: 0 0 20px rgba(240, 128, 128, 0.9); }
 }
 
 /* ==========================================================================
-   FEATURED CARDS - SPARKLIER
-   ========================================================================== */
-.featured-card {
-    background: rgba(20, 20, 20, 0.9);
-    border-radius: 15px;
-    padding: 25px;
-    border: 2px solid rgba(240, 128, 128, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-
-.featured-card::after {
-    content: '';
-    position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 300%;
-    height: 300%;
-    background: radial-gradient(circle, rgba(240, 128, 128, 0.1), transparent);
-    transition: all 0.5s ease;
-    opacity: 0;
-}
-
-.featured-card:hover::after {
-    opacity: 1;
-    animation: cardSparkle 2s ease infinite;
-}
-
-@keyframes cardSparkle {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(10px, 10px); }
-}
-
-.featured-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: lightcoral;
-    box-shadow: 0 15px 30px rgba(240, 128, 128, 0.3), 0 0 20px rgba(240, 128, 128, 0.2);
-}
-
-/* ==========================================================================
-   VIDEO SMOOTH LOOP FIX
-   ========================================================================== */
-.trailer-main {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
-    position: relative;
-}
-
-.video-wrapper {
-    position: relative;
-    padding-bottom: 56.25%;
-    height: 0;
-    overflow: hidden;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 128, 128, 0.2);
-    border: 2px solid rgba(240, 128, 128, 0.3);
-    transition: all 0.3s ease;
-}
-
-.video-wrapper:hover {
-    border-color: lightcoral;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(240, 128, 128, 0.4);
-}
-
-.video-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* ==========================================================================
-   BUTTONS - SPARKLE EFFECT
-   ========================================================================== */
-.cart-btn, .wishlist-btn, .checkout-btn {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.cart-btn::before, .wishlist-btn::before, .checkout-btn::before {
-    content: '✨';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    font-size: 1rem;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-.cart-btn:hover::before, .wishlist-btn:hover::before, .checkout-btn:hover::before {
-    opacity: 1;
-    animation: sparkleFloat 1.5s ease infinite;
-}
-
-/* ==========================================================================
-   FOOTER - SMOOTHER TRANSITIONS
+   FOOTER
    ========================================================================== */
 footer {
     background-color: rgba(0, 0, 0, 0.9);
@@ -573,6 +485,14 @@ footer:hover {
     box-shadow: 0 -10px 30px rgba(240, 128, 128, 0.1);
 }
 
+.socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
 .socialIcons a {
     display: flex;
     align-items: center;
@@ -585,36 +505,75 @@ footer:hover {
     position: relative;
 }
 
-.socialIcons a::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(240, 128, 128, 0.5), transparent);
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
 .socialIcons a:hover {
     background: lightcoral;
     transform: translateY(-5px) rotate(360deg);
     box-shadow: 0 10px 25px rgba(240, 128, 128, 0.5);
 }
 
-.socialIcons a:hover::after {
-    opacity: 1;
-    animation: socialSparkle 1.5s ease infinite;
+/* Mobile navigation */
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
 }
 
-@keyframes socialSparkle {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.5); opacity: 0; }
+.mobile-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #f5deb3;
+    margin: 3px 0;
+    transition: 0.3s;
+    border-radius: 1px;
 }
 
-/* ==========================================================================
-   VIDEO LOOP FIX - JavaScript
-   ========================================================================== */
-/* Add this to your JavaScript to fix video looping */
+@media (max-width: 768px) {
+    .mobile-toggle {
+        display: flex !important;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        padding: 100px 20px 30px;
+        z-index: 1000;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 15px 20px;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

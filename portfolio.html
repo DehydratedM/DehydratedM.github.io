@@ -197,7 +197,7 @@
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
-            volume: 5  // ← Changed from 10 to 5 (softer)
+            volume: 7  // ← Changed from 10 to 5 (softer)
         },
         events: {
             onReady: onPlayerReady,
@@ -206,16 +206,20 @@
     });
 }
         
-        function onPlayerReady(event) {
-            applySoundState();
-            applyShuffleState();
-            
-            if (bgmEnabled && !document.hidden) {
-                event.target.playVideo();
-            }
-            
-            document.getElementById('shuffle-toggle').style.display = 'flex';
-        }
+     function onPlayerReady(event) {
+    applySoundState();
+    applyShuffleState();
+    
+    // Set BGM volume to 3 (very soft)
+    event.target.setVolume(7);
+    
+    if (bgmEnabled && !document.hidden) {
+        event.target.playVideo();
+    }
+    
+    // Show shuffle button
+    document.getElementById('shuffle-toggle').style.display = 'flex';
+}
         
         function onPlayerStateChange(event) {
             if (event.data === YT.PlayerState.ENDED && shuffleEnabled && bgmEnabled) {

@@ -32,8 +32,8 @@
         @keyframes diamondFade { 0% { transform: rotate(45deg) scale(0); opacity: 1; } 100% { transform: rotate(135deg) scale(2); opacity: 0; } }
         
         .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35) saturate(0.9); }
-        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(240,128,128,0.18) 50%, rgba(10,10,10,0.88) 100%); animation: glowPulse 8s ease-in-out infinite; }
+        .background-video video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.25); }
+        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(240,128,128,0.15) 50%, rgba(10,10,10,0.85) 100%); animation: glowPulse 8s ease-in-out infinite; }
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
@@ -122,14 +122,7 @@
         </button>
     </div>
     
-    <!-- Cute but formal looping background video - soft pastel bokeh lights -->
-    <div class="background-video">
-        <video autoplay muted loop playsinline id="bg-video">
-            <source src="https://cdn.pixabay.com/video/2023/08/27/178080-858591556_large.mp4" type="video/mp4">
-            <source src="https://cdn.pixabay.com/video/2022/12/09/142638-781675153_large.mp4" type="video/mp4">
-            <source src="D.mp4" type="video/mp4">
-        </video>
-    </div>
+    <div class="background-video"><video autoplay muted loop playsinline id="bg-video"><source src="D.mp4" type="video/mp4"></video></div>
     <div class="custom-cursor" id="custom-cursor"></div>
     <div class="cursor-sparkle-ring" id="cursor-ring"></div>
     
@@ -559,7 +552,8 @@
                         "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures",
                         "Watch Trailer": "https://www.youtube.com/watch?v=TObP7BQpVv4"
                     }
-                }
+                },
+             
             ],
             released: [
                 { 
@@ -594,7 +588,7 @@
                     platforms: ["TBA"], 
                     links: {} 
                 },
-                { 
+                   { 
                     title: "Project: Chronos", 
                     desc: "Time-bending action RPG", 
                     img: "REICON.png", 

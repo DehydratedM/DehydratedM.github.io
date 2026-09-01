@@ -84,16 +84,18 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        /* Sound Toggle Button */
+        /* Cute Sound Toggle Button */
         .sound-toggle {
             position: fixed; bottom: 20px; right: 20px; z-index: 10000;
-            width: 50px; height: 50px; border-radius: 50%;
-            background: rgba(240,128,128,0.3); border: 2px solid #f08080;
+            width: 55px; height: 55px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(240,128,128,0.4), rgba(255,182,193,0.3));
+            border: 2px solid #ffb6c1;
             display: flex; align-items: center; justify-content: center;
-            cursor: none; font-size: 24px; transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(240,128,128,0.3);
+            cursor: none; transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(240,128,128,0.2);
         }
-        .sound-toggle:hover { background: rgba(240,128,128,0.5); transform: scale(1.1); box-shadow: 0 0 25px rgba(240,128,128,0.5); }
+        .sound-toggle:hover { background: linear-gradient(135deg, rgba(240,128,128,0.6), rgba(255,182,193,0.5)); transform: scale(1.1); box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(240,128,128,0.3); }
+        .sound-toggle svg { width: 24px; height: 24px; fill: #fff; filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)); }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -106,8 +108,11 @@
     </style>
 </head>
 <body>
-    <!-- Sound Toggle Button -->
-    <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">🔊</button>
+    <!-- Cute Sound Toggle Button with SVG Icons -->
+    <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+        <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+    </button>
     
     <div class="background-video"><video autoplay muted loop playsinline id="bg-video"><source src="D.mp4" type="video/mp4"></video></div>
     <div class="custom-cursor" id="custom-cursor"></div>
@@ -161,35 +166,51 @@
 
     <script>
         // ============================================================
-        // SOUND SYSTEM - Background Music + Click Sounds
+        // COZY SOUND SYSTEM - Light BGM + Cute Click Sounds
         // ============================================================
         const SoundSystem = {
             bgmEnabled: true,
             sfxEnabled: true,
             bgmElement: null,
+            audioContext: null,
             
             init() {
-                // Create BGM audio element with example music
+                // Create BGM audio element with copyright-free cozy music
+                // Using Kevin MacLeod's "Clear Air" from incompetech (royalty-free)
                 this.bgmElement = new Audio();
-                this.bgmElement.src = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+                this.bgmElement.src = 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Clear%20Air.mp3';
                 this.bgmElement.loop = true;
-                this.bgmElement.volume = 0.3;
+                this.bgmElement.volume = 0.08; // Very low volume
                 this.bgmElement.preload = 'auto';
                 
-                // Try to play BGM
+                // Initialize AudioContext for click sounds
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Try to play BGM automatically
                 this.playBGM();
                 
-                // Add click sound to all clickable elements
+                // Resume on first user interaction if needed
+                document.addEventListener('click', () => {
+                    if (this.audioContext.state === 'suspended') {
+                        this.audioContext.resume();
+                    }
+                    if (this.bgmElement.paused && this.bgmEnabled) {
+                        this.playBGM();
+                    }
+                }, { once: true });
+                
+                // Add cute click sound to all clickable elements
                 document.addEventListener('click', (e) => {
-                    if (e.target.closest('a, button, .game-link, .socialIcons a')) {
-                        this.playClickSound();
+                    if (e.target.closest('a, button, .game-link, .socialIcons a, .sound-toggle')) {
+                        this.playCuteClick();
                     }
                 });
                 
                 // Sound toggle button
                 const soundToggle = document.getElementById('sound-toggle');
                 if (soundToggle) {
-                    soundToggle.addEventListener('click', () => {
+                    soundToggle.addEventListener('click', (e) => {
+                        e.stopPropagation();
                         this.toggleSound();
                     });
                 }
@@ -198,8 +219,7 @@
             playBGM() {
                 if (this.bgmEnabled && this.bgmElement) {
                     this.bgmElement.play().catch(() => {
-                        // Autoplay blocked, will try again on user interaction
-                        console.log('BGM autoplay blocked, waiting for user interaction');
+                        console.log('BGM autoplay blocked, will play on interaction');
                     });
                 }
             },
@@ -214,35 +234,54 @@
                 this.bgmEnabled = !this.bgmEnabled;
                 this.sfxEnabled = this.bgmEnabled;
                 
-                const soundToggle = document.getElementById('sound-toggle');
+                const soundIconOn = document.getElementById('sound-icon-on');
+                const soundIconOff = document.getElementById('sound-icon-off');
                 
                 if (this.bgmEnabled) {
                     this.playBGM();
-                    if (soundToggle) soundToggle.textContent = '🔊';
+                    if (soundIconOn) soundIconOn.style.display = 'block';
+                    if (soundIconOff) soundIconOff.style.display = 'none';
                 } else {
                     this.pauseBGM();
-                    if (soundToggle) soundToggle.textContent = '🔇';
+                    if (soundIconOn) soundIconOn.style.display = 'none';
+                    if (soundIconOff) soundIconOff.style.display = 'block';
                 }
             },
             
-            playClickSound() {
-                if (!this.sfxEnabled) return;
+            playCuteClick() {
+                if (!this.sfxEnabled || !this.audioContext) return;
                 
-                // Create click sound using Web Audio API
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
+                if (this.audioContext.state === 'suspended') {
+                    this.audioContext.resume();
+                }
                 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                const now = this.audioContext.currentTime;
                 
-                oscillator.type = 'sine';
-                oscillator.frequency.value = 800;
-                gainNode.gain.value = 0.1;
+                // Create cute "pop" sound using two oscillators
+                const osc1 = this.audioContext.createOscillator();
+                const osc2 = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
                 
-                oscillator.start();
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
-                oscillator.stop(audioContext.currentTime + 0.1);
+                osc1.connect(gainNode);
+                osc2.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                
+                // Cute high-pitched "pop"
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(1200, now);
+                osc1.frequency.exponentialRampToValueAtTime(800, now + 0.06);
+                
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(1800, now);
+                osc2.frequency.exponentialRampToValueAtTime(1200, now + 0.08);
+                
+                gainNode.gain.setValueAtTime(0.06, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+                
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.1);
+                osc2.stop(now + 0.1);
             }
         };
         

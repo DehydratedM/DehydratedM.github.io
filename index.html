@@ -79,28 +79,10 @@
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
         
-        .music-credits {
-            margin-top: 15px;
-            padding: 10px;
-            font-size: 0.7rem;
-            color: #808080;
-        }
-        .music-credits a {
-            color: #d4a5b5;
-            text-decoration: none;
-            font-style: italic;
-            transition: all 0.3s ease;
-            cursor: none;
-        }
-        .music-credits a:hover {
-            color: #ffb6c1;
-            text-shadow: 0 0 10px rgba(255,182,193,0.5);
-            letter-spacing: 0.5px;
-        }
-        .music-credits span {
-            color: #666;
-            font-style: normal;
-        }
+        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; }
+        .music-credits a { color: #d4a5b5; text-decoration: none; font-style: italic; transition: all 0.3s ease; cursor: none; }
+        .music-credits a:hover { color: #ffb6c1; text-shadow: 0 0 10px rgba(255,182,193,0.5); letter-spacing: 0.5px; }
+        .music-credits span { color: #666; font-style: normal; }
         
         .Oo { color: #808080; font-size: 0.8rem; }
         .Oo a { color: #808080; text-decoration: none; }
@@ -108,35 +90,12 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        .sound-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-end;
-        }
-        .sound-toggle, .shuffle-toggle {
-            width: 55px; height: 55px; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3));
-            border: 2px solid #ffb6c1;
-            display: flex; align-items: center; justify-content: center;
-            cursor: none; transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2);
-        }
+        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
         .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
         .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
-        .shuffle-toggle.active {
-            background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6));
-            box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(173,216,230,0.4);
-            animation: shuffleGlow 2s ease-in-out infinite;
-        }
-        @keyframes shuffleGlow {
-            0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); }
-            50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); }
-        }
+        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(173,216,230,0.4); animation: shuffleGlow 2s ease-in-out infinite; }
+        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -237,9 +196,6 @@
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 8;
 
-        // ============================================================
-        // LOAD SAVED STATES
-        // ============================================================
         const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
         if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
 
@@ -249,9 +205,6 @@
         const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
         const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
 
-        // ============================================================
-        // YOUTUBE PLAYER INITIALIZATION
-        // ============================================================
         function onYouTubeIframeAPIReady() {
             youtubePlayer = new YT.Player('youtube-bgm-player', {
                 height: '1',
@@ -285,28 +238,22 @@
             
             event.target.setVolume(BGM_VOLUME);
             
-            // Set pending seek time
             if (savedVideoTime > 1) {
                 pendingSeekTime = savedVideoTime;
             }
             
-            // ONLY play if sound is enabled AND page is visible
             if (bgmEnabled && !document.hidden) {
-                // Use a longer delay to ensure player is fully ready
                 setTimeout(() => {
                     if (youtubePlayer && bgmEnabled) {
                         youtubePlayer.playVideo();
                     }
                 }, 2000);
             } else {
-                // If muted or hidden, ensure it's paused
                 event.target.pauseVideo();
             }
             
-            // Show shuffle button
             document.getElementById('shuffle-toggle').style.display = 'flex';
             
-            // Start periodic position saving (only if playing)
             setInterval(() => {
                 if (bgmEnabled && !document.hidden && isPlayerReady) {
                     savePlaybackPosition();
@@ -315,11 +262,9 @@
         }
 
         function onPlayerStateChange(event) {
-            // When video starts playing
             if (event.data === YT.PlayerState.PLAYING) {
                 isSeekingComplete = false;
                 
-                // If seeking is needed
                 if (pendingSeekTime > 0 && !isSeekingComplete) {
                     setTimeout(() => {
                         try {
@@ -332,13 +277,11 @@
                     }, 800);
                 }
                 
-                // If hidden or muted, pause immediately
                 if (document.hidden || !bgmEnabled) {
                     event.target.pauseVideo();
                 }
             }
             
-            // When video ends
             if (event.data === YT.PlayerState.ENDED) {
                 localStorage.setItem('dimdesk_bgm_time', '0');
                 pendingSeekTime = 0;
@@ -352,21 +295,16 @@
                 }
             }
             
-            // Save position when paused
             if (event.data === YT.PlayerState.PAUSED) {
                 savePlaybackPosition();
             }
             
-            // When video is cued (new video loaded)
             if (event.data === YT.PlayerState.CUED) {
                 savePlaybackPosition();
                 isSeekingComplete = false;
             }
         }
 
-        // ============================================================
-        // SAVE PLAYBACK POSITION
-        // ============================================================
         function savePlaybackPosition() {
             if (youtubePlayer && isPlayerReady) {
                 try {
@@ -383,9 +321,6 @@
             }
         }
 
-        // ============================================================
-        // APPLY UI STATES
-        // ============================================================
         function applySoundState() {
             const soundIconOn = document.getElementById('sound-icon-on');
             const soundIconOff = document.getElementById('sound-icon-off');
@@ -410,9 +345,6 @@
             }
         }
 
-        // ============================================================
-        // SOUND TOGGLE - FIXED: Mute properly pauses
-        // ============================================================
         document.getElementById('sound-toggle').addEventListener('click', function(e) {
             e.stopPropagation();
             bgmEnabled = !bgmEnabled;
@@ -423,17 +355,13 @@
                 if (bgmEnabled && !document.hidden) {
                     youtubePlayer.playVideo();
                 } else {
-                    // When muted, properly pause and save position
                     youtubePlayer.pauseVideo();
-                    youtubePlayer.mute(); // Extra safety
+                    youtubePlayer.mute();
                     savePlaybackPosition();
                 }
             }
         });
 
-        // ============================================================
-        // SHUFFLE TOGGLE
-        // ============================================================
         document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
             e.stopPropagation();
             shuffleEnabled = !shuffleEnabled;
@@ -451,9 +379,6 @@
             }
         });
 
-        // ============================================================
-        // SAVE POSITION WHEN LEAVING PAGE
-        // ============================================================
         window.addEventListener('beforeunload', () => {
             if (bgmEnabled) {
                 savePlaybackPosition();
@@ -466,32 +391,23 @@
             }
         });
 
-        // ============================================================
-        // TAB VISIBILITY - Fixed: muted stays muted
-        // ============================================================
         document.addEventListener('visibilitychange', () => {
             if (youtubePlayer && isPlayerReady) {
                 if (document.hidden) {
-                    // Save position and pause when tab hidden
                     savePlaybackPosition();
                     youtubePlayer.pauseVideo();
                 } else {
-                    // Only resume if sound is enabled
                     if (bgmEnabled) {
                         setTimeout(() => {
                             youtubePlayer.playVideo();
                         }, 500);
                     } else {
-                        // Keep paused if muted
                         youtubePlayer.pauseVideo();
                     }
                 }
             }
         });
 
-        // ============================================================
-        // INITIALIZE STATES
-        // ============================================================
         applySoundState();
         applyShuffleState();
 
@@ -501,7 +417,7 @@
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         document.addEventListener('click', (e) => {
-            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
+            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a')) {
                 playCuteClick();
             }
         });
@@ -559,30 +475,35 @@
         SparkleSystem.init();
 
         const bgVideo = document.getElementById('bg-video');
-        if (bgVideo) { bgVideo.addEventListener('timeupdate', () => { if (bgVideo.currentTime >= bgVideo.duration - 0.15) { bgVideo.currentTime = 0; bgVideo.play(); } }); bgVideo.addEventListener('ended', () => { bgVideo.currentTime = 0; bgVideo.play(); }); bgVideo.addEventListener('stalled', () => bgVideo.play()); }
+        if (bgVideo) { 
+            bgVideo.addEventListener('timeupdate', () => { if (bgVideo.currentTime >= bgVideo.duration - 0.15) { bgVideo.currentTime = 0; bgVideo.play(); } }); 
+            bgVideo.addEventListener('ended', () => { bgVideo.currentTime = 0; bgVideo.play(); }); 
+            bgVideo.addEventListener('stalled', () => bgVideo.play()); 
+        }
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
         // ============================================================
-        // GAME DATA (Updated image to REICON.png and fixed video sources)
+        // GAME DATA - Updated with Realm Escape: Jungle Adventure
         // ============================================================
         const gameData = {
             featured: [
                 { 
-                    title: "Bloomy Delivery Adventures", 
-                    desc: "A cozy delivery adventure game where you help Bloomy deliver packages in a charming world", 
+                    title: "Realm Escape: Jungle Adventure", 
+                    desc: "Embark on an epic jungle adventure! Escape ancient temples, solve puzzles, and uncover hidden treasures in this thrilling mobile game.", 
                     img: "REICON.png", 
-                    video: "https://www.w3schools.com/html/mov_bbb.mp4",  // Direct MP4 video for playback
-                    tags: ["Unity", "C#", "Android", "Cozy", "Adventure"],
+                    video: "https://www.youtube.com/watch?v=TObP7BQpVv4", 
+                    tags: ["Unity", "C#", "Android", "Adventure", "Puzzle"],
                     platforms: ["Google Play"],
                     links: { 
-                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures",
+                        "Watch Trailer": "https://www.youtube.com/watch?v=TObP7BQpVv4"
                     }
                 },
                 { 
                     title: "Project: Chronos", 
                     desc: "Time-bending action RPG", 
-                    img: "REICON.png",  // changed placeholder to REICON.png as requested
+                    img: "REICON.png", 
                     video: "https://www.w3schools.com/html/mov_bbb.mp4", 
                     tags: ["Unity", "C#"], 
                     platforms: ["Coming Soon"], 
@@ -591,14 +512,15 @@
             ],
             released: [
                 { 
-                    title: "Bloomy Delivery Adventures", 
-                    desc: "A cozy delivery adventure game for Android devices", 
+                    title: "Realm Escape: Jungle Adventure", 
+                    desc: "Embark on an epic jungle adventure! Escape ancient temples, solve puzzles, and uncover hidden treasures in this thrilling mobile game.", 
                     img: "REICON.png", 
-                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-                    tags: ["Unity", "C#", "Android", "Cozy"],
+                    video: "https://www.youtube.com/watch?v=TObP7BQpVv4", 
+                    tags: ["Unity", "C#", "Android", "Adventure", "Puzzle"],
                     platforms: ["Google Play"],
                     links: { 
-                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures",
+                        "Watch Trailer": "https://www.youtube.com/watch?v=TObP7BQpVv4"
                     }
                 }
             ],
@@ -625,10 +547,18 @@
         };
 
         function createCard(game, isFeatured = false) {
-            // Use image if video source is not a direct video, else use video element
-            const mediaHTML = game.video ? 
-                `<div class="game-media"><video src="${game.video}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" onclick="this.play()"></video></div>` : 
-                `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
+            // For YouTube videos, use a clickable thumbnail
+            const videoId = game.video.includes('youtube.com/watch') ? game.video.split('v=')[1] : null;
+            const mediaHTML = videoId ? 
+                `<div class="game-media" onclick="window.open('${game.video}', '_blank')">
+                    <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${game.title}" loading="lazy">
+                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:rgba(0,0,0,0.7);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>` : 
+                (game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : 
+                `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`);
+            
             return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
         }
 

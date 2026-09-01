@@ -259,7 +259,7 @@
             modestbranding: 1,
             rel: 0,
             showinfo: 0,
-            volume: 3  // ← Changed from 10 to 3 (much softer)
+            volume: 6  // ← Changed from 10 to 3 (much softer)
         },
         events: {
             onReady: onPlayerReady,
@@ -273,7 +273,7 @@
     applyShuffleState();
     
     // Set BGM volume to 3 (very soft)
-    event.target.setVolume(3);
+    event.target.setVolume(6);
     
     if (bgmEnabled && !document.hidden) {
         event.target.playVideo();

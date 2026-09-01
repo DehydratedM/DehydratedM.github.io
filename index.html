@@ -79,7 +79,6 @@
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
         
-        /* Music Credits Section */
         .music-credits {
             margin-top: 15px;
             padding: 10px;
@@ -109,7 +108,6 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        /* Sound Controls */
         .sound-controls {
             position: fixed;
             bottom: 20px;
@@ -213,7 +211,6 @@
             <a href="https://cara.app/fubie/all" target="_blank" title="Cara"><img src="caraW.png" alt="Cara" onerror="this.style.display='none'"></a>
         </div>
         
-        <!-- Music Credits -->
         <div class="music-credits">
             <span>♪ Music by</span>
             <a href="https://www.youtube.com/@dani_hz" target="_blank">ᴅᴀɴɪ.ʜᴢ</a>
@@ -227,311 +224,309 @@
 
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-   // ============================================================
-// PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
-// ============================================================
-let youtubePlayer = null;
-let bgmEnabled = true;
-let shuffleEnabled = false;
-let isPlayerReady = false;
-let isSeekingComplete = false;
-let pendingSeekTime = 0;
+        // ============================================================
+        // PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
+        // ============================================================
+        let youtubePlayer = null;
+        let bgmEnabled = true;
+        let shuffleEnabled = false;
+        let isPlayerReady = false;
+        let isSeekingComplete = false;
+        let pendingSeekTime = 0;
 
-const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
-const BGM_VOLUME = 8;
+        const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
+        const BGM_VOLUME = 8;
 
-// ============================================================
-// LOAD SAVED STATES
-// ============================================================
-const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
-if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
+        // ============================================================
+        // LOAD SAVED STATES
+        // ============================================================
+        const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
+        if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
 
-const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
-if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
+        const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
+        if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
 
-const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
-const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
+        const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
+        const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
 
-// ============================================================
-// YOUTUBE PLAYER INITIALIZATION
-// ============================================================
-function onYouTubeIframeAPIReady() {
-    youtubePlayer = new YT.Player('youtube-bgm-player', {
-        height: '1',
-        width: '1',
-        playerVars: {
-            autoplay: 0,
-            controls: 0,
-            disablekb: 1,
-            fs: 0,
-            iv_load_policy: 3,
-            listType: 'playlist',
-            list: PLAYLIST_ID,
-            index: savedVideoIndex,
-            loop: 1,
-            modestbranding: 1,
-            rel: 0,
-            showinfo: 0,
-            volume: BGM_VOLUME
-        },
-        events: {
-            onReady: onPlayerReady,
-            onStateChange: onPlayerStateChange
+        // ============================================================
+        // YOUTUBE PLAYER INITIALIZATION
+        // ============================================================
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtube-bgm-player', {
+                height: '1',
+                width: '1',
+                playerVars: {
+                    autoplay: 0,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    iv_load_policy: 3,
+                    listType: 'playlist',
+                    list: PLAYLIST_ID,
+                    index: savedVideoIndex,
+                    loop: 1,
+                    modestbranding: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    volume: BGM_VOLUME
+                },
+                events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                }
+            });
         }
-    });
-}
 
-function onPlayerReady(event) {
-    isPlayerReady = true;
-    applySoundState();
-    applyShuffleState();
-    
-    event.target.setVolume(BGM_VOLUME);
-    
-    // Set pending seek time
-    if (savedVideoTime > 1) {
-        pendingSeekTime = savedVideoTime;
-    }
-    
-    // ONLY play if sound is enabled AND page is visible
-    if (bgmEnabled && !document.hidden) {
-        // Use a longer delay to ensure player is fully ready
-        setTimeout(() => {
-            if (youtubePlayer && bgmEnabled) {
-                youtubePlayer.playVideo();
+        function onPlayerReady(event) {
+            isPlayerReady = true;
+            applySoundState();
+            applyShuffleState();
+            
+            event.target.setVolume(BGM_VOLUME);
+            
+            // Set pending seek time
+            if (savedVideoTime > 1) {
+                pendingSeekTime = savedVideoTime;
             }
-        }, 2000);
-    } else {
-        // If muted or hidden, ensure it's paused
-        event.target.pauseVideo();
-    }
-    
-    // Show shuffle button
-    document.getElementById('shuffle-toggle').style.display = 'flex';
-    
-    // Start periodic position saving (only if playing)
-    setInterval(() => {
-        if (bgmEnabled && !document.hidden && isPlayerReady) {
-            savePlaybackPosition();
+            
+            // ONLY play if sound is enabled AND page is visible
+            if (bgmEnabled && !document.hidden) {
+                // Use a longer delay to ensure player is fully ready
+                setTimeout(() => {
+                    if (youtubePlayer && bgmEnabled) {
+                        youtubePlayer.playVideo();
+                    }
+                }, 2000);
+            } else {
+                // If muted or hidden, ensure it's paused
+                event.target.pauseVideo();
+            }
+            
+            // Show shuffle button
+            document.getElementById('shuffle-toggle').style.display = 'flex';
+            
+            // Start periodic position saving (only if playing)
+            setInterval(() => {
+                if (bgmEnabled && !document.hidden && isPlayerReady) {
+                    savePlaybackPosition();
+                }
+            }, 2000);
         }
-    }, 2000);
-}
 
-function onPlayerStateChange(event) {
-    // When video starts playing
-    if (event.data === YT.PlayerState.PLAYING) {
-        isSeekingComplete = false;
-        
-        // If seeking is needed
-        if (pendingSeekTime > 0 && !isSeekingComplete) {
-            setTimeout(() => {
+        function onPlayerStateChange(event) {
+            // When video starts playing
+            if (event.data === YT.PlayerState.PLAYING) {
+                isSeekingComplete = false;
+                
+                // If seeking is needed
+                if (pendingSeekTime > 0 && !isSeekingComplete) {
+                    setTimeout(() => {
+                        try {
+                            if (youtubePlayer && pendingSeekTime > 0) {
+                                youtubePlayer.seekTo(pendingSeekTime, true);
+                                pendingSeekTime = 0;
+                                isSeekingComplete = true;
+                            }
+                        } catch(e) {}
+                    }, 800);
+                }
+                
+                // If hidden or muted, pause immediately
+                if (document.hidden || !bgmEnabled) {
+                    event.target.pauseVideo();
+                }
+            }
+            
+            // When video ends
+            if (event.data === YT.PlayerState.ENDED) {
+                localStorage.setItem('dimdesk_bgm_time', '0');
+                pendingSeekTime = 0;
+                
+                if (shuffleEnabled && bgmEnabled && !document.hidden) {
+                    setTimeout(() => {
+                        event.target.nextVideo();
+                    }, 500);
+                } else if (!bgmEnabled) {
+                    event.target.pauseVideo();
+                }
+            }
+            
+            // Save position when paused
+            if (event.data === YT.PlayerState.PAUSED) {
+                savePlaybackPosition();
+            }
+            
+            // When video is cued (new video loaded)
+            if (event.data === YT.PlayerState.CUED) {
+                savePlaybackPosition();
+                isSeekingComplete = false;
+            }
+        }
+
+        // ============================================================
+        // SAVE PLAYBACK POSITION
+        // ============================================================
+        function savePlaybackPosition() {
+            if (youtubePlayer && isPlayerReady) {
                 try {
-                    if (youtubePlayer && pendingSeekTime > 0) {
-                        youtubePlayer.seekTo(pendingSeekTime, true);
-                        pendingSeekTime = 0;
-                        isSeekingComplete = true;
+                    const currentTime = youtubePlayer.getCurrentTime();
+                    const currentIndex = youtubePlayer.getPlaylistIndex();
+                    
+                    if (currentTime > 0.5) {
+                        localStorage.setItem('dimdesk_bgm_time', currentTime.toString());
+                    }
+                    if (currentIndex >= 0) {
+                        localStorage.setItem('dimdesk_bgm_index', currentIndex.toString());
                     }
                 } catch(e) {}
-            }, 800);
+            }
         }
-        
-        // If hidden or muted, pause immediately
-        if (document.hidden || !bgmEnabled) {
-            event.target.pauseVideo();
-        }
-    }
-    
-    // When video ends
-    if (event.data === YT.PlayerState.ENDED) {
-        localStorage.setItem('dimdesk_bgm_time', '0');
-        pendingSeekTime = 0;
-        
-        if (shuffleEnabled && bgmEnabled && !document.hidden) {
-            setTimeout(() => {
-                event.target.nextVideo();
-            }, 500);
-        } else if (!bgmEnabled) {
-            event.target.pauseVideo();
-        }
-    }
-    
-    // Save position when paused
-    if (event.data === YT.PlayerState.PAUSED) {
-        savePlaybackPosition();
-    }
-    
-    // When video is cued (new video loaded)
-    if (event.data === YT.PlayerState.CUED) {
-        savePlaybackPosition();
-        isSeekingComplete = false;
-    }
-}
 
-// ============================================================
-// SAVE PLAYBACK POSITION
-// ============================================================
-function savePlaybackPosition() {
-    if (youtubePlayer && isPlayerReady) {
-        try {
-            const currentTime = youtubePlayer.getCurrentTime();
-            const currentIndex = youtubePlayer.getPlaylistIndex();
+        // ============================================================
+        // APPLY UI STATES
+        // ============================================================
+        function applySoundState() {
+            const soundIconOn = document.getElementById('sound-icon-on');
+            const soundIconOff = document.getElementById('sound-icon-off');
             
-            if (currentTime > 0.5) {
-                localStorage.setItem('dimdesk_bgm_time', currentTime.toString());
-            }
-            if (currentIndex >= 0) {
-                localStorage.setItem('dimdesk_bgm_index', currentIndex.toString());
-            }
-        } catch(e) {}
-    }
-}
-
-// ============================================================
-// APPLY UI STATES
-// ============================================================
-function applySoundState() {
-    const soundIconOn = document.getElementById('sound-icon-on');
-    const soundIconOff = document.getElementById('sound-icon-off');
-    
-    if (bgmEnabled) {
-        if (soundIconOn) soundIconOn.style.display = 'block';
-        if (soundIconOff) soundIconOff.style.display = 'none';
-    } else {
-        if (soundIconOn) soundIconOn.style.display = 'none';
-        if (soundIconOff) soundIconOff.style.display = 'block';
-    }
-}
-
-function applyShuffleState() {
-    const shuffleBtn = document.getElementById('shuffle-toggle');
-    if (shuffleBtn) {
-        if (shuffleEnabled) {
-            shuffleBtn.classList.add('active');
-        } else {
-            shuffleBtn.classList.remove('active');
-        }
-    }
-}
-
-// ============================================================
-// SOUND TOGGLE - FIXED: Mute properly pauses
-// ============================================================
-document.getElementById('sound-toggle').addEventListener('click', function(e) {
-    e.stopPropagation();
-    bgmEnabled = !bgmEnabled;
-    localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
-    applySoundState();
-    
-    if (youtubePlayer) {
-        if (bgmEnabled && !document.hidden) {
-            youtubePlayer.playVideo();
-        } else {
-            // When muted, properly pause and save position
-            youtubePlayer.pauseVideo();
-            youtubePlayer.mute(); // Extra safety
-            savePlaybackPosition();
-        }
-    }
-});
-
-// ============================================================
-// SHUFFLE TOGGLE
-// ============================================================
-document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
-    e.stopPropagation();
-    shuffleEnabled = !shuffleEnabled;
-    localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
-    applyShuffleState();
-    
-    if (youtubePlayer) {
-        try {
-            if (shuffleEnabled) {
-                youtubePlayer.setShuffle(true);
-            } else {
-                youtubePlayer.setShuffle(false);
-            }
-        } catch(e) {}
-    }
-});
-
-// ============================================================
-// SAVE POSITION WHEN LEAVING PAGE
-// ============================================================
-window.addEventListener('beforeunload', () => {
-    if (bgmEnabled) {
-        savePlaybackPosition();
-    }
-    if (youtubePlayer) {
-        try {
-            youtubePlayer.pauseVideo();
-            youtubePlayer.mute();
-        } catch(e) {}
-    }
-});
-
-// ============================================================
-// TAB VISIBILITY - Fixed: muted stays muted
-// ============================================================
-document.addEventListener('visibilitychange', () => {
-    if (youtubePlayer && isPlayerReady) {
-        if (document.hidden) {
-            // Save position and pause when tab hidden
-            savePlaybackPosition();
-            youtubePlayer.pauseVideo();
-        } else {
-            // Only resume if sound is enabled
             if (bgmEnabled) {
-                setTimeout(() => {
-                    youtubePlayer.playVideo();
-                }, 500);
+                if (soundIconOn) soundIconOn.style.display = 'block';
+                if (soundIconOff) soundIconOff.style.display = 'none';
             } else {
-                // Keep paused if muted
-                youtubePlayer.pauseVideo();
+                if (soundIconOn) soundIconOn.style.display = 'none';
+                if (soundIconOff) soundIconOff.style.display = 'block';
             }
         }
-    }
-});
 
-// ============================================================
-// INITIALIZE STATES
-// ============================================================
-applySoundState();
-applyShuffleState();
+        function applyShuffleState() {
+            const shuffleBtn = document.getElementById('shuffle-toggle');
+            if (shuffleBtn) {
+                if (shuffleEnabled) {
+                    shuffleBtn.classList.add('active');
+                } else {
+                    shuffleBtn.classList.remove('active');
+                }
+            }
+        }
 
-// ============================================================
-// CUTE CLICK SOUND
-// ============================================================
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // ============================================================
+        // SOUND TOGGLE - FIXED: Mute properly pauses
+        // ============================================================
+        document.getElementById('sound-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            bgmEnabled = !bgmEnabled;
+            localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
+            applySoundState();
+            
+            if (youtubePlayer) {
+                if (bgmEnabled && !document.hidden) {
+                    youtubePlayer.playVideo();
+                } else {
+                    // When muted, properly pause and save position
+                    youtubePlayer.pauseVideo();
+                    youtubePlayer.mute(); // Extra safety
+                    savePlaybackPosition();
+                }
+            }
+        });
 
-document.addEventListener('click', (e) => {
-    if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
-        playCuteClick();
-    }
-});
+        // ============================================================
+        // SHUFFLE TOGGLE
+        // ============================================================
+        document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            shuffleEnabled = !shuffleEnabled;
+            localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
+            applyShuffleState();
+            
+            if (youtubePlayer) {
+                try {
+                    if (shuffleEnabled) {
+                        youtubePlayer.setShuffle(true);
+                    } else {
+                        youtubePlayer.setShuffle(false);
+                    }
+                } catch(e) {}
+            }
+        });
 
-function playCuteClick() {
-    if (audioContext.state === 'suspended') audioContext.resume();
-    
-    const now = audioContext.currentTime;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    
-    osc.connect(gain);
-    gain.connect(audioContext.destination);
-    
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, now);
-    osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
-    osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
-    
-    gain.gain.setValueAtTime(0.04, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-    
-    osc.start(now);
-    osc.stop(now + 0.1);
-}
+        // ============================================================
+        // SAVE POSITION WHEN LEAVING PAGE
+        // ============================================================
+        window.addEventListener('beforeunload', () => {
+            if (bgmEnabled) {
+                savePlaybackPosition();
+            }
+            if (youtubePlayer) {
+                try {
+                    youtubePlayer.pauseVideo();
+                    youtubePlayer.mute();
+                } catch(e) {}
+            }
+        });
 
-// Rest of your existing code (cursor, sparkles, video, cards, skills, etc.)
+        // ============================================================
+        // TAB VISIBILITY - Fixed: muted stays muted
+        // ============================================================
+        document.addEventListener('visibilitychange', () => {
+            if (youtubePlayer && isPlayerReady) {
+                if (document.hidden) {
+                    // Save position and pause when tab hidden
+                    savePlaybackPosition();
+                    youtubePlayer.pauseVideo();
+                } else {
+                    // Only resume if sound is enabled
+                    if (bgmEnabled) {
+                        setTimeout(() => {
+                            youtubePlayer.playVideo();
+                        }, 500);
+                    } else {
+                        // Keep paused if muted
+                        youtubePlayer.pauseVideo();
+                    }
+                }
+            }
+        });
+
+        // ============================================================
+        // INITIALIZE STATES
+        // ============================================================
+        applySoundState();
+        applyShuffleState();
+
+        // ============================================================
+        // CUTE CLICK SOUND
+        // ============================================================
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        document.addEventListener('click', (e) => {
+            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
+                playCuteClick();
+            }
+        });
+
+        function playCuteClick() {
+            if (audioContext.state === 'suspended') audioContext.resume();
+            
+            const now = audioContext.currentTime;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+            
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
 
         // ============================================================
         // CUSTOM CURSOR
@@ -568,65 +563,72 @@ function playCuteClick() {
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
-    const gameData = {
-    featured: [
-        { 
-            title: "Bloomy Delivery Adventures", 
-            desc: "A cozy delivery adventure game where you help Bloomy deliver packages in a charming world", 
-            img: "https://play-lh.googleusercontent.com/REPLACE_WITH_ACTUAL_ICON_URL=w512", 
-            video: "https://www.youtube.com/watch?v=TObP7BQpVv4",  // Add YouTube trailer URL if you have one
-            tags: ["Unity", "C#", "Android", "Cozy", "Adventure"],
-            platforms: ["Google Play"],
-            links: { 
-                "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
-            }
-        },
-        { 
-            title: "Project: Chronos", 
-            desc: "Time-bending action RPG", 
-            img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            tags: ["Unity", "C#"], 
-            platforms: ["Coming Soon"], 
-            links: { "Wishlist": "#" } 
-        }
-    ],
-    released: [
-        { 
-            title: "Bloomy Delivery Adventures", 
-            desc: "A cozy delivery adventure game for Android devices", 
-            img: "https://play-lh.googleusercontent.com/REPLACE_WITH_ACTUAL_ICON_URL=w512", 
-            video: "https://www.youtube.com/watch?v=TObP7BQpVv4",  // Add YouTube trailer URL if you have one
-            tags: ["Unity", "C#", "Android", "Cozy"],
-            platforms: ["Google Play"],
-            links: { 
-                "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
-            }
-        }
-    ],
-    upcoming: [
-        { 
-            title: "Project: Chronos", 
-            desc: "Time-bending RPG", 
-            img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            tags: ["Unity", "C#"], 
-            platforms: ["TBA"], 
-            links: {} 
-        },
-        { 
-            title: "Paper Lanterns", 
-            desc: "Cozy management sim", 
-            img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns", 
-            video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-            tags: ["Unity", "C#"], 
-            platforms: ["TBA"], 
-            links: {} 
-        }
-    ]
-};
+        // ============================================================
+        // GAME DATA (Updated image to REICON.png and fixed video sources)
+        // ============================================================
+        const gameData = {
+            featured: [
+                { 
+                    title: "Bloomy Delivery Adventures", 
+                    desc: "A cozy delivery adventure game where you help Bloomy deliver packages in a charming world", 
+                    img: "REICON.png", 
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4",  // Direct MP4 video for playback
+                    tags: ["Unity", "C#", "Android", "Cozy", "Adventure"],
+                    platforms: ["Google Play"],
+                    links: { 
+                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+                    }
+                },
+                { 
+                    title: "Project: Chronos", 
+                    desc: "Time-bending action RPG", 
+                    img: "REICON.png",  // changed placeholder to REICON.png as requested
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+                    tags: ["Unity", "C#"], 
+                    platforms: ["Coming Soon"], 
+                    links: { "Wishlist": "#" } 
+                }
+            ],
+            released: [
+                { 
+                    title: "Bloomy Delivery Adventures", 
+                    desc: "A cozy delivery adventure game for Android devices", 
+                    img: "REICON.png", 
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+                    tags: ["Unity", "C#", "Android", "Cozy"],
+                    platforms: ["Google Play"],
+                    links: { 
+                        "Google Play": "https://play.google.com/store/apps/details?id=com.dimdesk.studios.bloomydeliveryadventures" 
+                    }
+                }
+            ],
+            upcoming: [
+                { 
+                    title: "Project: Chronos", 
+                    desc: "Time-bending RPG", 
+                    img: "REICON.png", 
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+                    tags: ["Unity", "C#"], 
+                    platforms: ["TBA"], 
+                    links: {} 
+                },
+                { 
+                    title: "Paper Lanterns", 
+                    desc: "Cozy management sim", 
+                    img: "REICON.png", 
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+                    tags: ["Unity", "C#"], 
+                    platforms: ["TBA"], 
+                    links: {} 
+                }
+            ]
+        };
+
         function createCard(game, isFeatured = false) {
-            const mediaHTML = game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
+            // Use image if video source is not a direct video, else use video element
+            const mediaHTML = game.video ? 
+                `<div class="game-media"><video src="${game.video}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;" onclick="this.play()"></video></div>` : 
+                `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`;
             return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
         }
 

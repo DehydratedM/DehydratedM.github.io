@@ -12,12 +12,26 @@ let videoRetryCount = 0;
 const MAX_VIDEO_RETRIES = 3;
 
 // ==========================================================================
+// BACKGROUND VIDEO SOURCES - Cute but formal looping backgrounds
+// ==========================================================================
+const BACKGROUND_VIDEO_SOURCES = [
+    // Soft golden bokeh lights - warm and elegant
+    'https://cdn.pixabay.com/video/2023/08/27/178080-858591556_large.mp4',
+    // Gentle pastel particles floating
+    'https://cdn.pixabay.com/video/2023/09/24/182017-867365083_large.mp4',
+    // Soft pink and gold shimmer
+    'https://cdn.pixabay.com/video/2024/05/17/212246-935891256_large.mp4',
+    // Fallback local video
+    'D.mp4'
+];
+
+// ==========================================================================
 // WHITE SPARKLE PARTICLE SYSTEM
 // ==========================================================================
 const SparkleSystem = {
     enabled: true,
     lastSparkleTime: 0,
-    sparkleInterval: 100, // milliseconds between sparkles
+    sparkleInterval: 100,
     maxSparklesPerSecond: 10,
     
     init() {
@@ -651,3 +665,4 @@ window.toggleCarousels = toggleCarousels;
 window.initCarousels = initCarousels;
 window.playVideo = playVideo;
 window.SparkleSystem = SparkleSystem;
+window.BACKGROUND_VIDEO_SOURCES = BACKGROUND_VIDEO_SOURCES;

@@ -12,10 +12,9 @@ let videoRetryCount = 0;
 const MAX_VIDEO_RETRIES = 3;
 
 // ==========================================================================
-// BACKGROUND VIDEO - YouTube Video ID (P8DQjFX8OB8)
+// BACKGROUND VIDEO - YouTube Video
 // ==========================================================================
 const YOUTUBE_BG_VIDEO_ID = 'P8DQjFX8OB8';
-const LOCAL_BG_VIDEO = 'D.mp4'; // Fallback local video
 
 // ==========================================================================
 // WHITE SPARKLE PARTICLE SYSTEM
@@ -132,7 +131,7 @@ const SparkleSystem = {
 SparkleSystem.init();
 
 // ==========================================================================
-// ENHANCED VIDEO SYSTEM - YouTube Background with Fallback
+// ENHANCED VIDEO SYSTEM - YouTube Background
 // ==========================================================================
 function initVideoSystem() {
     const bgContainer = document.querySelector('.background-video');
@@ -149,8 +148,8 @@ function initVideoSystem() {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 100vw;
-        height: 100vh;
+        width: 130vw;
+        height: 130vh;
         transform: translate(-50%, -50%);
         pointer-events: none;
         border: none;
@@ -160,125 +159,34 @@ function initVideoSystem() {
     iframe.setAttribute('allow', 'autoplay; encrypted-media');
     iframe.setAttribute('allowfullscreen', '');
     
-    // Also create a local video fallback
-    const fallbackVideo = document.createElement('video');
-    fallbackVideo.id = 'bg-video';
-    fallbackVideo.muted = true;
-    fallbackVideo.autoplay = true;
-    fallbackVideo.loop = true;
-    fallbackVideo.playsInline = true;
-    fallbackVideo.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: none;
-    `;
-    
-    const sourceElement = document.createElement('source');
-    sourceElement.src = LOCAL_BG_VIDEO;
-    sourceElement.type = 'video/mp4';
-    fallbackVideo.appendChild(sourceElement);
-    
     bgContainer.appendChild(iframe);
-    bgContainer.appendChild(fallbackVideo);
     
-    // Set videoElement reference for fallback
-    videoElement = fallbackVideo;
-    
-    // Add error handling to iframe
-    iframe.addEventListener('error', () => {
-        console.log('YouTube background failed, using fallback video');
-        iframe.style.display = 'none';
-        fallbackVideo.style.display = 'block';
-        videoElement = fallbackVideo;
-        playVideo();
-    });
-    
-    // Add load event to iframe
-    iframe.addEventListener('load', () => {
-        console.log('YouTube background video loaded');
-        videoRetryCount = 0;
-    });
-    
-    // Initialize fallback video event listeners
-    fallbackVideo.removeEventListener('timeupdate', handleVideoTimeUpdate);
-    fallbackVideo.removeEventListener('ended', handleVideoEnded);
-    fallbackVideo.removeEventListener('stalled', handleVideoStalled);
-    fallbackVideo.removeEventListener('waiting', handleVideoWaiting);
-    fallbackVideo.removeEventListener('error', handleVideoError);
-    
-    fallbackVideo.addEventListener('timeupdate', handleVideoTimeUpdate);
-    fallbackVideo.addEventListener('ended', handleVideoEnded);
-    fallbackVideo.addEventListener('stalled', handleVideoStalled);
-    fallbackVideo.addEventListener('waiting', handleVideoWaiting);
-    fallbackVideo.addEventListener('error', handleVideoError);
+    // Set videoElement reference for compatibility
+    videoElement = iframe;
 }
 
 function handleVideoTimeUpdate() {
-    if (!videoElement || !videoElement.duration) return;
-    
-    const LOOP_THRESHOLD = 0.15;
-    if (videoElement.currentTime >= videoElement.duration - LOOP_THRESHOLD) {
-        videoElement.currentTime = 0;
-        videoElement.play().catch(() => {});
-    }
-    
-    if (!videoElement.paused && !videoElement.ended) {
-        videoRetryCount = 0;
-    }
+    // YouTube iframe doesn't use these events
 }
 
 function handleVideoEnded() {
-    if (!videoElement) return;
-    videoElement.currentTime = 0;
-    playVideo();
+    // YouTube iframe loops automatically
 }
 
 function handleVideoStalled() {
-    playVideo();
+    // YouTube iframe handles this
 }
 
 function handleVideoWaiting() {
-    if (videoRetryCount < MAX_VIDEO_RETRIES) {
-        videoRetryCount++;
-        setTimeout(() => {
-            playVideo();
-        }, 500 * videoRetryCount);
-    }
+    // YouTube iframe handles this
 }
 
 function handleVideoError(e) {
     console.error('Video error:', e);
-    if (videoRetryCount >= MAX_VIDEO_RETRIES) {
-        const bgVideo = document.querySelector('.background-video');
-        if (bgVideo) {
-            bgVideo.style.display = 'none';
-        }
-    }
 }
 
 function playVideo() {
-    if (!videoElement) return;
-    
-    const playPromise = videoElement.play();
-    
-    if (playPromise !== undefined) {
-        playPromise
-            .then(() => {
-                videoRetryCount = 0;
-            })
-            .catch(error => {
-                if (videoRetryCount < MAX_VIDEO_RETRIES) {
-                    videoRetryCount++;
-                    setTimeout(() => {
-                        playVideo();
-                    }, 1000 * videoRetryCount);
-                }
-            });
-    }
+    // YouTube iframe autoplays automatically
 }
 
 // ==========================================================================

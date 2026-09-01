@@ -547,14 +547,11 @@
         };
 
         function createCard(game, isFeatured = false) {
-            // For YouTube videos, use a clickable thumbnail
+            // For YouTube videos, create an embedded iframe that auto-plays on hover
             const videoId = game.video.includes('youtube.com/watch') ? game.video.split('v=')[1] : null;
             const mediaHTML = videoId ? 
-                `<div class="game-media" onclick="window.open('${game.video}', '_blank')">
-                    <img src="https://img.youtube.com/vi/${videoId}/hqdefault.jpg" alt="${game.title}" loading="lazy">
-                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:rgba(0,0,0,0.7);border-radius:50%;display:flex;align-items:center;justify-content:center;">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
+                `<div class="game-media" onmouseenter="this.querySelector('iframe').src='https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}'" onmouseleave="this.querySelector('iframe').src=''">
+                    <iframe src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;object-fit:cover;pointer-events:none;"></iframe>
                 </div>` : 
                 (game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : 
                 `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`);

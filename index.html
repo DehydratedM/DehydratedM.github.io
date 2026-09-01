@@ -59,8 +59,8 @@
         .featured-card:hover, .project-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(240,128,128,0.3); }
         .game-media { position: relative; width: 100%; height: 180px; overflow: hidden; background: #000; }
         .project-card .game-media { height: 160px; }
-        .game-media video, .game-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
-        .game-media:hover video, .game-media:hover img { transform: scale(1.05); }
+        .game-media video, .game-media img, .game-media iframe { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; pointer-events: none; }
+        .game-media:hover video, .game-media:hover img, .game-media:hover iframe { transform: scale(1.05); }
         .featured-content, .project-content { padding: 15px 20px; flex: 1; display: flex; flex-direction: column; }
         .featured-content h3, .project-content h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 600; }
         .featured-content p, .project-content p { color: var(--text2); font-size: 0.9rem; line-height: 1.5; flex: 1; }
@@ -108,7 +108,7 @@
     </style>
 </head>
 <body>
-    <!-- Hidden YouTube Player -->
+    <!-- Hidden YouTube Player for BGM -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
     <!-- Sound Controls -->
@@ -547,13 +547,13 @@
         };
 
         function createCard(game, isFeatured = false) {
-            // For YouTube videos, create an embedded iframe that auto-plays on hover
+            // For YouTube videos, use iframe with autoplay and loop
             const videoId = game.video.includes('youtube.com/watch') ? game.video.split('v=')[1] : null;
             const mediaHTML = videoId ? 
-                `<div class="game-media" onmouseenter="this.querySelector('iframe').src='https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}'" onmouseleave="this.querySelector('iframe').src=''">
-                    <iframe src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width:100%;height:100%;object-fit:cover;pointer-events:none;"></iframe>
+                `<div class="game-media">
+                    <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>` : 
-                (game.video ? `<div class="game-media"><video src="${game.video}" muted loop onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"></video></div>` : 
+                (game.video ? `<div class="game-media"><video src="${game.video}" muted loop autoplay playsinline></video></div>` : 
                 `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`);
             
             return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;

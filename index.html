@@ -42,13 +42,30 @@
                 radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.4), transparent),
                 radial-gradient(3px 3px at 70% 90%, rgba(255,215,0,0.3), transparent),
                 radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.3), transparent),
-                radial-gradient(2px 2px at 90% 30%, rgba(255,215,0,0.2), transparent);
-            animation: sparkleTwinkle 3s ease-in-out infinite;
+                radial-gradient(2px 2px at 90% 30%, rgba(255,215,0,0.2), transparent),
+                radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.2), transparent),
+                radial-gradient(2px 2px at 15% 60%, rgba(255,215,0,0.3), transparent),
+                radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.2), transparent),
+                radial-gradient(2px 2px at 45% 90%, rgba(255,215,0,0.3), transparent);
+            animation: sparkleTwinkle 2.5s ease-in-out infinite;
         }
         
         @keyframes sparkleTwinkle {
-            0%, 100% { opacity: 0.4; }
+            0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
+        }
+        
+        /* Mouse-following sparkle trail */
+        .sparkle-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 99999;
+            animation: sparkleFade 0.8s ease-out forwards;
+        }
+        
+        @keyframes sparkleFade {
+            0% { transform: scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: scale(0) rotate(180deg); opacity: 0; }
         }
         
         .background-video { 
@@ -201,20 +218,48 @@
             border-color: var(--accent);
             box-shadow: 0 10px 30px rgba(240, 128, 128, 0.3);
         }
-        .featured-image, .project-image {
+        
+        /* Game media styles */
+        .game-media {
+            position: relative;
             width: 100%;
             height: 180px;
             overflow: hidden;
+            background: #000;
         }
-        .project-image { height: 160px; }
-        .featured-image img, .project-image img {
+        .project-card .game-media { height: 160px; }
+        
+        .game-media video,
+        .game-media img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
-        .featured-card:hover .featured-image img,
-        .project-card:hover .project-image img { transform: scale(1.03); }
+        .game-media:hover video,
+        .game-media:hover img {
+            transform: scale(1.05);
+        }
+        
+        .play-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .game-media:hover .play-indicator { opacity: 1; }
         
         .featured-content, .project-content {
             padding: 15px 20px;
@@ -239,13 +284,48 @@
             gap: 4px;
             margin-top: 10px;
         }
-        .project-tag, .featured-tag {
+        .project-tag {
             background: rgba(240, 128, 128, 0.2);
             color: var(--accent);
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 0.7rem;
             font-weight: 500;
+        }
+        
+        .platform-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .platform-badge {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        .game-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .game-link {
+            padding: 4px 10px;
+            background: rgba(240, 128, 128, 0.2);
+            color: #f08080;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .game-link:hover {
+            background: rgba(240, 128, 128, 0.4);
+            color: #fff;
+            transform: translateY(-2px);
         }
         
         footer {
@@ -412,40 +492,237 @@
             document.getElementById('main-nav').classList.toggle('active');
         });
 
-        // Game data
+        // ============================================================
+        // GAME DATA - EDIT THIS SECTION TO ADD YOUR GAMES
+        // ============================================================
         const gameData = {
             featured: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound mechanics", img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes", tags: ["Unity", "C#"] },
-                { title: "Project: Chronos", desc: "Time-bending action RPG", img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos", tags: ["Unreal 5", "RPG"] }
+                { 
+                    title: "Echoes of Aether", 
+                    desc: "Puzzle-platformer with sound manipulation mechanics", 
+                    img: "https://via.placeholder.com/400x200/2c3e50/fff?text=Echoes+of+Aether",
+                    video: "", // Add video URL here: "https://example.com/trailer.mp4"
+                    tags: ["Unity", "C#", "2D", "Puzzle"],
+                    platforms: ["Steam", "itch.io"],
+                    links: {
+                        "Steam": "https://store.steampowered.com",
+                        "itch.io": "https://dimdesk.itch.io"
+                    }
+                },
+                { 
+                    title: "Project: Chronos", 
+                    desc: "Time-bending action RPG with branching narrative", 
+                    img: "https://via.placeholder.com/400x200/8e44ad/fff?text=Chronos",
+                    video: "", // Add video URL here
+                    tags: ["Unreal 5", "C++", "RPG"],
+                    platforms: ["Coming Soon"],
+                    links: {
+                        "Wishlist": "https://store.steampowered.com"
+                    }
+                }
             ],
             released: [
-                { title: "Echoes of Aether", desc: "Puzzle-platformer with sound manipulation", img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes", tags: ["Unity", "C#", "2D"] },
-                { title: "Starlight Drifter", desc: "Space exploration with narrative focus", img: "https://via.placeholder.com/280x160/8e44ad/fff?text=Starlight", tags: ["Unreal", "C++"] },
-                { title: "Neon Abyss", desc: "Cyberpunk roguelike shooter", img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon", tags: ["Godot"] }
+                { 
+                    title: "Echoes of Aether", 
+                    desc: "Puzzle-platformer with sound manipulation", 
+                    img: "https://via.placeholder.com/280x160/2c3e50/fff?text=Echoes",
+                    video: "", // Add video URL here
+                    tags: ["Unity", "C#", "2D"],
+                    platforms: ["Steam", "itch.io"],
+                    links: {
+                        "Steam": "https://store.steampowered.com",
+                        "itch.io": "https://dimdesk.itch.io"
+                    }
+                },
+                { 
+                    title: "Starlight Drifter", 
+                    desc: "Space exploration with narrative focus", 
+                    img: "https://via.placeholder.com/280x160/8e44ad/fff?text=Starlight",
+                    video: "", // Add video URL here
+                    tags: ["Unreal", "C++", "3D"],
+                    platforms: ["Steam"],
+                    links: {
+                        "Steam": "https://store.steampowered.com"
+                    }
+                },
+                { 
+                    title: "Neon Abyss", 
+                    desc: "Cyberpunk roguelike shooter", 
+                    img: "https://via.placeholder.com/280x160/c0392b/fff?text=Neon",
+                    video: "", // Add video URL here
+                    tags: ["Godot", "Action"],
+                    platforms: ["itch.io"],
+                    links: {
+                        "itch.io": "https://dimdesk.itch.io"
+                    }
+                }
             ],
             upcoming: [
-                { title: "Project: Chronos", desc: "Time-bending RPG", img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos", tags: ["Unreal 5"] },
-                { title: "Paper Lanterns", desc: "Cozy management sim", img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns", tags: ["Unity"] }
+                { 
+                    title: "Project: Chronos", 
+                    desc: "Time-bending RPG with branching narrative", 
+                    img: "https://via.placeholder.com/280x160/16a085/fff?text=Chronos",
+                    video: "", // Add video URL here
+                    tags: ["Unreal 5", "RPG"],
+                    platforms: ["TBA"],
+                    links: {}
+                },
+                { 
+                    title: "Paper Lanterns", 
+                    desc: "Cozy management sim in a floating village", 
+                    img: "https://via.placeholder.com/280x160/f39c12/fff?text=Lanterns",
+                    video: "", // Add video URL here
+                    tags: ["Unity", "Simulation"],
+                    platforms: ["TBA"],
+                    links: {}
+                }
             ]
         };
+        // ============================================================
+        // END OF GAME DATA - STOP EDITING HERE
+        // ============================================================
 
+        // Enhanced createCard function with video support
         function createCard(game, isFeatured = false) {
+            const mediaHTML = game.video ? `
+                <div class="game-media">
+                    <video src="${game.video}" muted loop 
+                           onmouseover="this.play()" 
+                           onmouseout="this.pause(); this.currentTime=0;">
+                    </video>
+                    <div class="play-indicator">▶</div>
+                </div>
+            ` : `
+                <div class="game-media">
+                    <img src="${game.img}" alt="${game.title}" loading="lazy">
+                </div>
+            `;
+            
             return `
                 <div class="${isFeatured ? 'featured-card' : 'project-card'}">
-                    <div class="${isFeatured ? 'featured-image' : 'project-image'}">
-                        <img src="${game.img}" alt="${game.title}">
-                    </div>
+                    ${mediaHTML}
                     <div class="${isFeatured ? 'featured-content' : 'project-content'}">
                         <h3>${game.title}</h3>
                         <p>${game.desc}</p>
                         <div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
+                        ${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}
+                        ${game.links && Object.keys(game.links).length > 0 ? `
+                            <div class="game-links">
+                                ${Object.entries(game.links).map(([name, url]) => 
+                                    `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`
+                                ).join('')}
+                            </div>
+                        ` : ''}
                     </div>
                 </div>`;
         }
 
+        // Show game details in modal
+        function showGameDetails(game) {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background: #1a1a1a;
+                border-radius: 12px;
+                padding: 25px;
+                max-width: 600px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                border: 2px solid #f08080;
+                box-shadow: 0 0 30px rgba(240, 128, 128, 0.3);
+                position: relative;
+            `;
+            
+            modalContent.innerHTML = `
+                <button onclick="this.closest('div').parentElement.remove()" 
+                        style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; z-index: 10001;">
+                    &times;
+                </button>
+                <h2 style="color: #fff; margin-bottom: 15px;">${game.title}</h2>
+                ${game.video ? `
+                    <video src="${game.video}" controls autoplay 
+                           style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                    </video>
+                ` : `
+                    <img src="${game.img}" alt="${game.title}" 
+                         style="width: 100%; border-radius: 8px; margin-bottom: 15px;">
+                `}
+                <p style="color: #b0b0b0; margin-bottom: 15px;">${game.desc}</p>
+                <div style="margin-bottom: 15px;">
+                    ${game.tags.map(t => `<span style="background: rgba(240,128,128,0.2); color: #f08080; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; margin-right: 5px;">${t}</span>`).join('')}
+                </div>
+                ${game.platforms ? `
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #fff;">Platforms:</strong>
+                        ${game.platforms.map(p => `<span style="color: #b0b0b0; margin-left: 5px;">${p}</span>`).join('')}
+                    </div>
+                ` : ''}
+                ${game.links && Object.keys(game.links).length > 0 ? `
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        ${Object.entries(game.links).map(([name, url]) => 
+                            `<a href="${url}" target="_blank" 
+                                style="padding: 8px 15px; background: #f08080; color: #000; text-decoration: none; border-radius: 6px; font-weight: 600;">
+                                ${name}
+                            </a>`
+                        ).join('')}
+                    </div>
+                ` : ''}
+            `;
+            
+            modalOverlay.appendChild(modalContent);
+            document.body.appendChild(modalOverlay);
+            
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.remove();
+                }
+            });
+            
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modalOverlay.remove();
+                }
+            });
+        }
+
+        // Render cards
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');
         document.getElementById('released-games').innerHTML = gameData.released.map(g => createCard(g)).join('');
         document.getElementById('upcoming-projects').innerHTML = gameData.upcoming.map(g => createCard(g)).join('');
+
+        // Mouse-following sparkle effect
+        let lastSparkleTime = 0;
+        document.addEventListener('mousemove', function(e) {
+            const now = Date.now();
+            if (now - lastSparkleTime < 150) return;
+            lastSparkleTime = now;
+            
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle-trail';
+            const sparkles = ['✨', '⭐', '💫', '🌟'];
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.style.left = (e.clientX + (Math.random() - 0.5) * 15) + 'px';
+            sparkle.style.top = (e.clientY + (Math.random() - 0.5) * 15) + 'px';
+            sparkle.style.fontSize = (8 + Math.random() * 12) + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 800);
+        });
     </script>
 </body>
 </html>

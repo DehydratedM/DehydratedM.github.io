@@ -12,14 +12,14 @@ let videoRetryCount = 0;
 const MAX_VIDEO_RETRIES = 3;
 
 // ==========================================================================
-// BACKGROUND VIDEO SOURCES - Cute but formal looping backgrounds
+// BACKGROUND VIDEO SOURCES - Cute but formal looping backgrounds (Online)
 // ==========================================================================
 const BACKGROUND_VIDEO_SOURCES = [
-    // Soft golden bokeh lights - warm and elegant
+    // Soft white particles floating - elegant and cute
+    'https://cdn.pixabay.com/video/2024/02/25/202060-914596699_large.mp4',
+    // Gentle golden bokeh lights - warm and formal
     'https://cdn.pixabay.com/video/2023/08/27/178080-858591556_large.mp4',
-    // Gentle pastel particles floating
-    'https://cdn.pixabay.com/video/2023/09/24/182017-867365083_large.mp4',
-    // Soft pink and gold shimmer
+    // Soft pink pastel shimmer - cute and delicate
     'https://cdn.pixabay.com/video/2024/05/17/212246-935891256_large.mp4',
     // Fallback local video
     'D.mp4'
@@ -140,12 +140,23 @@ const SparkleSystem = {
 SparkleSystem.init();
 
 // ==========================================================================
-// ENHANCED VIDEO SYSTEM - SMOOTH LOOPING
+// ENHANCED VIDEO SYSTEM - SMOOTH LOOPING WITH FALLBACK
 // ==========================================================================
 function initVideoSystem() {
     videoElement = document.getElementById('bg-video');
     
     if (!videoElement) return;
+    
+    // Set up multiple source elements for fallback
+    const videoContainer = videoElement.parentElement;
+    if (videoContainer && !videoElement.querySelector('source')) {
+        BACKGROUND_VIDEO_SOURCES.forEach((src, index) => {
+            const sourceElement = document.createElement('source');
+            sourceElement.src = src;
+            sourceElement.type = 'video/mp4';
+            videoElement.appendChild(sourceElement);
+        });
+    }
     
     videoElement.preload = 'auto';
     videoElement.muted = true;

@@ -184,7 +184,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         // ============================================================
-        // PERSISTENT YOUTUBE PLAYLIST BGM - Smooth Across Pages
+        // PERSISTENT YOUTUBE PLAYLIST BGM - With Manual Shuffle
         // ============================================================
         let youtubePlayer = null;
         let bgmEnabled = true;
@@ -192,7 +192,8 @@
         let isPlayerReady = false;
         let isSeekingComplete = false;
         let pendingSeekTime = 0;
-        let clickAudioContext = null;
+        let playlistVideos = [];
+        let currentVideoIndex = 0;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 8;
@@ -205,6 +206,7 @@
 
         const savedVideoTime = parseFloat(localStorage.getItem('dimdesk_bgm_time') || '0');
         const savedVideoIndex = parseInt(localStorage.getItem('dimdesk_bgm_index') || '0');
+        currentVideoIndex = savedVideoIndex;
 
         function onYouTubeIframeAPIReady() {
             youtubePlayer = new YT.Player('youtube-bgm-player', {
@@ -238,6 +240,14 @@
             applyShuffleState();
             
             event.target.setVolume(BGM_VOLUME);
+            
+            // Get playlist videos
+            try {
+                playlistVideos = event.target.getPlaylist();
+                console.log('Playlist loaded:', playlistVideos.length, 'videos');
+            } catch(e) {
+                console.log('Could not get playlist:', e);
+            }
             
             if (savedVideoTime > 1) {
                 pendingSeekTime = savedVideoTime;
@@ -289,11 +299,19 @@
                 localStorage.setItem('dimdesk_bgm_time', '0');
                 pendingSeekTime = 0;
                 
-                if (shuffleEnabled && bgmEnabled && !document.hidden) {
-                    setTimeout(() => {
-                        event.target.nextVideo();
-                    }, 500);
-                } else if (!bgmEnabled) {
+                if (bgmEnabled && !document.hidden) {
+                    if (shuffleEnabled) {
+                        // Manual shuffle - play random video
+                        setTimeout(() => {
+                            playRandomVideo();
+                        }, 500);
+                    } else {
+                        // Normal sequential play
+                        setTimeout(() => {
+                            event.target.nextVideo();
+                        }, 500);
+                    }
+                } else {
                     event.target.pauseVideo();
                 }
             }
@@ -308,6 +326,32 @@
             }
         }
 
+        function playRandomVideo() {
+            if (!youtubePlayer || !isPlayerReady) return;
+            
+            try {
+                if (playlistVideos && playlistVideos.length > 1) {
+                    let randomIndex;
+                    do {
+                        randomIndex = Math.floor(Math.random() * playlistVideos.length);
+                    } while (randomIndex === currentVideoIndex && playlistVideos.length > 1);
+                    
+                    currentVideoIndex = randomIndex;
+                    localStorage.setItem('dimdesk_bgm_index', randomIndex.toString());
+                    localStorage.setItem('dimdesk_bgm_time', '0');
+                    
+                    youtubePlayer.playVideoAt(randomIndex);
+                    console.log('Playing random video at index:', randomIndex);
+                } else {
+                    // Fallback to nextVideo if playlist not loaded
+                    youtubePlayer.nextVideo();
+                }
+            } catch(e) {
+                console.log('Shuffle error:', e);
+                youtubePlayer.nextVideo();
+            }
+        }
+
         function savePlaybackPosition() {
             if (youtubePlayer && isPlayerReady) {
                 try {
@@ -319,6 +363,7 @@
                     }
                     if (currentIndex >= 0) {
                         localStorage.setItem('dimdesk_bgm_index', currentIndex.toString());
+                        currentVideoIndex = currentIndex;
                     }
                 } catch(e) {}
             }
@@ -372,20 +417,11 @@
             shuffleEnabled = !shuffleEnabled;
             localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
             applyShuffleState();
+            console.log('Shuffle ' + (shuffleEnabled ? 'enabled' : 'disabled'));
             
-            if (youtubePlayer && isPlayerReady) {
-                try {
-                    youtubePlayer.setShuffle(shuffleEnabled);
-                    // Force shuffle state
-                    if (shuffleEnabled) {
-                        youtubePlayer.setShuffle(true);
-                        youtubePlayer.playVideo();
-                    } else {
-                        youtubePlayer.setShuffle(false);
-                    }
-                } catch(e) {
-                    console.log('Shuffle API not available, using manual shuffle');
-                }
+            if (shuffleEnabled && youtubePlayer && isPlayerReady) {
+                // Play a random video immediately when shuffle is enabled
+                playRandomVideo();
             }
         });
 
@@ -423,47 +459,6 @@
 
         applySoundState();
         applyShuffleState();
-
-        // ============================================================
-        // CUTE CLICK SOUND - Now properly muted when sound is off
-        // ============================================================
-        function initClickAudio() {
-            if (!clickAudioContext) {
-                clickAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (clickAudioContext.state === 'suspended') {
-                clickAudioContext.resume();
-            }
-        }
-
-        document.addEventListener('click', (e) => {
-            if (bgmEnabled && e.target.closest('a, button, .featured-card, .project-card, .game-link, .socialIcons a, .skill-card')) {
-                initClickAudio();
-                playCuteClick();
-            }
-        });
-
-        function playCuteClick() {
-            if (!clickAudioContext) return;
-            
-            const now = clickAudioContext.currentTime;
-            const osc = clickAudioContext.createOscillator();
-            const gain = clickAudioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(clickAudioContext.destination);
-            
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(880, now);
-            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
-            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
-            
-            gain.gain.setValueAtTime(0.04, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-            
-            osc.start(now);
-            osc.stop(now + 0.1);
-        }
 
         // ============================================================
         // CUSTOM CURSOR
@@ -521,7 +516,15 @@
                         "Watch Trailer": "https://www.youtube.com/watch?v=TObP7BQpVv4"
                     }
                 },
-              
+                { 
+                    title: "Project: Chronos", 
+                    desc: "Time-bending action RPG", 
+                    img: "REICON.png", 
+                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
+                    tags: ["Unity", "C#"], 
+                    platforms: ["Coming Soon"], 
+                    links: { "Wishlist": "#" } 
+                }
             ],
             released: [
                 { 
@@ -555,21 +558,11 @@
                     tags: ["Unity", "C#"], 
                     platforms: ["TBA"], 
                     links: {} 
-                },
-                  { 
-                    title: "Project: Chronos", 
-                    desc: "Time-bending action RPG", 
-                    img: "REICON.png", 
-                    video: "https://www.w3schools.com/html/mov_bbb.mp4", 
-                    tags: ["Unity", "C#"], 
-                    platforms: ["Coming Soon"], 
-                    links: { "Wishlist": "#" } 
                 }
             ]
         };
 
         function createCard(game, isFeatured = false) {
-            // For YouTube videos, use iframe with autoplay and loop
             const videoId = game.video.includes('youtube.com/watch') ? game.video.split('v=')[1] : null;
             const mediaHTML = videoId ? 
                 `<div class="game-media">
@@ -578,7 +571,7 @@
                 (game.video ? `<div class="game-media"><video src="${game.video}" muted loop autoplay playsinline></video></div>` : 
                 `<div class="game-media"><img src="${game.img}" alt="${game.title}" loading="lazy"></div>`);
             
-            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}" onclick="playCuteClick()">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
+            return `<div class="${isFeatured ? 'featured-card' : 'project-card'}">${mediaHTML}<div class="${isFeatured ? 'featured-content' : 'project-content'}"><h3>${game.title}</h3><p>${game.desc}</p><div class="project-tags">${game.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>${game.platforms ? `<div class="platform-badges">${game.platforms.map(p => `<span class="platform-badge">${p}</span>`).join('')}</div>` : ''}${game.links && Object.keys(game.links).length > 0 ? `<div class="game-links">${Object.entries(game.links).map(([name, url]) => `<a href="${url}" target="_blank" class="game-link" onclick="event.stopPropagation()">${name}</a>`).join('')}</div>` : ''}</div></div>`;
         }
 
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');

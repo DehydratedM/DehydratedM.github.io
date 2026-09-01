@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="DimDesk Studios Portfolio - Skills & Experience">
     <title>Portfolio - DimDesk.Studios</title>
- <!-- In <head> -->
-<link rel="icon" type="image/png" href="sparkle.png" />
+    <link rel="icon" type="image/png" href="sparkle.png" />
     <style>
         :root { --bg: #0a0a0a; --bg2: #1a1a1a; --text: #fff; --text2: #b0b0b0; --accent: #f08080; --border: rgba(255,255,255,0.1); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,7 +38,7 @@
         
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
         .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(240,128,128,0.3); }
+        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(240,128,128,0.3); object-fit: cover; }
         .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
         .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.3s ease; cursor: none; }
         .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(240,128,128,0.1); box-shadow: 0 0 10px rgba(240,128,128,0.2); }
@@ -60,18 +59,34 @@
         .skill-tag { display: inline-block; background: rgba(240,128,128,0.2); color: var(--accent); padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; margin-top: 8px; }
         
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
-        .socialIcons { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; }
+        .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
         .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; }
         .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
-        .socialIcons svg { width: 20px; height: 20px; fill: #b0b0b0; transition: fill 0.3s ease; }
-        .socialIcons a:hover svg { fill: #fff; }
+        .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
+        .socialIcons a:hover img { filter: brightness(1); }
+        
+        /* Music Credits */
+        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; }
+        .music-credits a { color: #d4a5b5; text-decoration: none; font-style: italic; transition: all 0.3s ease; cursor: none; }
+        .music-credits a:hover { color: #ffb6c1; text-shadow: 0 0 10px rgba(255,182,193,0.5); letter-spacing: 0.5px; }
+        .music-credits span { color: #666; font-style: normal; }
+        
         .Oo { color: #808080; font-size: 0.8rem; }
         .Oo a { color: #808080; text-decoration: none; }
         .Oo a:hover { color: var(--text); }
-        .mobile-toggle { display: none; }
+        .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
+        .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
+        
+        /* Sound Controls */
+        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
+        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
+        .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
+        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
+        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
+        
         @media (max-width: 768px) {
-            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; width: 40px; height: 40px; background: none; border: none; cursor: none; }
-            .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
+            .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
             .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; z-index: 999; }
             .nav-links.active { right: 0; }
             .nav-links ul { flex-direction: column; }
@@ -81,6 +96,20 @@
     </style>
 </head>
 <body>
+    <!-- Hidden YouTube Player -->
+    <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
+    
+    <!-- Sound Controls -->
+    <div class="sound-controls">
+        <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
+            <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+        </button>
+        <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+            <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+            <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+    </div>
+    
     <div class="background-video"><video autoplay muted loop playsinline id="bg-video"><source src="D.mp4" type="video/mp4"></video></div>
     <div class="custom-cursor" id="custom-cursor"></div>
     <div class="cursor-sparkle-ring" id="cursor-ring"></div>
@@ -114,35 +143,218 @@
         </section>
     </main>
 
+    <footer>
+        <div class="socialIcons">
+            <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" title="Bluesky"><img src="bluesky-fillW.png" alt="Bluesky" onerror="this.style.display='none'"></a>
+            <a href="https://www.youtube.com/@fubiereal" target="_blank" title="YouTube"><img src="youtube-fillW.png" alt="YouTube" onerror="this.style.display='none'"></a>
+            <a href="https://www.patreon.com/c/DIMDESK" target="_blank" title="Patreon"><img src="pathronW.png" alt="Patreon" onerror="this.style.display='none'"></a>
+            <a href="https://dimdesk.itch.io" target="_blank" title="Itch.io"><img src="itchioW.png" alt="Itch.io" onerror="this.style.display='none'"></a>
+            <a href="https://cara.app/fubie/all" target="_blank" title="Cara"><img src="caraW.png" alt="Cara" onerror="this.style.display='none'"></a>
+        </div>
+        
+        <!-- Music Credits -->
+        <div class="music-credits">
+            <span>♪ Music by</span>
+            <a href="https://www.youtube.com/@dani_hz" target="_blank">ᴅᴀɴɪ.ʜᴢ</a>
+            <span>and</span>
+            <a href="https://www.youtube.com/@shushubobo" target="_blank">shushubobo</a>
+            <span>♫</span>
+        </div>
+        
+        <div class="Oo"><p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p><p>© 2025 DimDesk.Studios</p></div>
+    </footer>
 
-
-<!-- In footer -->
-<footer>
-    <div class="socialIcons">
-        <a href="https://bsky.app/profile/fubiem.bsky.social" target="_blank" title="Bluesky"><img src="bluesky-fillW.png" alt="Bluesky" width="20" height="20" onerror="this.style.display='none'"></a>
-        <a href="https://www.youtube.com/@fubiereal" target="_blank" title="YouTube"><img src="youtube-fillW.png" alt="YouTube" width="20" height="20" onerror="this.style.display='none'"></a>
-        <a href="https://www.patreon.com/c/DIMDESK" target="_blank" title="Patreon"><img src="pathronW.png" alt="Patreon" width="20" height="20" onerror="this.style.display='none'"></a>
-        <a href="https://dimdesk.itch.io" target="_blank" title="Itch.io"><img src="itchioW.png" alt="Itch.io" width="20" height="20" onerror="this.style.display='none'"></a>
-        <a href="https://cara.app/fubie/all" target="_blank" title="Cara"><img src="caraW.png" alt="Cara" width="20" height="20" onerror="this.style.display='none'"></a>
-    </div>
-    <div class="Oo"><p>Contact: <a href="mailto:dimdesk.contact@gmail.com">dimdesk.contact@gmail.com</a></p><p>© 2025 DimDesk.Studios</p></div>
-</footer>
-
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        // ============================================================
+        // YOUTUBE PLAYLIST BGM SYSTEM
+        // ============================================================
+        let youtubePlayer = null;
+        let bgmEnabled = true;
+        let shuffleEnabled = false;
+        
+        const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
+        
+        const savedSoundState = localStorage.getItem('dimdesk_sound_enabled');
+        if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
+        
+        const savedShuffleState = localStorage.getItem('dimdesk_shuffle_enabled');
+        if (savedShuffleState !== null) shuffleEnabled = savedShuffleState === 'true';
+        
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtube-bgm-player', {
+                height: '1',
+                width: '1',
+                playerVars: {
+                    autoplay: bgmEnabled ? 1 : 0,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    iv_load_policy: 3,
+                    listType: 'playlist',
+                    list: PLAYLIST_ID,
+                    loop: 1,
+                    modestbranding: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    volume: 10
+                },
+                events: {
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
+                }
+            });
+        }
+        
+        function onPlayerReady(event) {
+            applySoundState();
+            applyShuffleState();
+            
+            if (bgmEnabled && !document.hidden) {
+                event.target.playVideo();
+            }
+            
+            document.getElementById('shuffle-toggle').style.display = 'flex';
+        }
+        
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED && shuffleEnabled && bgmEnabled) {
+                event.target.nextVideo();
+            }
+            
+            if (event.data === YT.PlayerState.PLAYING && document.hidden) {
+                event.target.pauseVideo();
+            }
+        }
+        
+        function applySoundState() {
+            const soundIconOn = document.getElementById('sound-icon-on');
+            const soundIconOff = document.getElementById('sound-icon-off');
+            
+            if (bgmEnabled) {
+                if (soundIconOn) soundIconOn.style.display = 'block';
+                if (soundIconOff) soundIconOff.style.display = 'none';
+            } else {
+                if (soundIconOn) soundIconOn.style.display = 'none';
+                if (soundIconOff) soundIconOff.style.display = 'block';
+            }
+        }
+        
+        function applyShuffleState() {
+            const shuffleBtn = document.getElementById('shuffle-toggle');
+            if (shuffleBtn) {
+                if (shuffleEnabled) {
+                    shuffleBtn.classList.add('active');
+                } else {
+                    shuffleBtn.classList.remove('active');
+                }
+            }
+        }
+        
+        document.getElementById('sound-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            bgmEnabled = !bgmEnabled;
+            localStorage.setItem('dimdesk_sound_enabled', bgmEnabled);
+            applySoundState();
+            
+            if (youtubePlayer) {
+                if (bgmEnabled && !document.hidden) {
+                    youtubePlayer.playVideo();
+                } else {
+                    youtubePlayer.pauseVideo();
+                }
+            }
+        });
+        
+        document.getElementById('shuffle-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            shuffleEnabled = !shuffleEnabled;
+            localStorage.setItem('dimdesk_shuffle_enabled', shuffleEnabled);
+            applyShuffleState();
+            
+            if (youtubePlayer && shuffleEnabled && bgmEnabled) {
+                youtubePlayer.setShuffle(true);
+                youtubePlayer.nextVideo();
+            } else if (youtubePlayer) {
+                youtubePlayer.setShuffle(false);
+            }
+        });
+        
+        document.addEventListener('visibilitychange', () => {
+            if (youtubePlayer) {
+                if (document.hidden) {
+                    youtubePlayer.pauseVideo();
+                } else if (bgmEnabled) {
+                    youtubePlayer.playVideo();
+                }
+            }
+        });
+        
+        window.addEventListener('beforeunload', () => {
+            if (youtubePlayer) {
+                youtubePlayer.pauseVideo();
+            }
+        });
+        
+        applySoundState();
+        applyShuffleState();
+
+        // ============================================================
+        // CUTE CLICK SOUND
+        // ============================================================
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        document.addEventListener('click', (e) => {
+            if (bgmEnabled && e.target.closest('a, button, .skill-card, .socialIcons a')) {
+                playCuteClick();
+            }
+        });
+        
+        function playCuteClick() {
+            if (audioContext.state === 'suspended') audioContext.resume();
+            
+            const now = audioContext.currentTime;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(880, now);
+            osc.frequency.exponentialRampToValueAtTime(1320, now + 0.04);
+            osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+            
+            gain.gain.setValueAtTime(0.04, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+            
+            osc.start(now);
+            osc.stop(now + 0.1);
+        }
+
+        // ============================================================
+        // CUSTOM CURSOR
+        // ============================================================
         const customCursor = document.getElementById('custom-cursor');
         const cursorRing = document.getElementById('cursor-ring');
-        document.addEventListener('mousemove', function(e) { customCursor.style.left = e.clientX + 'px'; customCursor.style.top = e.clientY + 'px'; cursorRing.style.left = e.clientX + 'px'; cursorRing.style.top = e.clientY + 'px'; });
+        document.addEventListener('mousemove', function(e) {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+            cursorRing.style.left = e.clientX + 'px';
+            cursorRing.style.top = e.clientY + 'px';
+        });
 
+        // ============================================================
+        // SPARKLE SYSTEM
+        // ============================================================
         const SparkleSystem = {
             enabled: true, lastSparkleTime: 0, sparkleInterval: 50, lastMousePosition: null,
             init() {
                 document.addEventListener('mousemove', (e) => this.onMouseMove(e));
                 document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
-                document.addEventListener('visibilitychange', () => { this.enabled = !document.hidden; });
-                setInterval(() => { if (this.enabled && !document.hidden && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 200);
+                setInterval(() => { if (this.enabled && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 200);
             },
-            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; if (!this.enabled || document.hidden) return; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 2 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
-            onTouchMove(e) { this.lastMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY }; if (!this.enabled) return; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval * 1.5) return; this.lastSparkleTime = now; this.createSparkle(e.touches[0].clientX, e.touches[0].clientY); },
+            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 2 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
             createSparkle(x, y) { const type = Math.random(); if (type < 0.35) this.createParticle(x, y); else if (type < 0.65) this.createStar(x, y); else this.createDiamond(x, y); },
             createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 40; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 600); },
             createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 35; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 700); },

@@ -64,10 +64,14 @@
         
         .portfolio-header { text-align: center; margin: 40px auto 20px; padding: 0 20px; }
         .portfolio-header h1 { font-size: 2.5rem; text-shadow: 0 0 20px rgba(240,128,128,0.5); }
+        .portfolio-header h1::after { content: ' ✦'; color: var(--accent); opacity: 0.6; }
         .portfolio-header p { color: var(--text2); font-size: 1.1rem; }
+        .portfolio-header p::before { content: '✧ '; color: var(--accent); opacity: 0.4; }
+        .portfolio-header p::after { content: ' ✧'; color: var(--accent); opacity: 0.4; }
         
         .about-section { max-width: 800px; margin: 25px auto; padding: 30px; background: var(--bg2); border-radius: 12px; border: 1px solid rgba(240,128,128,0.2); box-shadow: 0 0 20px rgba(240,128,128,0.1); position: relative; overflow: hidden; }
-        .about-section::before { content: '✦'; position: absolute; top: -10px; right: 20px; font-size: 4rem; opacity: 0.05; color: var(--accent); }
+        .about-section::before { content: '✿'; position: absolute; top: -10px; right: 20px; font-size: 4rem; opacity: 0.05; color: var(--accent); }
+        .about-section::after { content: '❀'; position: absolute; bottom: -10px; left: 20px; font-size: 3rem; opacity: 0.04; color: var(--accent); }
         .about-section h2 { text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(240,128,128,0.4); font-size: 1.5rem; }
         .about-section h2::after { content: ' ✿'; color: var(--accent); opacity: 0.5; }
         .about-section p { color: var(--text2); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.6; }
@@ -88,7 +92,7 @@
         .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         .skill-card { background: var(--bg2); border-radius: 10px; padding: 20px; border: 1px solid rgba(240,128,128,0.15); transition: all 0.3s ease; cursor: none; position: relative; overflow: hidden; }
         .skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #ffb6c1); opacity: 0; transition: opacity 0.3s ease; }
-        .skill-card::after { content: '✦'; position: absolute; bottom: 10px; right: 15px; font-size: 1.5rem; opacity: 0.03; color: var(--accent); }
+        .skill-card::after { content: '✧'; position: absolute; bottom: 10px; right: 15px; font-size: 1.5rem; opacity: 0.03; color: var(--accent); }
         .skill-card:hover::before { opacity: 1; }
         .skill-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(240,128,128,0.15); }
         .skill-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
@@ -132,6 +136,13 @@
         .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
         @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
         
+        /* Heartbeat pulse on hover for extra cuteness */
+        .stat-item:hover .stat-number { animation: heartPulse 0.6s ease; }
+        @keyframes heartPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        
+        /* Glow text effect */
+        .glow-text { color: var(--accent); text-shadow: 0 0 20px rgba(240,128,128,0.3); }
+        
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
             .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; z-index: 999; }
@@ -149,8 +160,8 @@
     <!-- Floating Decorative Elements -->
     <div class="floating-deco">✿</div>
     <div class="floating-deco">✦</div>
-    <div class="floating-deco">🌸</div>
-    <div class="floating-deco">☆</div>
+    <div class="floating-deco">❀</div>
+    <div class="floating-deco">✧</div>
     
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
@@ -187,25 +198,27 @@
         </div>
     </header>
 
-    <div class="portfolio-header"><h1>My Portfolio</h1><p>Game Developer & Artist — 5+ Years of Experience ✿</p></div>
+    <div class="portfolio-header">
+        <h1>My Portfolio</h1>
+        <p>Game Developer &amp; Artist — 5+ Years of Experience</p>
+    </div>
 
     <main>
         <div class="about-section">
             <h2>About Me</h2>
             <p>Hi, I'm M! I'm an indie game developer and artist passionate about creating unique 2D gaming experiences. With over 5 years of experience in the game development industry, I've worked on multiple projects from concept to release.</p>
             <p>I specialize in Unity with C# programming, creating engaging 2D games with hand-drawn art and animation. My work combines technical expertise with artistic vision to craft memorable experiences.</p>
-            <p>My focus is on crafting memorable experiences through creative game design and artistic expression, with a strong emphasis on player engagement and polished gameplay. ✦</p>
+            <p>My focus is on crafting memorable experiences through creative game design and artistic expression, with a strong emphasis on player engagement and polished gameplay.</p>
             <div class="about-stats">
                 <div class="stat-item"><div class="stat-number">5+</div><div class="stat-label">Years Experience ✧</div></div>
                 <div class="stat-item"><div class="stat-number">14</div><div class="stat-label">Skills Mastered ✦</div></div>
-                <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Games Released 🎮</div></div>
-                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Projects Completed 🌟</div></div>
+                <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Games Released ❀</div></div>
             </div>
         </div>
         
         <section class="skills-section">
             <div class="skills-header">
-                <h2 class="skills-title">Skills & Technologies</h2>
+                <h2 class="skills-title">Skills &amp; Technologies</h2>
                 <div class="skills-filter">
                     <button class="filter-btn active" data-filter="all">All ✿</button>
                     <button class="filter-btn" data-filter="Engine">Engine</button>
@@ -590,7 +603,7 @@
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
         // ============================================================
-        // SKILLS DATA with Years of Experience - UPDATED
+        // SKILLS DATA with Years of Experience
         // ============================================================
         const skills = [
             { name: "Unity Engine", desc: "2D game development with C#", tag: "Engine", years: 5, progress: 90 },

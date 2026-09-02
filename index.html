@@ -32,7 +32,7 @@
         @keyframes diamondFade { 0% { transform: rotate(45deg) scale(0); opacity: 1; } 100% { transform: rotate(135deg) scale(2); opacity: 0; } }
         
         .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
-        .background-video iframe { position: absolute; top: 50%; left: 50%; width: 130vw; height: 130vh; transform: translate(-50%, -50%); pointer-events: none; border: none; filter: brightness(0.3); }
+        .background-video iframe { position: absolute; top: 50%; left: 50%; width: 100vw; height: 100vh; transform: translate(-50%, -50%) scale(1.2); pointer-events: none; border: none; filter: brightness(0.3); object-fit: cover; }
         .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(240,128,128,0.18) 50%, rgba(10,10,10,0.88) 100%); animation: glowPulse 8s ease-in-out infinite; }
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         
@@ -59,8 +59,10 @@
         .featured-card:hover, .project-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(240,128,128,0.3); }
         .game-media { position: relative; width: 100%; height: 180px; overflow: hidden; background: #000; }
         .project-card .game-media { height: 160px; }
-        .game-media video, .game-media img, .game-media iframe { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; pointer-events: none; }
-        .game-media:hover video, .game-media:hover img, .game-media:hover iframe { transform: scale(1.05); }
+        .game-media iframe { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; transform: translate(-50%, -50%) scale(1.5); object-fit: cover; transition: transform 0.3s ease; pointer-events: none; border: none; }
+        .game-media video, .game-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; pointer-events: none; }
+        .game-media:hover iframe { transform: translate(-50%, -50%) scale(1.6); }
+        .game-media:hover video, .game-media:hover img { transform: scale(1.05); }
         .featured-content, .project-content { padding: 15px 20px; flex: 1; display: flex; flex-direction: column; }
         .featured-content h3, .project-content h3 { font-size: 1.1rem; margin-bottom: 8px; font-weight: 600; }
         .featured-content p, .project-content p { color: var(--text2); font-size: 0.9rem; line-height: 1.5; flex: 1; }

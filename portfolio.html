@@ -115,35 +115,283 @@
         .floating-deco:nth-child(5) { top: 50%; left: 50%; animation-delay: -7s; font-size: 3rem; }
         @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
         
-        /* Sound Controls - Bottom Left */
-        .sound-controls { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; align-items: center; gap: 12px; }
-        
-        .sound-group { display: flex; align-items: center; gap: 10px; }
-        
-        .sound-toggle, .shuffle-toggle { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); backdrop-filter: blur(10px); }
-        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); box-shadow: 0 0 25px rgba(255,182,193,0.6); }
-        .sound-toggle svg, .shuffle-toggle svg { width: 22px; height: 22px; fill: #fff; }
-        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
-        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
-        
-        /* Volume Slider - Appears on hover */
-        .volume-slider-container { width: 110px; background: rgba(15,15,15,0.95); border-radius: 10px; padding: 8px 12px; border: 1px solid rgba(255,182,193,0.3); box-shadow: 0 5px 20px rgba(0,0,0,0.5); opacity: 0; transform: translateX(-10px) scale(0.95); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; backdrop-filter: blur(10px); }
-        .volume-slider-container.visible { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
-        .volume-slider-container .volume-label { display: flex; justify-content: space-between; font-size: 0.55rem; color: var(--text2); margin-bottom: 3px; }
-        .volume-slider-container .volume-label span:last-child { color: var(--accent); font-weight: 600; }
-        .volume-slider { -webkit-appearance: none; width: 100%; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); outline: none; transition: opacity 0.2s; cursor: none; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: none; box-shadow: 0 0 10px rgba(240,128,128,0.5); transition: all 0.2s; }
-        .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 20px rgba(240,128,128,0.7); }
-        .volume-slider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: none; border: none; }
-        .volume-slider::-moz-range-track { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.1); }
-        
-        .sound-wrapper { display: flex; align-items: center; gap: 8px; }
-        
-        /* Scroll to top button - right of sound */
-        .scroll-top { width: 50px; height: 50px; border-radius: 50%; background: rgba(240,128,128,0.15); border: 1px solid rgba(240,128,128,0.3); color: var(--text); font-size: 1.2rem; cursor: none; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: translateY(20px) scale(0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(240,128,128,0.1); }
-        .scroll-top.visible { opacity: 1; transform: translateY(0) scale(1); }
-        .scroll-top:hover { background: rgba(240,128,128,0.3); transform: scale(1.1); box-shadow: 0 0 25px rgba(240,128,128,0.3); border-color: var(--accent); }
-        
+        /* ============================================================
+           SOUND CONTROLS - Bottom Right with Vertical Volume
+           ============================================================ */
+        .sound-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Scroll to top button - above sound controls */
+        .scroll-top {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(240,128,128,0.12);
+            border: 1px solid rgba(240,128,128,0.25);
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(240,128,128,0.08);
+        }
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .scroll-top:hover {
+            background: rgba(240,128,128,0.3);
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 0 30px rgba(240,128,128,0.3);
+            border-color: var(--accent);
+        }
+
+        .sound-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+        }
+
+        /* Main sound toggle button */
+        .sound-toggle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,182,193,0.35), rgba(173,216,230,0.25));
+            border: 2px solid rgba(255,182,193,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255,182,193,0.3), 0 0 40px rgba(173,216,230,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .sound-toggle:hover {
+            background: linear-gradient(135deg, rgba(255,182,193,0.55), rgba(173,216,230,0.4));
+            transform: scale(1.08);
+            box-shadow: 0 0 30px rgba(255,182,193,0.5);
+        }
+        .sound-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        /* Shuffle toggle - positioned to the right of sound */
+        .shuffle-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,182,193,0.15);
+            border: 1px solid rgba(255,182,193,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .shuffle-toggle.visible {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+            pointer-events: auto;
+        }
+        .shuffle-toggle:hover {
+            background: rgba(255,182,193,0.3);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .shuffle-toggle svg {
+            width: 16px;
+            height: 16px;
+            fill: #fff;
+        }
+        .shuffle-toggle.active {
+            background: linear-gradient(135deg, rgba(255,182,193,0.5), rgba(173,216,230,0.4));
+            border-color: #ffb6c1;
+            box-shadow: 0 0 20px rgba(255,182,193,0.4);
+            animation: shuffleGlow 2s ease-in-out infinite;
+        }
+        @keyframes shuffleGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.3); }
+            50% { box-shadow: 0 0 30px rgba(255,182,193,0.6); }
+        }
+
+        /* Vertical Volume Slider - above sound toggle */
+        .volume-slider-container {
+            width: 36px;
+            height: 110px;
+            background: rgba(15,15,15,0.92);
+            border-radius: 16px;
+            padding: 12px 8px;
+            border: 1px solid rgba(255,182,193,0.2);
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .volume-slider-container.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .volume-slider-container .volume-label {
+            font-size: 0.5rem;
+            color: var(--text2);
+            text-align: center;
+            line-height: 1.2;
+        }
+        .volume-slider-container .volume-label span:last-child {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.65rem;
+            display: block;
+            margin-top: 2px;
+        }
+        .volume-slider-vertical {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 60px;
+            background: transparent;
+            outline: none;
+            cursor: none;
+            writing-mode: bt-lr;
+            transform: rotate(270deg);
+            margin: 0 -30px;
+        }
+        .volume-slider-vertical::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1), var(--accent));
+            border-radius: 2px;
+        }
+        .volume-slider-vertical::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: none;
+            box-shadow: 0 0 15px rgba(240,128,128,0.5);
+            transition: all 0.2s;
+            margin-top: -5px;
+        }
+        .volume-slider-vertical::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 25px rgba(240,128,128,0.7);
+        }
+        .volume-slider-vertical::-moz-range-track {
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.1);
+        }
+        .volume-slider-vertical::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: none;
+            border: none;
+            box-shadow: 0 0 15px rgba(240,128,128,0.5);
+        }
+
+        .sound-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* ============================================================
+           CUTE LITTLE BUDDY - Floating companion
+           ============================================================ */
+        .buddy-container {
+            position: fixed;
+            bottom: 160px;
+            right: 35px;
+            z-index: 9999;
+            pointer-events: none;
+            user-select: none;
+        }
+        .buddy {
+            font-size: 3rem;
+            animation: buddyFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(240,128,128,0.2));
+            transition: transform 0.3s ease;
+            cursor: none;
+            pointer-events: auto;
+            line-height: 1;
+        }
+        .buddy:hover {
+            animation-play-state: paused;
+            transform: scale(1.2) rotate(-10deg);
+        }
+        .buddy-speech {
+            position: absolute;
+            top: -30px;
+            right: 40px;
+            background: rgba(15,15,15,0.9);
+            border: 1px solid rgba(255,182,193,0.3);
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 0.7rem;
+            color: var(--text2);
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px) scale(0.9);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+        .buddy-speech::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 15px;
+            width: 10px;
+            height: 10px;
+            background: rgba(15,15,15,0.9);
+            border-right: 1px solid rgba(255,182,193,0.3);
+            border-bottom: 1px solid rgba(255,182,193,0.3);
+            transform: rotate(45deg);
+        }
+        .buddy-speech.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        @keyframes buddyFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
         .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; position: relative; }
@@ -172,11 +420,17 @@
             .skills-header { flex-direction: column; align-items: flex-start; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .floating-deco { display: none; }
-            .sound-controls { bottom: 15px; left: 15px; gap: 8px; }
-            .sound-toggle, .shuffle-toggle, .scroll-top { width: 42px; height: 42px; }
-            .sound-toggle svg, .shuffle-toggle svg { width: 18px; height: 18px; }
-            .volume-slider-container { width: 90px; padding: 6px 10px; }
-            .scroll-top { font-size: 1rem; }
+            .sound-controls { bottom: 20px; right: 20px; gap: 8px; }
+            .sound-toggle { width: 44px; height: 44px; }
+            .sound-toggle svg { width: 20px; height: 20px; }
+            .shuffle-toggle { width: 34px; height: 34px; right: -42px; }
+            .shuffle-toggle svg { width: 14px; height: 14px; }
+            .volume-slider-container { width: 30px; height: 90px; padding: 8px 6px; }
+            .volume-slider-vertical { height: 45px; margin: 0 -25px; }
+            .scroll-top { width: 40px; height: 40px; font-size: 0.9rem; }
+            .buddy-container { bottom: 130px; right: 25px; }
+            .buddy { font-size: 2.2rem; }
+            .buddy-speech { font-size: 0.6rem; right: 30px; top: -25px; padding: 4px 10px; }
         }
     </style>
 </head>
@@ -191,26 +445,37 @@
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- Sound Controls - Bottom Left -->
+    <!-- CUTE LITTLE BUDDY -->
+    <div class="buddy-container" id="buddy-container">
+        <div class="buddy" id="buddy">🌸</div>
+        <div class="buddy-speech" id="buddy-speech">✨ hi there! ✨</div>
+    </div>
+    
+    <!-- Sound Controls - Bottom Right -->
     <div class="sound-controls">
         <!-- Scroll to top button -->
         <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
         
-        <!-- Sound controls -->
+        <!-- Sound group -->
         <div class="sound-group">
-            <div class="sound-wrapper">
-                <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
-                    <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                    <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-                </button>
+            <div class="sound-wrapper" id="sound-wrapper">
+                <!-- Volume slider (vertical, above sound button) -->
                 <div class="volume-slider-container" id="volume-slider-container">
                     <div class="volume-label">
                         <span>♫</span>
                         <span id="volume-display">70%</span>
                     </div>
-                    <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+                    <input type="range" class="volume-slider-vertical" id="volume-slider" min="0" max="100" value="70" orient="vertical">
                 </div>
+                
+                <!-- Sound toggle button -->
+                <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+                    <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                </button>
             </div>
+            
+            <!-- Shuffle toggle (appears to the right of sound on hover) -->
             <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
                 <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
             </button>
@@ -515,32 +780,49 @@
             }
         }
 
-        // Volume slider functionality
+        // Volume slider functionality - VERTICAL
         const volumeSlider = document.getElementById('volume-slider');
         const volumeDisplay = document.getElementById('volume-display');
         const volumeContainer = document.getElementById('volume-slider-container');
+        const soundWrapper = document.getElementById('sound-wrapper');
+        const shuffleBtn = document.getElementById('shuffle-toggle');
 
-        // Show volume slider on hover over sound wrapper
+        // Show volume slider AND shuffle on hover over sound wrapper
         let hoverTimeout;
-        document.querySelector('.sound-wrapper').addEventListener('mouseenter', function() {
+        soundWrapper.addEventListener('mouseenter', function() {
             clearTimeout(hoverTimeout);
             volumeContainer.classList.add('visible');
+            shuffleBtn.classList.add('visible');
         });
-        document.querySelector('.sound-wrapper').addEventListener('mouseleave', function() {
+        soundWrapper.addEventListener('mouseleave', function() {
             hoverTimeout = setTimeout(() => {
                 volumeContainer.classList.remove('visible');
-            }, 1000);
+                shuffleBtn.classList.remove('visible');
+            }, 800);
         });
 
         // Keep visible when interacting with slider
         volumeSlider.addEventListener('mouseenter', function() {
             clearTimeout(hoverTimeout);
             volumeContainer.classList.add('visible');
+            shuffleBtn.classList.add('visible');
         });
         volumeSlider.addEventListener('mouseleave', function() {
             hoverTimeout = setTimeout(() => {
                 volumeContainer.classList.remove('visible');
-            }, 1000);
+                shuffleBtn.classList.remove('visible');
+            }, 800);
+        });
+
+        // Keep shuffle visible when hovering it
+        shuffleBtn.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            shuffleBtn.classList.add('visible');
+        });
+        shuffleBtn.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                shuffleBtn.classList.remove('visible');
+            }, 800);
         });
 
         volumeSlider.addEventListener('input', function() {
@@ -710,6 +992,43 @@
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // ============================================================
+        // CUTE BUDDY - Speech bubbles on interaction
+        // ============================================================
+        const buddy = document.getElementById('buddy');
+        const buddySpeech = document.getElementById('buddy-speech');
+        const buddyMessages = [
+            '✨ hi there! ✨',
+            '🌸 keep going! 🌸',
+            '✿ you got this! ✿',
+            '🌟 stay creative! 🌟',
+            '💫 make something awesome! 💫',
+            '✨ dream big! ✨',
+            '🌸 happy coding! 🌸',
+            '✿ you\'re amazing! ✿'
+        ];
+        let speechTimeout;
+
+        buddy.addEventListener('click', function() {
+            const msg = buddyMessages[Math.floor(Math.random() * buddyMessages.length)];
+            buddySpeech.textContent = msg;
+            buddySpeech.classList.add('show');
+            clearTimeout(speechTimeout);
+            speechTimeout = setTimeout(() => {
+                buddySpeech.classList.remove('show');
+            }, 2500);
+        });
+
+        // Random speech on page load after a moment
+        setTimeout(() => {
+            const msg = buddyMessages[Math.floor(Math.random() * buddyMessages.length)];
+            buddySpeech.textContent = msg;
+            buddySpeech.classList.add('show');
+            setTimeout(() => {
+                buddySpeech.classList.remove('show');
+            }, 3000);
+        }, 3000);
 
         // ============================================================
         // SKILLS DATA with Years of Experience

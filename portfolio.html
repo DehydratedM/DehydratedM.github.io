@@ -31,8 +31,27 @@
         .sparkle-diamond { position: fixed; pointer-events: none; z-index: 99997; width: 6px; height: 6px; background: white; transform: rotate(45deg); animation: diamondFade 0.5s ease-out forwards; box-shadow: 0 0 8px 2px rgba(255,255,255,0.7); }
         @keyframes diamondFade { 0% { transform: rotate(45deg) scale(0); opacity: 1; } 100% { transform: rotate(135deg) scale(2); opacity: 0; } }
         
-        .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
-        .background-video iframe { position: absolute; top: 50%; left: 50%; width: 130vw; height: 130vh; transform: translate(-50%, -50%); pointer-events: none; border: none; filter: brightness(0.3); }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .background-video iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200vw;
+            height: 200vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            border: none;
+            filter: brightness(0.3);
+        }
         .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(240,128,128,0.18) 50%, rgba(10,10,10,0.88) 100%); animation: glowPulse 8s ease-in-out infinite; }
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         

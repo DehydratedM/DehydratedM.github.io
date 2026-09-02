@@ -62,7 +62,7 @@
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
         
         /* ============================================================
-           CUTE AESTHETIC LOGO
+           PERIWINKLE LOGO - Echo (blue), Dream (pink), Studio (light purple)
            ============================================================ */
         .logo-container {
             display: flex;
@@ -133,24 +133,10 @@
             position: relative;
             z-index: 1;
         }
-        .logo-text .highlight {
-            color: var(--accent);
-            font-weight: 700;
-        }
-        .logo-text .dot {
-            color: var(--accent);
-            opacity: 0.6;
-            margin: 0 2px;
-        }
-        .logo-sub {
-            font-size: 0.55rem;
-            color: var(--text2);
-            opacity: 0.5;
-            letter-spacing: 1px;
-            font-weight: 400;
-            display: block;
-            margin-top: -2px;
-        }
+        .logo-text .echo { color: #7eb8e0; } /* Periwinkle blue */
+        .logo-text .dream { color: #f08080; } /* Soft pink */
+        .logo-text .studio { color: #b8a0d4; } /* Light purple */
+        .logo-text .dot { color: var(--accent); opacity: 0.6; margin: 0 2px; }
         .logo-sparkle {
             position: absolute;
             font-size: 0.5rem;
@@ -205,6 +191,46 @@
         .skill-card::after { content: '✧'; position: absolute; bottom: 10px; right: 15px; font-size: 1.5rem; opacity: 0.03; color: var(--accent); }
         .skill-card:hover::before { opacity: 1; }
         .skill-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(240,128,128,0.15); }
+        
+        /* ============================================================
+           DYNAMIC CARD CLICK EFFECTS
+           ============================================================ */
+        .skill-card.clicked {
+            animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 40px rgba(240,128,128,0.3) !important;
+        }
+        @keyframes cardPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.05) rotate(-1deg); }
+            60% { transform: scale(0.98) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .skill-card .card-click-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(240,128,128,0.15);
+            transform: scale(0);
+            animation: rippleEffect 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes rippleEffect {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        .skill-card .card-sparkle-burst {
+            position: absolute;
+            pointer-events: none;
+            z-index: 11;
+            font-size: 0.8rem;
+            animation: sparkleBurst 0.6s ease-out forwards;
+        }
+        @keyframes sparkleBurst {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+        }
+        
         .skill-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         .skill-card h3 { font-size: 1rem; font-weight: 600; }
         .skill-years { font-size: 0.75rem; color: var(--accent); background: rgba(240,128,128,0.15); padding: 2px 10px; border-radius: 12px; white-space: nowrap; }
@@ -463,7 +489,6 @@
             .logo-img-wrapper { width: 34px; height: 34px; }
             .logo-img-wrapper .logo-icon { font-size: 1.1rem; }
             .logo-text { font-size: 0.85rem; }
-            .logo-sub { font-size: 0.45rem; }
         }
     </style>
 </head>
@@ -517,10 +542,9 @@
                     <span class="logo-sparkle">✧</span>
                     <span class="logo-sparkle">✧</span>
                 </div>
-                <div>
-                    <span class="logo-text">Echo<span class="highlight">Dream</span><span class="dot">.</span>Studio</span>
-                    <span class="logo-sub">✦ game dev ✦</span>
-                </div>
+                <span class="logo-text">
+                    <span class="echo">Echo</span><span class="dream">Dream</span><span class="dot">.</span><span class="studio">Studio</span>
+                </span>
             </a>
             <nav class="nav-links" id="main-nav">
                 <ul>
@@ -973,6 +997,69 @@
         });
 
         // ============================================================
+        // DYNAMIC CARD CLICK EFFECTS
+        // ============================================================
+        document.querySelectorAll('.skill-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Remove previous click effects
+                this.classList.remove('clicked');
+                
+                // Force reflow for animation replay
+                void this.offsetWidth;
+                
+                // Add click class for animation
+                this.classList.add('clicked');
+                
+                // Create ripple effect
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('div');
+                ripple.className = 'card-click-ripple';
+                const size = Math.max(rect.width, rect.height) * 0.6;
+                ripple.style.width = size + 'px';
+                ripple.style.height = size + 'px';
+                ripple.style.left = (x - size/2) + 'px';
+                ripple.style.top = (y - size/2) + 'px';
+                this.appendChild(ripple);
+                
+                // Create sparkle burst
+                const sparkleChars = ['✦', '✧', '✿', '✦', '✧'];
+                for (let i = 0; i < 6; i++) {
+                    const sparkle = document.createElement('span');
+                    sparkle.className = 'card-sparkle-burst';
+                    sparkle.textContent = sparkleChars[i % sparkleChars.length];
+                    const angle = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
+                    const dist = 40 + Math.random() * 30;
+                    const tx = Math.cos(angle) * dist;
+                    const ty = Math.sin(angle) * dist;
+                    sparkle.style.setProperty('--tx', tx + 'px');
+                    sparkle.style.setProperty('--ty', ty + 'px');
+                    sparkle.style.left = x + 'px';
+                    sparkle.style.top = y + 'px';
+                    sparkle.style.fontSize = (0.6 + Math.random() * 0.4) + 'rem';
+                    this.appendChild(sparkle);
+                    
+                    // Remove sparkle after animation
+                    setTimeout(() => {
+                        if (sparkle.parentNode) sparkle.remove();
+                    }, 700);
+                }
+                
+                // Remove ripple after animation
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                }, 800);
+                
+                // Remove clicked class after animation
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 600);
+            });
+        });
+
+        // ============================================================
         // SKILLS DATA
         // ============================================================
         const skills = [
@@ -1011,6 +1098,57 @@
                     </div>
                 </div>
             `).join('');
+            
+            // Re-attach click events to newly rendered cards
+            document.querySelectorAll('.skill-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Remove previous click effects
+                    this.classList.remove('clicked');
+                    void this.offsetWidth;
+                    this.classList.add('clicked');
+                    
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const ripple = document.createElement('div');
+                    ripple.className = 'card-click-ripple';
+                    const size = Math.max(rect.width, rect.height) * 0.6;
+                    ripple.style.width = size + 'px';
+                    ripple.style.height = size + 'px';
+                    ripple.style.left = (x - size/2) + 'px';
+                    ripple.style.top = (y - size/2) + 'px';
+                    this.appendChild(ripple);
+                    
+                    const sparkleChars = ['✦', '✧', '✿', '✦', '✧'];
+                    for (let i = 0; i < 6; i++) {
+                        const sparkle = document.createElement('span');
+                        sparkle.className = 'card-sparkle-burst';
+                        sparkle.textContent = sparkleChars[i % sparkleChars.length];
+                        const angle = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
+                        const dist = 40 + Math.random() * 30;
+                        const tx = Math.cos(angle) * dist;
+                        const ty = Math.sin(angle) * dist;
+                        sparkle.style.setProperty('--tx', tx + 'px');
+                        sparkle.style.setProperty('--ty', ty + 'px');
+                        sparkle.style.left = x + 'px';
+                        sparkle.style.top = y + 'px';
+                        sparkle.style.fontSize = (0.6 + Math.random() * 0.4) + 'rem';
+                        this.appendChild(sparkle);
+                        setTimeout(() => {
+                            if (sparkle.parentNode) sparkle.remove();
+                        }, 700);
+                    }
+                    
+                    setTimeout(() => {
+                        if (ripple.parentNode) ripple.remove();
+                    }, 800);
+                    
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 600);
+                });
+            });
         }
 
         renderSkills();

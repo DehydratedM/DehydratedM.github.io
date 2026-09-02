@@ -272,34 +272,6 @@
         .game-link { padding: 4px 10px; background: rgba(240,128,128,0.2); color: #f08080; text-decoration: none; border-radius: 4px; font-size: 0.75rem; transition: all 0.3s ease; cursor: none; }
         .game-link:hover { background: rgba(240,128,128,0.4); color: #fff; transform: translateY(-2px); }
         
-        /* ============================================================
-           SCROLL TO TOP BUTTON
-           ============================================================ */
-        .scroll-top {
-            position: fixed;
-            bottom: 100px;
-            right: 30px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(240,128,128,0.12);
-            border: 1px solid rgba(240,128,128,0.25);
-            color: var(--text);
-            font-size: 1.1rem;
-            cursor: none;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            opacity: 0;
-            transform: translateY(20px) scale(0.8);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 15px rgba(240,128,128,0.08);
-            z-index: 9999;
-        }
-        .scroll-top.visible { opacity: 1; transform: translateY(0) scale(1); }
-        .scroll-top:hover { background: rgba(240,128,128,0.3); transform: scale(1.1) translateY(-3px); box-shadow: 0 0 30px rgba(240,128,128,0.3); border-color: var(--accent); }
-        
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; position: relative; overflow: hidden; }
         footer::before {
             content: '';
@@ -347,6 +319,28 @@
             align-items: flex-end;
             gap: 10px;
         }
+
+        /* Scroll to top button - ABOVE sound controls */
+        .scroll-top {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(240,128,128,0.12);
+            border: 1px solid rgba(240,128,128,0.25);
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(240,128,128,0.08);
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .scroll-top:hover { background: rgba(240,128,128,0.3); transform: scale(1.1) translateY(-3px); box-shadow: 0 0 30px rgba(240,128,128,0.3); border-color: var(--accent); }
 
         .sound-group {
             display: flex;
@@ -522,7 +516,7 @@
             .nav-links ul { flex-direction: column; }
             .nav-links li { width: 100%; list-style: none; }
             .nav-links a { display: block; padding: 12px 15px; }
-            .scroll-top { bottom: 110px; right: 15px; width: 40px; height: 40px; font-size: 0.9rem; }
+            .scroll-top { width: 40px; height: 40px; font-size: 0.9rem; }
             .logo-img-wrapper { width: 34px; height: 34px; }
             .logo-img-wrapper img { padding: 3px; }
             .logo-text { font-size: 0.85rem; }
@@ -540,11 +534,11 @@
     <!-- Hidden YouTube Player for BGM -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- Scroll to Top Button -->
-    <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
-    
     <!-- Sound Controls - Bottom Right (Matches PORTFOLIO) -->
     <div class="sound-controls">
+        <!-- Scroll to Top Button - ABOVE sound controls -->
+        <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
+        
         <div class="sound-group">
             <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
                 <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>

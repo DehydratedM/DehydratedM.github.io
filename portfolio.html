@@ -66,24 +66,29 @@
         .portfolio-header h1 { font-size: 2.5rem; text-shadow: 0 0 20px rgba(240,128,128,0.5); }
         .portfolio-header p { color: var(--text2); font-size: 1.1rem; }
         
-        .about-section { max-width: 800px; margin: 25px auto; padding: 30px; background: var(--bg2); border-radius: 12px; border: 1px solid rgba(240,128,128,0.2); box-shadow: 0 0 20px rgba(240,128,128,0.1); }
+        .about-section { max-width: 800px; margin: 25px auto; padding: 30px; background: var(--bg2); border-radius: 12px; border: 1px solid rgba(240,128,128,0.2); box-shadow: 0 0 20px rgba(240,128,128,0.1); position: relative; overflow: hidden; }
+        .about-section::before { content: '✦'; position: absolute; top: -10px; right: 20px; font-size: 4rem; opacity: 0.05; color: var(--accent); }
         .about-section h2 { text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(240,128,128,0.4); font-size: 1.5rem; }
+        .about-section h2::after { content: ' ✿'; color: var(--accent); opacity: 0.5; }
         .about-section p { color: var(--text2); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.6; }
         .about-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
-        .stat-item { text-align: center; }
+        .stat-item { text-align: center; padding: 8px; border-radius: 8px; transition: all 0.3s ease; }
+        .stat-item:hover { background: rgba(240,128,128,0.05); transform: translateY(-2px); }
         .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 20px rgba(240,128,128,0.3); }
         .stat-label { color: var(--text2); font-size: 0.8rem; margin-top: 4px; }
         
         .skills-section { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .skills-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
         .skills-title { font-size: 1.5rem; text-shadow: 0 0 10px rgba(240,128,128,0.4); }
+        .skills-title::after { content: ' ✧'; color: var(--accent); opacity: 0.5; }
         .skills-filter { display: flex; gap: 8px; flex-wrap: wrap; }
         .filter-btn { padding: 6px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text2); font-size: 0.75rem; cursor: none; transition: all 0.3s ease; }
-        .filter-btn:hover, .filter-btn.active { background: rgba(240,128,128,0.2); border-color: var(--accent); color: var(--text); }
+        .filter-btn:hover, .filter-btn.active { background: rgba(240,128,128,0.2); border-color: var(--accent); color: var(--text); box-shadow: 0 0 20px rgba(240,128,128,0.15); }
         
         .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
         .skill-card { background: var(--bg2); border-radius: 10px; padding: 20px; border: 1px solid rgba(240,128,128,0.15); transition: all 0.3s ease; cursor: none; position: relative; overflow: hidden; }
         .skill-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #ffb6c1); opacity: 0; transition: opacity 0.3s ease; }
+        .skill-card::after { content: '✦'; position: absolute; bottom: 10px; right: 15px; font-size: 1.5rem; opacity: 0.03; color: var(--accent); }
         .skill-card:hover::before { opacity: 1; }
         .skill-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(240,128,128,0.15); }
         .skill-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
@@ -94,21 +99,18 @@
         .skill-progress { margin-top: 12px; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
         .skill-progress-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); transition: width 1s ease; }
         
-        /* Timeline Section */
-        .timeline-section { max-width: 800px; margin: 30px auto; padding: 0 20px; }
-        .timeline-title { text-align: center; font-size: 1.5rem; margin-bottom: 25px; text-shadow: 0 0 10px rgba(240,128,128,0.4); }
-        .timeline { position: relative; padding-left: 30px; }
-        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(240,128,128,0.2)); }
-        .timeline-item { position: relative; margin-bottom: 25px; padding-left: 20px; }
-        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 15px rgba(240,128,128,0.4); }
-        .timeline-item h3 { font-size: 1rem; margin-bottom: 2px; }
-        .timeline-item .timeline-date { color: var(--accent); font-size: 0.8rem; margin-bottom: 4px; }
-        .timeline-item p { color: var(--text2); font-size: 0.85rem; }
+        /* Floating decorative elements */
+        .floating-deco { position: fixed; pointer-events: none; z-index: 0; opacity: 0.03; font-size: 2rem; animation: float 20s ease-in-out infinite; }
+        .floating-deco:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .floating-deco:nth-child(2) { top: 30%; right: 3%; animation-delay: -5s; }
+        .floating-deco:nth-child(3) { bottom: 20%; left: 8%; animation-delay: -10s; }
+        .floating-deco:nth-child(4) { bottom: 40%; right: 5%; animation-delay: -15s; }
+        @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
         
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; }
-        .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
+        .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; position: relative; }
+        .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px) scale(1.05); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
         
@@ -139,13 +141,17 @@
             .nav-links a { display: block; padding: 12px 15px; }
             .skills-header { flex-direction: column; align-items: flex-start; }
             .portfolio-grid { grid-template-columns: 1fr; }
-            .timeline { padding-left: 15px; }
-            .timeline-item { padding-left: 10px; }
-            .timeline-item::before { left: -21px; width: 10px; height: 10px; }
+            .floating-deco { display: none; }
         }
     </style>
 </head>
 <body>
+    <!-- Floating Decorative Elements -->
+    <div class="floating-deco">✿</div>
+    <div class="floating-deco">✦</div>
+    <div class="floating-deco">🌸</div>
+    <div class="floating-deco">☆</div>
+    
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
@@ -181,19 +187,19 @@
         </div>
     </header>
 
-    <div class="portfolio-header"><h1>My Portfolio</h1><p>Game Developer & Artist — 5+ Years of Experience</p></div>
+    <div class="portfolio-header"><h1>My Portfolio</h1><p>Game Developer & Artist — 5+ Years of Experience ✿</p></div>
 
     <main>
         <div class="about-section">
             <h2>About Me</h2>
             <p>Hi, I'm M! I'm an indie game developer and artist passionate about creating unique 2D gaming experiences. With over 5 years of experience in the game development industry, I've worked on multiple projects from concept to release.</p>
             <p>I specialize in Unity with C# programming, creating engaging 2D games with hand-drawn art and animation. My work combines technical expertise with artistic vision to craft memorable experiences.</p>
-            <p>My focus is on crafting memorable experiences through creative game design and artistic expression, with a strong emphasis on player engagement and polished gameplay.</p>
+            <p>My focus is on crafting memorable experiences through creative game design and artistic expression, with a strong emphasis on player engagement and polished gameplay. ✦</p>
             <div class="about-stats">
-                <div class="stat-item"><div class="stat-number">5+</div><div class="stat-label">Years Experience</div></div>
-                <div class="stat-item"><div class="stat-number">18</div><div class="stat-label">Skills Mastered</div></div>
-                <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Games Released</div></div>
-                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Projects Completed</div></div>
+                <div class="stat-item"><div class="stat-number">5+</div><div class="stat-label">Years Experience ✧</div></div>
+                <div class="stat-item"><div class="stat-number">14</div><div class="stat-label">Skills Mastered ✦</div></div>
+                <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Games Released 🎮</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Projects Completed 🌟</div></div>
             </div>
         </div>
         
@@ -201,7 +207,7 @@
             <div class="skills-header">
                 <h2 class="skills-title">Skills & Technologies</h2>
                 <div class="skills-filter">
-                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn active" data-filter="all">All ✿</button>
                     <button class="filter-btn" data-filter="Engine">Engine</button>
                     <button class="filter-btn" data-filter="Language">Language</button>
                     <button class="filter-btn" data-filter="Art">Art</button>
@@ -212,33 +218,6 @@
                 </div>
             </div>
             <div class="portfolio-grid" id="portfolio-skills"></div>
-        </section>
-
-        <!-- Timeline Section -->
-        <section class="timeline-section">
-            <h2 class="timeline-title">Experience Timeline</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Realm Escape: Jungle Adventure</h3>
-                    <div class="timeline-date">2025 — Present</div>
-                    <p>Lead Developer & Artist — Released on Google Play, featuring puzzle-adventure gameplay with hand-drawn art.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Bloom Delivery Adventures</h3>
-                    <div class="timeline-date">2024 — 2025</div>
-                    <p>Game Developer & Designer — Created a cozy delivery game with vibrant 2D art and engaging mechanics.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Independent Game Development</h3>
-                    <div class="timeline-date">2020 — Present</div>
-                    <p>Full-stack game development — Unity, C#, 2D art, animation, sound design, and project management.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Digital Art & Illustration</h3>
-                    <div class="timeline-date">2018 — Present</div>
-                    <p>Character design, concept art, and illustrations for games and personal projects using Photoshop and traditional media.</p>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -259,7 +238,7 @@
             <span>♫</span>
         </div>
         
-        <div class="Oo"><p>Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a></p><p>© 2025 EchoDream.Studio</p></div>
+        <div class="Oo"><p>Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a></p><p>© 2025 EchoDream.Studio ✿</p></div>
     </footer>
 
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -611,7 +590,7 @@
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
         // ============================================================
-        // SKILLS DATA with Years of Experience - EXPANDED
+        // SKILLS DATA with Years of Experience - UPDATED
         // ============================================================
         const skills = [
             { name: "Unity Engine", desc: "2D game development with C#", tag: "Engine", years: 5, progress: 90 },
@@ -624,18 +603,18 @@
             { name: "Premiere Pro", desc: "Video editing, trailers, playthroughs", tag: "Video", years: 4, progress: 75 },
             { name: "After Effects", desc: "Motion graphics, visual effects", tag: "Video", years: 3, progress: 70 },
             { name: "Sound Design", desc: "Audio implementation, mixing", tag: "Audio", years: 4, progress: 72 },
-            { name: "FL Studio", desc: "Music composition, sound design", tag: "Audio", years: 5, progress: 75 },
             { name: "HTML & CSS", desc: "Web development for game promotion", tag: "Web", years: 4, progress: 78 },
             { name: "JavaScript", desc: "Interactive web features & games", tag: "Web", years: 3, progress: 70 },
-            { name: "Blender", desc: "3D modeling for game assets", tag: "Engine", years: 3, progress: 65 },
-            { name: "Visual Studio", desc: "IDE for C# development", tag: "Language", years: 5, progress: 85 },
-            { name: "Git & GitHub", desc: "Version control and collaboration", tag: "Design", years: 4, progress: 72 },
-            { name: "UI/UX Design", desc: "User interface and experience design", tag: "Design", years: 4, progress: 76 },
-            { name: "Pixel Art", desc: "Retro style pixel art creation", tag: "Art", years: 4, progress: 78 }
+            { name: "Blender", desc: "3D modeling for game assets", tag: "Engine", years: 1, progress: 50 },
+            { name: "Git & GitHub", desc: "Version control and collaboration", tag: "Design", years: 2, progress: 65 }
         ];
 
         function renderSkills(filter = 'all') {
             const filtered = filter === 'all' ? skills : skills.filter(s => s.tag === filter);
+            if (filtered.length === 0) {
+                document.getElementById('portfolio-skills').innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text2);padding:40px;">No skills found in this category ✧</div>`;
+                return;
+            }
             document.getElementById('portfolio-skills').innerHTML = filtered.map(s => `
                 <div class="skill-card" data-tag="${s.tag}">
                     <div class="skill-card-header">
@@ -653,7 +632,7 @@
 
         renderSkills();
 
-        // Filter functionality
+        // Filter functionality with animation
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

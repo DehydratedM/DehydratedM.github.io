@@ -62,7 +62,7 @@
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
         
         /* ============================================================
-           LOGO WITH IMAGE - Use heart.png or logostar.png
+           LOGO WITH IMAGE - logostar.png
            ============================================================ */
         .logo-container {
             display: flex;
@@ -136,10 +136,10 @@
             position: relative;
             z-index: 1;
         }
-        /* Pretty colors - Dream in soft lavender, Echo in sky blue, Studio in rose gold */
-        .logo-text .echo { color: #7ec8e3; } /* Soft sky blue */
-        .logo-text .dream { color: #c9a0e8; } /* Pretty lavender purple */
-        .logo-text .studio { color: #e8b4c8; } /* Soft rose pink */
+        /* CUTER COLORS - Dream in bubblegum pink, Echo in cotton candy blue, Studio in soft lavender */
+        .logo-text .echo { color: #7ec8e3; } /* Cotton candy blue */
+        .logo-text .dream { color: #f5a0b0; } /* Bubblegum pink - much cuter! */
+        .logo-text .studio { color: #c9a0e8; } /* Soft lavender */
         .logo-text .dot { color: var(--accent); opacity: 0.6; margin: 0 2px; }
         .logo-sparkle {
             position: absolute;
@@ -541,8 +541,7 @@
         <div class="HE">
             <a href="index.html" class="logo-container">
                 <div class="logo-img-wrapper">
-                    <!-- Change src to "heart.png" or "logostar.png" -->
-                    <img src="heart.png" alt="EchoDream" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=logo-icon>✦</span>'">
+                    <img src="logostar.png" alt="EchoDream" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=logo-icon>✦</span>'">
                     <div class="logo-glow"></div>
                     <span class="logo-sparkle">✧</span>
                     <span class="logo-sparkle">✧</span>
@@ -958,17 +957,17 @@
         }
 
         // ============================================================
-        // CUSTOM CURSOR - ENHANCED SPARKLE TRAIL
+        // CUSTOM CURSOR - ENHANCED SPARKLE TRAIL (Longer lasting)
         // ============================================================
         const customCursor = document.getElementById('custom-cursor');
         const cursorRing = document.getElementById('cursor-ring');
         
-        // Enhanced sparkle trail system
+        // Enhanced sparkle trail system - longer lasting
         class SparkleTrail {
             constructor() {
                 this.particles = [];
-                this.maxParticles = 15;
-                this.trailInterval = 30;
+                this.maxParticles = 25;
+                this.trailInterval = 20; // Faster for more particles
                 this.lastTrailTime = 0;
                 this.mouseX = 0;
                 this.mouseY = 0;
@@ -996,9 +995,8 @@
                     this.isActive = false;
                 });
 
-                // Also create particles on click for burst effect
                 document.addEventListener('click', (e) => {
-                    for (let i = 0; i < 8; i++) {
+                    for (let i = 0; i < 12; i++) {
                         this.createBurstParticle(e.clientX, e.clientY);
                     }
                 });
@@ -1007,7 +1005,7 @@
             createTrailParticle(x, y) {
                 const el = document.createElement('div');
                 const size = 2 + Math.random() * 4;
-                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3'];
+                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffffff', '#ffe0f0'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 
                 el.style.cssText = `
@@ -1028,11 +1026,11 @@
                 
                 document.body.appendChild(el);
                 
-                const dx = (Math.random() - 0.5) * 4;
-                const dy = (Math.random() - 0.5) * 4 - 2;
+                const dx = (Math.random() - 0.5) * 3;
+                const dy = (Math.random() - 0.5) * 3 - 1.5;
                 const startTime = performance.now();
-                const duration = 400 + Math.random() * 300;
-                const startScale = 0.3 + Math.random() * 0.4;
+                const duration = 600 + Math.random() * 400; // Longer duration
+                const startScale = 0.2 + Math.random() * 0.3;
                 
                 const animate = (time) => {
                     const progress = (time - startTime) / duration;
@@ -1042,13 +1040,13 @@
                     }
                     
                     const ease = 1 - Math.pow(1 - progress, 2);
-                    const currentX = x + dx * progress * 30;
-                    const currentY = y + dy * progress * 30 - progress * 20;
-                    const scale = startScale * (1 + progress * 0.5);
-                    const opacity = 1 - progress * progress;
+                    const currentX = x + dx * progress * 40;
+                    const currentY = y + dy * progress * 40 - progress * 30;
+                    const scale = startScale * (1 + progress * 0.8);
+                    const opacity = 1 - Math.pow(progress, 1.5);
                     
                     el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
-                    el.style.opacity = opacity;
+                    el.style.opacity = Math.max(0, opacity);
                     
                     requestAnimationFrame(animate);
                 };
@@ -1058,11 +1056,11 @@
 
             createBurstParticle(x, y) {
                 const el = document.createElement('div');
-                const size = 3 + Math.random() * 5;
-                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#fff'];
+                const size = 3 + Math.random() * 6;
+                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffffff', '#ffe0f0', '#ffc0cb'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 const angle = Math.random() * Math.PI * 2;
-                const speed = 2 + Math.random() * 4;
+                const speed = 2 + Math.random() * 5;
                 
                 el.style.cssText = `
                     position: fixed;
@@ -1085,7 +1083,7 @@
                 const dx = Math.cos(angle) * speed;
                 const dy = Math.sin(angle) * speed;
                 const startTime = performance.now();
-                const duration = 600 + Math.random() * 400;
+                const duration = 800 + Math.random() * 500;
                 
                 const animate = (time) => {
                     const progress = (time - startTime) / duration;
@@ -1095,10 +1093,10 @@
                     }
                     
                     const ease = 1 - Math.pow(1 - progress, 1.5);
-                    const currentX = x + dx * progress * 50;
-                    const currentY = y + dy * progress * 50 - progress * 10;
-                    const scale = 0.5 + progress * 0.5;
-                    const opacity = 1 - progress * progress * 1.2;
+                    const currentX = x + dx * progress * 60;
+                    const currentY = y + dy * progress * 60 - progress * 15;
+                    const scale = 0.3 + progress * 0.7;
+                    const opacity = 1 - Math.pow(progress, 1.3);
                     
                     el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
                     el.style.opacity = Math.max(0, opacity);
@@ -1125,10 +1123,8 @@
             },
             onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 1 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
             createSparkle(x, y) { 
-                // Only create if not too many particles exist
                 const existing = document.querySelectorAll('.sparkle-particle, .sparkle-star, .sparkle-diamond');
                 if (existing.length > 30) return;
-                
                 const type = Math.random(); 
                 if (type < 0.35) this.createParticle(x, y); 
                 else if (type < 0.65) this.createStar(x, y); 

@@ -224,7 +224,7 @@
         .sound-toggle svg { width: 24px; height: 24px; fill: #fff; }
 
         /* ============================================================
-           PRETTY VOLUME SLIDER - Elegant Design
+           FIXED VOLUME SLIDER - Clean & Functional
            ============================================================ */
         .volume-slider-container {
             width: 44px;
@@ -233,7 +233,7 @@
             border-radius: 22px;
             padding: 16px 10px;
             border: 1px solid rgba(255,182,193,0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.03);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             opacity: 0;
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             pointer-events: none;
@@ -267,23 +267,25 @@
             margin-top: 3px;
             text-shadow: 0 0 20px rgba(240,128,128,0.2);
         }
+        /* FIXED: Proper vertical slider */
         .volume-slider-vertical {
-            -webkit-appearance: slider-vertical;
-            appearance: slider-vertical;
-            width: 60px;
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
             height: 100%;
             min-height: 55px;
             background: transparent;
             outline: none;
             cursor: none;
-            margin: 0 auto;
+            writing-mode: bt-lr;
+            transform: rotate(270deg);
+            margin: 0 -20px;
         }
         .volume-slider-vertical::-webkit-slider-runnable-track {
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(to top, rgba(255,255,255,0.06), rgba(255,182,193,0.2), var(--accent));
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, rgba(255,255,255,0.06), rgba(255,182,193,0.2), var(--accent));
             border-radius: 4px;
-            margin: 0 auto;
             box-shadow: inset 0 0 20px rgba(240,128,128,0.05);
         }
         .volume-slider-vertical::-webkit-slider-thumb {
@@ -293,18 +295,18 @@
             border-radius: 50%;
             background: radial-gradient(circle at 35% 35%, #fff, var(--accent));
             cursor: none;
-            box-shadow: 0 0 25px rgba(240,128,128,0.5), 0 0 50px rgba(240,128,128,0.15), inset 0 -2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 0 25px rgba(240,128,128,0.5), 0 0 50px rgba(240,128,128,0.15);
             transition: all 0.25s ease;
-            margin-left: -8px;
+            margin-top: -8px;
             border: 2px solid rgba(255,255,255,0.3);
         }
         .volume-slider-vertical::-webkit-slider-thumb:hover {
             transform: scale(1.15);
-            box-shadow: 0 0 35px rgba(240,128,128,0.7), 0 0 70px rgba(240,128,128,0.25);
+            box-shadow: 0 0 35px rgba(240,128,128,0.7);
         }
         .volume-slider-vertical::-moz-range-track {
-            width: 4px;
-            height: 100%;
+            width: 100%;
+            height: 4px;
             border-radius: 4px;
             background: rgba(255,255,255,0.1);
         }
@@ -319,7 +321,7 @@
         }
 
         /* ============================================================
-           PRETTY CAT BUDDY - Cute & Elegant
+           CUTE CAT BUDDY - Free SVG Cat Widget
            ============================================================ */
         .buddy-container {
             position: fixed;
@@ -338,21 +340,21 @@
             cursor: none;
             pointer-events: auto;
             line-height: 1;
-            width: 80px;
-            height: 80px;
+            width: 85px;
+            height: 85px;
         }
         .buddy svg {
             width: 100%;
             height: 100%;
             display: block;
-            filter: drop-shadow(0 8px 30px rgba(255,182,193,0.15));
+            filter: drop-shadow(0 8px 30px rgba(255,182,193,0.12));
         }
         .buddy:hover {
-            transform: scale(1.1) rotate(-4deg);
+            transform: scale(1.08) rotate(-3deg);
         }
         .buddy-speech {
             position: absolute;
-            bottom: 82px;
+            bottom: 85px;
             left: 0;
             background: rgba(15,15,18,0.92);
             border: 1px solid rgba(255,182,193,0.15);
@@ -367,7 +369,6 @@
             pointer-events: none;
             backdrop-filter: blur(12px);
             box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-            font-family: 'Inter', sans-serif;
         }
         .buddy-speech::after {
             content: '';
@@ -438,10 +439,10 @@
             .shuffle-toggle { width: 34px; height: 34px; }
             .shuffle-toggle svg { width: 14px; height: 14px; }
             .volume-slider-container { width: 36px; height: 100px; padding: 12px 8px; bottom: 58px; }
-            .volume-slider-vertical { width: 50px; min-height: 40px; }
+            .volume-slider-vertical { margin: 0 -16px; }
             .scroll-top { width: 40px; height: 40px; font-size: 0.9rem; }
             .buddy-container { bottom: 20px; left: 20px; }
-            .buddy { width: 60px; height: 60px; }
+            .buddy { width: 62px; height: 62px; }
             .buddy-speech { font-size: 0.55rem; left: -5px; bottom: 62px; padding: 5px 10px; }
             .buddy-speech::after { left: 18px; }
         }
@@ -458,71 +459,47 @@
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- PRETTY CAT BUDDY - Elegant SVG -->
+    <!-- CUTE CAT BUDDY - Free SVG Cat Widget -->
     <div class="buddy-container" id="buddy-container">
         <div class="buddy" id="buddy">
             <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <!-- Soft glow aura -->
-                <ellipse cx="60" cy="55" rx="45" ry="40" fill="none" stroke="rgba(255,182,193,0.04)" stroke-width="4"/>
-                
                 <!-- Body -->
-                <ellipse cx="60" cy="78" rx="32" ry="26" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.2)" stroke-width="1.8"/>
-                
+                <ellipse cx="60" cy="75" rx="30" ry="24" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.2)" stroke-width="1.8"/>
                 <!-- Head -->
                 <circle cx="60" cy="42" r="26" fill="rgba(255,182,193,0.1)" stroke="rgba(255,182,193,0.2)" stroke-width="1.8"/>
-                
                 <!-- Ears -->
-                <path d="M40 24 L33 8 L48 20 Z" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.25)" stroke-width="1.5"/>
-                <path d="M80 24 L87 8 L72 20 Z" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.25)" stroke-width="1.5"/>
+                <path d="M40 23 L32 8 L48 19 Z" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.25)" stroke-width="1.5"/>
+                <path d="M80 23 L88 8 L72 19 Z" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.25)" stroke-width="1.5"/>
                 <!-- Inner ears -->
-                <path d="M41 23 L36 13 L47 21 Z" fill="rgba(255,150,150,0.12)"/>
-                <path d="M79 23 L84 13 L73 21 Z" fill="rgba(255,150,150,0.12)"/>
-                
+                <path d="M41 22 L35 12 L47 20 Z" fill="rgba(255,150,150,0.12)"/>
+                <path d="M79 22 L85 12 L73 20 Z" fill="rgba(255,150,150,0.12)"/>
                 <!-- Eyes -->
-                <ellipse cx="50" cy="40" rx="7" ry="8" fill="rgba(255,182,193,0.08)"/>
-                <ellipse cx="70" cy="40" rx="7" ry="8" fill="rgba(255,182,193,0.08)"/>
-                <circle cx="52" cy="39" r="5" fill="#ffb6c1"/>
-                <circle cx="68" cy="39" r="5" fill="#ffb6c1"/>
-                <circle cx="53.5" cy="37.5" r="2.2" fill="#fff"/>
-                <circle cx="69.5" cy="37.5" r="2.2" fill="#fff"/>
-                <!-- Eye sparkle -->
-                <circle cx="51" cy="41" r="0.8" fill="rgba(255,255,255,0.3)"/>
-                <circle cx="67" cy="41" r="0.8" fill="rgba(255,255,255,0.3)"/>
-                
+                <circle cx="50" cy="40" r="6" fill="#ffb6c1"/>
+                <circle cx="70" cy="40" r="6" fill="#ffb6c1"/>
+                <circle cx="52" cy="38" r="2.5" fill="#fff"/>
+                <circle cx="72" cy="38" r="2.5" fill="#fff"/>
                 <!-- Nose -->
-                <path d="M58 48 L62 48 L60 50.5 Z" fill="#f08080" opacity="0.8"/>
-                
+                <path d="M57 48 L63 48 L60 51 Z" fill="#f08080" opacity="0.8"/>
                 <!-- Mouth -->
-                <path d="M56 52.5 Q60 56.5 64 52.5" stroke="#f08080" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
-                
+                <path d="M55 52 Q60 57 65 52" stroke="#f08080" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.7"/>
                 <!-- Blush -->
-                <ellipse cx="42" cy="47" rx="6" ry="4" fill="rgba(255,150,150,0.15)"/>
-                <ellipse cx="78" cy="47" rx="6" ry="4" fill="rgba(255,150,150,0.15)"/>
-                
+                <ellipse cx="40" cy="47" rx="6" ry="4" fill="rgba(255,150,150,0.15)"/>
+                <ellipse cx="80" cy="47" rx="6" ry="4" fill="rgba(255,150,150,0.15)"/>
                 <!-- Whiskers -->
-                <line x1="30" y1="43" x2="42" y2="45" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                <line x1="30" y1="48" x2="42" y2="49" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                <line x1="30" y1="53" x2="42" y2="52" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                <line x1="90" y1="43" x2="78" y2="45" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                <line x1="90" y1="48" x2="78" y2="49" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                <line x1="90" y1="53" x2="78" y2="52" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
-                
+                <line x1="28" y1="43" x2="40" y2="45" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
+                <line x1="28" y1="48" x2="40" y2="49" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
+                <line x1="28" y1="53" x2="40" y2="52" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
+                <line x1="92" y1="43" x2="80" y2="45" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
+                <line x1="92" y1="48" x2="80" y2="49" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
+                <line x1="92" y1="53" x2="80" y2="52" stroke="rgba(255,182,193,0.15)" stroke-width="1.2"/>
                 <!-- Paws -->
-                <ellipse cx="42" cy="90" rx="8" ry="5" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.15)" stroke-width="1.5"/>
-                <ellipse cx="78" cy="90" rx="8" ry="5" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.15)" stroke-width="1.5"/>
-                
-                <!-- Paw pads -->
-                <circle cx="40" cy="91" r="1.5" fill="rgba(255,182,193,0.15)"/>
-                <circle cx="44" cy="91" r="1.5" fill="rgba(255,182,193,0.15)"/>
-                <circle cx="76" cy="91" r="1.5" fill="rgba(255,182,193,0.15)"/>
-                <circle cx="80" cy="91" r="1.5" fill="rgba(255,182,193,0.15)"/>
-                
+                <ellipse cx="42" cy="88" rx="8" ry="5" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.15)" stroke-width="1.5"/>
+                <ellipse cx="78" cy="88" rx="8" ry="5" fill="rgba(255,182,193,0.08)" stroke="rgba(255,182,193,0.15)" stroke-width="1.5"/>
                 <!-- Tail -->
-                <path d="M88 78 Q102 72 98 58 Q96 52 100 48" stroke="rgba(255,182,193,0.2)" stroke-width="3" fill="none" stroke-linecap="round"/>
-                
-                <!-- Little heart on chest -->
-                <path d="M56 68 Q56 64 58 66 Q60 64 60 68 Q58 71 56 68Z" fill="rgba(240,128,128,0.15)"/>
-                <path d="M62 68 Q62 64 64 66 Q66 64 66 68 Q64 71 62 68Z" fill="rgba(240,128,128,0.15)"/>
+                <path d="M88 72 Q102 66 98 52 Q96 46 100 42" stroke="rgba(255,182,193,0.2)" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- Heart on chest -->
+                <path d="M57 66 Q57 62 59 64 Q61 62 61 66 Q59 69 57 66Z" fill="rgba(240,128,128,0.15)"/>
+                <path d="M63 66 Q63 62 65 64 Q67 62 67 66 Q65 69 63 66Z" fill="rgba(240,128,128,0.15)"/>
             </svg>
             <span class="buddy-sparkle">✦</span>
             <span class="buddy-sparkle">✧</span>
@@ -819,7 +796,7 @@
         }
 
         // ============================================================
-        // VOLUME SLIDER
+        // VOLUME SLIDER - FIXED
         // ============================================================
         const volumeSlider = document.getElementById('volume-slider');
         const volumeDisplay = document.getElementById('volume-display');

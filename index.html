@@ -18,8 +18,9 @@
         .cursor-sparkle-ring { position: fixed; pointer-events: none; z-index: 999998; width: 30px; height: 30px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; transform: translate(-50%, -50%); animation: cursorRingPulse 2s ease-in-out infinite; box-shadow: 0 0 10px rgba(255,255,255,0.4), inset 0 0 10px rgba(255,255,255,0.2); }
         @keyframes cursorRingPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.3; } }
         
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent), radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent); animation: sparkleTwinkle 2s ease-in-out infinite; }
-        @keyframes sparkleTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
+        /* Enhanced background sparkles */
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent), radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 5% 15%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 95% 85%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 55% 45%, rgba(255,255,255,0.2), transparent), radial-gradient(2px 2px at 25% 65%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 65% 15%, rgba(255,255,255,0.2), transparent), radial-gradient(2px 2px at 85% 55%, rgba(255,255,255,0.3), transparent); animation: sparkleTwinkle 3s ease-in-out infinite; }
+        @keyframes sparkleTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
         
         .sparkle-particle { position: fixed; pointer-events: none; z-index: 99999; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 70%); animation: particleFade 0.6s ease-out forwards; box-shadow: 0 0 6px 2px rgba(255,255,255,0.8), 0 0 12px 4px rgba(255,255,255,0.4); }
         @keyframes particleFade { 0% { transform: scale(0); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.8; } 100% { transform: scale(0); opacity: 0; } }
@@ -56,18 +57,158 @@
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(240,128,128,0.3); object-fit: cover; }
+        
+        /* ============================================================
+           LOGO WITH IMAGE - logostar.png
+           ============================================================ */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            padding: 4px 12px 4px 4px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,182,193,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,182,193,0.03), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .logo-container:hover::before {
+            opacity: 1;
+        }
+        .logo-container:hover {
+            border-color: rgba(255,182,193,0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(240,128,128,0.08);
+        }
+        .logo-img-wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255,182,193,0.12), rgba(200,180,255,0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,182,193,0.15);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .logo-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+            filter: drop-shadow(0 2px 8px rgba(240,128,128,0.15));
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(3deg); }
+        }
+        .logo-img-wrapper .logo-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,182,193,0.1), transparent 70%);
+            pointer-events: none;
+        }
+        .logo-text {
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+        }
+        .logo-text .echo { color: #7ec8e3; }
+        .logo-text .dream { color: #f5a0b0; }
+        .logo-text .studio { color: #c9a0e8; }
+        .logo-text .dot { color: var(--accent); opacity: 0.6; margin: 0 2px; }
+        .logo-sparkle {
+            position: absolute;
+            font-size: 0.5rem;
+            color: var(--accent);
+            opacity: 0;
+            animation: logoSparkle 3s ease-in-out infinite;
+        }
+        .logo-sparkle:nth-child(1) { top: -2px; right: -2px; animation-delay: 0s; }
+        .logo-sparkle:nth-child(2) { bottom: -2px; left: -2px; animation-delay: 1.5s; }
+        @keyframes logoSparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.2) rotate(30deg); }
+        }
+        
+        /* ============================================================
+           CUTER NAV LINKS
+           ============================================================ */
         .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
-        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.3s ease; cursor: none; }
-        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(240,128,128,0.1); box-shadow: 0 0 10px rgba(240,128,128,0.2); }
+        .nav-links a { 
+            color: var(--text2); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+            font-size: 0.85rem; 
+            transition: all 0.3s ease; 
+            cursor: none;
+            position: relative;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .nav-links a::before {
+            content: '✧ ';
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-links a::after {
+            content: ' ✧';
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-links a:hover::before,
+        .nav-links a:hover::after,
+        .nav-links a.current-page::before,
+        .nav-links a.current-page::after {
+            opacity: 0.4;
+        }
+        .nav-links a:hover, 
+        .nav-links a.current-page { 
+            color: #fff; 
+            background: linear-gradient(135deg, rgba(255,182,193,0.15), rgba(200,180,255,0.15));
+            box-shadow: 0 0 25px rgba(240,128,128,0.15);
+            border: 1px solid rgba(255,182,193,0.15);
+            transform: translateY(-1px);
+        }
+        .nav-links a.current-page {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255,182,193,0.2), rgba(200,180,255,0.2));
+            border-color: rgba(255,182,193,0.25);
+            box-shadow: 0 0 30px rgba(240,128,128,0.2);
+        }
         
         .hero-section { text-align: center; margin: 40px auto; padding: 0 20px; max-width: 800px; }
         .hero-logo { max-width: 350px; width: 100%; height: auto; margin: 20px auto; filter: drop-shadow(0 5px 15px rgba(240,128,128,0.3)); }
         .hero-title { font-size: 2.5rem; font-weight: 700; margin: 10px 0; text-shadow: 0 0 20px rgba(240,128,128,0.5); }
+        .hero-title::after { content: ' ✦'; color: var(--accent); opacity: 0.6; }
         .hero-subtitle { color: var(--text2); font-size: 1.1rem; }
+        .hero-subtitle::before { content: '✧ '; color: var(--accent); opacity: 0.4; }
+        .hero-subtitle::after { content: ' ✧'; color: var(--accent); opacity: 0.4; }
+        
         .section-header { text-align: center; margin: 40px auto 20px; max-width: 800px; }
         .section-title { font-size: 1.8rem; font-weight: 600; text-shadow: 0 0 10px rgba(240,128,128,0.4); }
+        .section-title::after { content: ' ✧'; color: var(--accent); opacity: 0.5; }
         .section-divider { width: 60px; height: 3px; background: var(--accent); margin: 10px auto; border-radius: 2px; box-shadow: 0 0 10px rgba(240,128,128,0.5); }
         
         .featured-section, .projects-section { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
@@ -76,6 +217,46 @@
         .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
         .featured-card, .project-card { background: var(--bg2); border-radius: 8px; overflow: hidden; border: 1px solid rgba(240,128,128,0.2); transition: all 0.3s ease; cursor: none; display: flex; flex-direction: column; }
         .featured-card:hover, .project-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(240,128,128,0.3); }
+        
+        /* ============================================================
+           DYNAMIC CARD CLICK EFFECTS
+           ============================================================ */
+        .featured-card.clicked, .project-card.clicked {
+            animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 40px rgba(240,128,128,0.3) !important;
+        }
+        @keyframes cardPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.05) rotate(-1deg); }
+            60% { transform: scale(0.98) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        .featured-card .card-click-ripple, .project-card .card-click-ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(240,128,128,0.15);
+            transform: scale(0);
+            animation: rippleEffect 0.8s ease-out forwards;
+            pointer-events: none;
+            z-index: 10;
+        }
+        @keyframes rippleEffect {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        .featured-card .card-sparkle-burst, .project-card .card-sparkle-burst {
+            position: absolute;
+            pointer-events: none;
+            z-index: 11;
+            font-size: 0.8rem;
+            animation: sparkleBurst 0.6s ease-out forwards;
+        }
+        @keyframes sparkleBurst {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+        }
+        
         .game-media { position: relative; width: 100%; height: 180px; overflow: hidden; background: #000; }
         .project-card .game-media { height: 160px; }
         .game-media video, .game-media img, .game-media iframe { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; pointer-events: none; }
@@ -91,19 +272,63 @@
         .game-link { padding: 4px 10px; background: rgba(240,128,128,0.2); color: #f08080; text-decoration: none; border-radius: 4px; font-size: 0.75rem; transition: all 0.3s ease; cursor: none; }
         .game-link:hover { background: rgba(240,128,128,0.4); color: #fff; transform: translateY(-2px); }
         
-        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
-        .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
-        .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; }
+        /* ============================================================
+           SCROLL TO TOP BUTTON
+           ============================================================ */
+        .scroll-top {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(240,128,128,0.12);
+            border: 1px solid rgba(240,128,128,0.25);
+            color: var(--text);
+            font-size: 1.1rem;
+            cursor: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(240,128,128,0.08);
+            z-index: 9999;
+        }
+        .scroll-top.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .scroll-top:hover { background: rgba(240,128,128,0.3); transform: scale(1.1) translateY(-3px); box-shadow: 0 0 30px rgba(240,128,128,0.3); border-color: var(--accent); }
+        
+        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; position: relative; overflow: hidden; }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.15), transparent), radial-gradient(1.5px 1.5px at 30% 60%, rgba(255,255,255,0.1), transparent), radial-gradient(1px 1px at 50% 30%, rgba(255,255,255,0.12), transparent), radial-gradient(2px 2px at 70% 70%, rgba(255,255,255,0.08), transparent), radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.1), transparent);
+            animation: footerSparkle 4s ease-in-out infinite;
+        }
+        @keyframes footerSparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; position: relative; z-index: 1; }
+        .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; position: relative; }
         .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
         
-        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; }
+        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; position: relative; z-index: 1; }
         .music-credits a { color: #d4a5b5; text-decoration: none; font-style: italic; transition: all 0.3s ease; cursor: none; }
         .music-credits a:hover { color: #ffb6c1; text-shadow: 0 0 10px rgba(255,182,193,0.5); letter-spacing: 0.5px; }
         .music-credits span { color: #666; font-style: normal; }
         
-        .Oo { color: #808080; font-size: 0.8rem; }
+        .Oo { color: #808080; font-size: 0.8rem; position: relative; z-index: 1; }
         .Oo a { color: #808080; text-decoration: none; }
         .Oo a:hover { color: var(--text); }
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
@@ -123,12 +348,19 @@
             .nav-links ul { flex-direction: column; }
             .nav-links li { width: 100%; list-style: none; }
             .nav-links a { display: block; padding: 12px 15px; }
+            .scroll-top { bottom: 110px; right: 15px; width: 40px; height: 40px; font-size: 0.9rem; }
+            .logo-img-wrapper { width: 34px; height: 34px; }
+            .logo-img-wrapper img { padding: 3px; }
+            .logo-text { font-size: 0.85rem; }
         }
     </style>
 </head>
 <body>
     <!-- Hidden YouTube Player for BGM -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
+    
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
     
     <!-- Sound Controls -->
     <div class="sound-controls">
@@ -150,7 +382,17 @@
     
     <header>
         <div class="HE">
-            <a href="index.html" class="logo-container"><img src="cat.png" alt="EchoDream" class="logo-img"><span>EchoDream.Studio</span></a>
+            <a href="index.html" class="logo-container">
+                <div class="logo-img-wrapper">
+                    <img src="logostar.png" alt="EchoDream" onerror="this.style.display='none';this.parentElement.innerHTML='<span class=logo-icon>✦</span>'">
+                    <div class="logo-glow"></div>
+                    <span class="logo-sparkle">✧</span>
+                    <span class="logo-sparkle">✧</span>
+                </div>
+                <span class="logo-text">
+                    <span class="echo">Echo</span><span class="dream">Dream</span><span class="dot">.</span><span class="studio">Studio</span>
+                </span>
+            </a>
             <nav class="nav-links" id="main-nav">
                 <ul>
                     <li><a href="index.html" class="current-page">Home</a></li>
@@ -165,7 +407,7 @@
     <div class="hero-section">
         <img src="logo2.png" alt="EchoDream.Studio" class="hero-logo">
         <h1 class="hero-title">EchoDream.Studio</h1>
-        <p class="hero-subtitle">Independent Game Developer & Artist</p>
+        <p class="hero-subtitle">Independent Game Developer &amp; Artist</p>
     </div>
 
     <main>
@@ -200,7 +442,7 @@
             <span>♫</span>
         </div>
         
-        <div class="Oo"><p>Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a></p><p>© 2025 EchoDream.Studio</p></div>
+        <div class="Oo"><p>Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a></p><p>© 2025 EchoDream.Studio ✿</p></div>
     </footer>
 
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -217,9 +459,13 @@
         let playlistVideos = [];
         let currentVideoIndex = 0;
         let clickAudioContext = null;
+        let userVolume = 70;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 11;
+
+        const savedVolume = localStorage.getItem('echodream_volume');
+        if (savedVolume !== null) userVolume = parseInt(savedVolume);
 
         const savedSoundState = localStorage.getItem('echodream_sound_enabled');
         if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
@@ -248,7 +494,7 @@
                     modestbranding: 1,
                     rel: 0,
                     showinfo: 0,
-                    volume: BGM_VOLUME
+                    volume: Math.round(userVolume / 100 * 100)
                 },
                 events: {
                     onReady: onPlayerReady,
@@ -262,7 +508,8 @@
             applySoundState();
             applyShuffleState();
             
-            event.target.setVolume(BGM_VOLUME);
+            const vol = Math.round(userVolume / 100 * 100);
+            event.target.setVolume(vol);
             
             try {
                 playlistVideos = event.target.getPlaylist();
@@ -421,7 +668,7 @@
             if (youtubePlayer) {
                 if (bgmEnabled && !document.hidden) {
                     youtubePlayer.unMute();
-                    youtubePlayer.setVolume(BGM_VOLUME);
+                    youtubePlayer.setVolume(Math.round(userVolume / 100 * 100));
                     youtubePlayer.playVideo();
                 } else {
                     youtubePlayer.pauseVideo();
@@ -464,7 +711,7 @@
                     if (bgmEnabled) {
                         setTimeout(() => {
                             youtubePlayer.unMute();
-                            youtubePlayer.setVolume(BGM_VOLUME);
+                            youtubePlayer.setVolume(Math.round(userVolume / 100 * 100));
                             youtubePlayer.playVideo();
                         }, 500);
                     } else {
@@ -520,39 +767,271 @@
         }
 
         // ============================================================
-        // CUSTOM CURSOR
+        // CUSTOM CURSOR - ENHANCED SPARKLE TRAIL
         // ============================================================
         const customCursor = document.getElementById('custom-cursor');
         const cursorRing = document.getElementById('cursor-ring');
-        document.addEventListener('mousemove', function(e) {
-            customCursor.style.left = e.clientX + 'px';
-            customCursor.style.top = e.clientY + 'px';
-            cursorRing.style.left = e.clientX + 'px';
-            cursorRing.style.top = e.clientY + 'px';
-        });
+        
+        class SparkleTrail {
+            constructor() {
+                this.particles = [];
+                this.maxParticles = 35;
+                this.trailInterval = 15;
+                this.lastTrailTime = 0;
+                this.mouseX = 0;
+                this.mouseY = 0;
+                this.isActive = false;
+            }
+
+            init() {
+                document.addEventListener('mousemove', (e) => {
+                    this.mouseX = e.clientX;
+                    this.mouseY = e.clientY;
+                    this.isActive = true;
+                    customCursor.style.left = e.clientX + 'px';
+                    customCursor.style.top = e.clientY + 'px';
+                    cursorRing.style.left = e.clientX + 'px';
+                    cursorRing.style.top = e.clientY + 'px';
+                    
+                    const now = performance.now();
+                    if (now - this.lastTrailTime > this.trailInterval) {
+                        this.lastTrailTime = now;
+                        this.createTrailParticle(e.clientX, e.clientY);
+                        if (Math.random() > 0.6) {
+                            this.createTrailParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+                        }
+                    }
+                });
+
+                document.addEventListener('mouseleave', () => {
+                    this.isActive = false;
+                });
+
+                document.addEventListener('click', (e) => {
+                    for (let i = 0; i < 15; i++) {
+                        this.createBurstParticle(e.clientX, e.clientY);
+                    }
+                });
+            }
+
+            createTrailParticle(x, y) {
+                const el = document.createElement('div');
+                const size = 1.5 + Math.random() * 4;
+                const colors = ['#ffffff', '#ffe8f0', '#ffd1dc', '#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3'];
+                const colorIndex = Math.random() < 0.4 ? 0 : Math.floor(Math.random() * colors.length);
+                const color = colors[colorIndex];
+                
+                el.style.cssText = `
+                    position: fixed;
+                    pointer-events: none;
+                    z-index: 99995;
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: ${color};
+                    left: ${x - size/2}px;
+                    top: ${y - size/2}px;
+                    opacity: 1;
+                    box-shadow: 0 0 ${size * 4}px ${color}50, 0 0 ${size * 8}px ${color}25;
+                    transition: none;
+                    will-change: transform, opacity;
+                `;
+                
+                document.body.appendChild(el);
+                
+                const dx = (Math.random() - 0.5) * 3;
+                const dy = (Math.random() - 0.5) * 3 - 1.5;
+                const startTime = performance.now();
+                const duration = 800 + Math.random() * 500;
+                const startScale = 0.2 + Math.random() * 0.3;
+                
+                const animate = (time) => {
+                    const progress = (time - startTime) / duration;
+                    if (progress >= 1) {
+                        if (el.parentNode) el.remove();
+                        return;
+                    }
+                    
+                    const ease = 1 - Math.pow(1 - progress, 2);
+                    const currentX = x + dx * progress * 50;
+                    const currentY = y + dy * progress * 50 - progress * 35;
+                    const scale = startScale * (1 + progress * 0.9);
+                    const opacity = 1 - Math.pow(progress, 1.4);
+                    
+                    el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
+                    el.style.opacity = Math.max(0, opacity);
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                requestAnimationFrame(animate);
+            }
+
+            createBurstParticle(x, y) {
+                const el = document.createElement('div');
+                const size = 2 + Math.random() * 6;
+                const colors = ['#ffffff', '#ffe8f0', '#ffd1dc', '#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffc0cb'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 2 + Math.random() * 6;
+                
+                el.style.cssText = `
+                    position: fixed;
+                    pointer-events: none;
+                    z-index: 99995;
+                    width: ${size}px;
+                    height: ${size}px;
+                    border-radius: 50%;
+                    background: ${color};
+                    left: ${x - size/2}px;
+                    top: ${y - size/2}px;
+                    opacity: 1;
+                    box-shadow: 0 0 ${size * 5}px ${color}60, 0 0 ${size * 10}px ${color}30;
+                    transition: none;
+                    will-change: transform, opacity;
+                `;
+                
+                document.body.appendChild(el);
+                
+                const dx = Math.cos(angle) * speed;
+                const dy = Math.sin(angle) * speed;
+                const startTime = performance.now();
+                const duration = 900 + Math.random() * 500;
+                
+                const animate = (time) => {
+                    const progress = (time - startTime) / duration;
+                    if (progress >= 1) {
+                        if (el.parentNode) el.remove();
+                        return;
+                    }
+                    
+                    const ease = 1 - Math.pow(1 - progress, 1.5);
+                    const currentX = x + dx * progress * 70;
+                    const currentY = y + dy * progress * 70 - progress * 20;
+                    const scale = 0.3 + progress * 0.8;
+                    const opacity = 1 - Math.pow(progress, 1.2);
+                    
+                    el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
+                    el.style.opacity = Math.max(0, opacity);
+                    
+                    requestAnimationFrame(animate);
+                };
+                
+                requestAnimationFrame(animate);
+            }
+        }
+
+        const sparkleTrail = new SparkleTrail();
+        sparkleTrail.init();
 
         // ============================================================
-        // SPARKLE SYSTEM
+        // SPARKLE SYSTEM (background) - Enhanced with more sparkles
         // ============================================================
         const SparkleSystem = {
-            enabled: true, lastSparkleTime: 0, sparkleInterval: 50, lastMousePosition: null,
+            enabled: true, lastSparkleTime: 0, sparkleInterval: 60, lastMousePosition: null,
             init() {
                 document.addEventListener('mousemove', (e) => this.onMouseMove(e));
                 document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
-                setInterval(() => { if (this.enabled && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 200);
+                setInterval(() => { if (this.enabled && this.lastMousePosition) { 
+                    this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y);
+                    if (Math.random() > 0.5) {
+                        this.createSparkle(this.lastMousePosition.x + (Math.random()-0.5)*80, this.lastMousePosition.y + (Math.random()-0.5)*80);
+                    }
+                } }, 200);
+                setInterval(() => {
+                    if (Math.random() > 0.3) {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        this.createSparkle(x, y);
+                    }
+                }, 800);
             },
-            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 2 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
-            createSparkle(x, y) { const type = Math.random(); if (type < 0.35) this.createParticle(x, y); else if (type < 0.65) this.createStar(x, y); else this.createDiamond(x, y); },
-            createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 40; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 600); },
-            createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 4; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 35; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 700); },
-            createDiamond(x, y) { const d = document.createElement('div'); d.className = 'sparkle-diamond'; const size = 3 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; d.style.left = (x + Math.cos(angle) * dist) + 'px'; d.style.top = (y + Math.sin(angle) * dist) + 'px'; d.style.width = size + 'px'; d.style.height = size + 'px'; document.body.appendChild(d); setTimeout(() => { if (d.parentNode) d.remove(); }, 500); }
+            onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 1 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
+            createSparkle(x, y) { 
+                const existing = document.querySelectorAll('.sparkle-particle, .sparkle-star, .sparkle-diamond');
+                if (existing.length > 50) return;
+                const type = Math.random(); 
+                if (type < 0.35) this.createParticle(x, y); 
+                else if (type < 0.65) this.createStar(x, y); 
+                else this.createDiamond(x, y); 
+            },
+            createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 500); },
+            createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 600); },
+            createDiamond(x, y) { const d = document.createElement('div'); d.className = 'sparkle-diamond'; const size = 3 + Math.random() * 2; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 25; d.style.left = (x + Math.cos(angle) * dist) + 'px'; d.style.top = (y + Math.sin(angle) * dist) + 'px'; d.style.width = size + 'px'; d.style.height = size + 'px'; document.body.appendChild(d); setTimeout(() => { if (d.parentNode) d.remove(); }, 400); }
         };
         SparkleSystem.init();
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
         // ============================================================
-        // GAME DATA - Updated with Realm Escape: Jungle Adventure
+        // SCROLL TO TOP
+        // ============================================================
+        const scrollTopBtn = document.getElementById('scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ============================================================
+        // DYNAMIC CARD CLICK EFFECTS
+        // ============================================================
+        document.querySelectorAll('.featured-card, .project-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                this.classList.remove('clicked');
+                void this.offsetWidth;
+                this.classList.add('clicked');
+                
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('div');
+                ripple.className = 'card-click-ripple';
+                const size = Math.max(rect.width, rect.height) * 0.6;
+                ripple.style.width = size + 'px';
+                ripple.style.height = size + 'px';
+                ripple.style.left = (x - size/2) + 'px';
+                ripple.style.top = (y - size/2) + 'px';
+                this.appendChild(ripple);
+                
+                const sparkleChars = ['✦', '✧', '✿', '✦', '✧'];
+                for (let i = 0; i < 6; i++) {
+                    const sparkle = document.createElement('span');
+                    sparkle.className = 'card-sparkle-burst';
+                    sparkle.textContent = sparkleChars[i % sparkleChars.length];
+                    const angle = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
+                    const dist = 40 + Math.random() * 30;
+                    const tx = Math.cos(angle) * dist;
+                    const ty = Math.sin(angle) * dist;
+                    sparkle.style.setProperty('--tx', tx + 'px');
+                    sparkle.style.setProperty('--ty', ty + 'px');
+                    sparkle.style.left = x + 'px';
+                    sparkle.style.top = y + 'px';
+                    sparkle.style.fontSize = (0.6 + Math.random() * 0.4) + 'rem';
+                    this.appendChild(sparkle);
+                    setTimeout(() => {
+                        if (sparkle.parentNode) sparkle.remove();
+                    }, 700);
+                }
+                
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                }, 800);
+                
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 600);
+            });
+        });
+
+        // ============================================================
+        // GAME DATA
         // ============================================================
         const gameData = {
             featured: [
@@ -629,6 +1108,56 @@
         document.getElementById('featured-grid').innerHTML = gameData.featured.map(g => createCard(g, true)).join('');
         document.getElementById('released-games').innerHTML = gameData.released.map(g => createCard(g)).join('');
         document.getElementById('upcoming-projects').innerHTML = gameData.upcoming.map(g => createCard(g)).join('');
+
+        // Re-attach click events to dynamically rendered cards
+        document.querySelectorAll('.featured-card, .project-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                this.classList.remove('clicked');
+                void this.offsetWidth;
+                this.classList.add('clicked');
+                
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const ripple = document.createElement('div');
+                ripple.className = 'card-click-ripple';
+                const size = Math.max(rect.width, rect.height) * 0.6;
+                ripple.style.width = size + 'px';
+                ripple.style.height = size + 'px';
+                ripple.style.left = (x - size/2) + 'px';
+                ripple.style.top = (y - size/2) + 'px';
+                this.appendChild(ripple);
+                
+                const sparkleChars = ['✦', '✧', '✿', '✦', '✧'];
+                for (let i = 0; i < 6; i++) {
+                    const sparkle = document.createElement('span');
+                    sparkle.className = 'card-sparkle-burst';
+                    sparkle.textContent = sparkleChars[i % sparkleChars.length];
+                    const angle = (i / 6) * Math.PI * 2 + Math.random() * 0.5;
+                    const dist = 40 + Math.random() * 30;
+                    const tx = Math.cos(angle) * dist;
+                    const ty = Math.sin(angle) * dist;
+                    sparkle.style.setProperty('--tx', tx + 'px');
+                    sparkle.style.setProperty('--ty', ty + 'px');
+                    sparkle.style.left = x + 'px';
+                    sparkle.style.top = y + 'px';
+                    sparkle.style.fontSize = (0.6 + Math.random() * 0.4) + 'rem';
+                    this.appendChild(sparkle);
+                    setTimeout(() => {
+                        if (sparkle.parentNode) sparkle.remove();
+                    }, 700);
+                }
+                
+                setTimeout(() => {
+                    if (ripple.parentNode) ripple.remove();
+                }, 800);
+                
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 600);
+            });
+        });
     </script>
 </body>
 </html>

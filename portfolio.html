@@ -51,7 +51,6 @@
             pointer-events: none;
             border: none;
             filter: brightness(0.3);
-            /* Seamless looping */
             animation: videoLoop 0.1s infinite;
         }
         @keyframes videoLoop {
@@ -61,8 +60,111 @@
         @keyframes glowPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
         
         .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 2rem; background: rgba(15,15,15,0.95); border-bottom: 1px solid rgba(240,128,128,0.2); position: sticky; top: 0; z-index: 1000; box-shadow: 0 0 20px rgba(240,128,128,0.1); }
-        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
-        .logo-img { width: 45px; height: 45px; border-radius: 8px; border: 2px solid var(--accent); box-shadow: 0 0 15px rgba(240,128,128,0.3); object-fit: cover; }
+        
+        /* ============================================================
+           CUTE AESTHETIC LOGO
+           ============================================================ */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text);
+            padding: 4px 10px 4px 4px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,182,193,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,182,193,0.03), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .logo-container:hover::before {
+            opacity: 1;
+        }
+        .logo-container:hover {
+            border-color: rgba(255,182,193,0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(240,128,128,0.08);
+        }
+        .logo-img-wrapper {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255,182,193,0.15), rgba(240,128,128,0.08));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,182,193,0.15);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .logo-img-wrapper .logo-icon {
+            font-size: 1.4rem;
+            filter: drop-shadow(0 2px 8px rgba(240,128,128,0.2));
+            animation: logoFloat 4s ease-in-out infinite;
+        }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(3deg); }
+        }
+        .logo-img-wrapper .logo-glow {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,182,193,0.1), transparent 70%);
+            pointer-events: none;
+        }
+        .logo-text {
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+        }
+        .logo-text .highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .logo-text .dot {
+            color: var(--accent);
+            opacity: 0.6;
+            margin: 0 2px;
+        }
+        .logo-sub {
+            font-size: 0.55rem;
+            color: var(--text2);
+            opacity: 0.5;
+            letter-spacing: 1px;
+            font-weight: 400;
+            display: block;
+            margin-top: -2px;
+        }
+        .logo-sparkle {
+            position: absolute;
+            font-size: 0.5rem;
+            color: var(--accent);
+            opacity: 0;
+            animation: logoSparkle 3s ease-in-out infinite;
+        }
+        .logo-sparkle:nth-child(1) { top: -2px; right: -2px; animation-delay: 0s; }
+        .logo-sparkle:nth-child(2) { bottom: -2px; left: -2px; animation-delay: 1.5s; }
+        @keyframes logoSparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.2) rotate(30deg); }
+        }
+        
         .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
         .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.3s ease; cursor: none; }
         .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(240,128,128,0.1); box-shadow: 0 0 10px rgba(240,128,128,0.2); }
@@ -228,9 +330,7 @@
         }
         .sound-toggle svg { width: 24px; height: 24px; fill: #fff; }
 
-        /* ============================================================
-           FIXED VOLUME SLIDER - Smaller & Smooth
-           ============================================================ */
+        /* Volume Slider */
         .volume-slider-container {
             width: 38px;
             height: 110px;
@@ -272,7 +372,6 @@
             margin-top: 2px;
             text-shadow: 0 0 20px rgba(240,128,128,0.2);
         }
-        /* FIXED: Proper smooth vertical slider */
         .volume-slider-vertical {
             -webkit-appearance: none;
             appearance: none;
@@ -325,91 +424,6 @@
             box-shadow: 0 0 20px rgba(240,128,128,0.4);
         }
 
-        /* ============================================================
-           CUTE CAT BUDDY - Free Widget Style
-           ============================================================ */
-        .buddy-container {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 9999;
-            pointer-events: none;
-            user-select: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .buddy {
-            font-size: 0;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: none;
-            pointer-events: auto;
-            line-height: 1;
-            width: 80px;
-            height: 80px;
-        }
-        .buddy svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-            filter: drop-shadow(0 8px 30px rgba(255,182,193,0.12));
-        }
-        .buddy:hover {
-            transform: scale(1.08) rotate(-3deg);
-        }
-        .buddy-speech {
-            position: absolute;
-            bottom: 82px;
-            left: 0;
-            background: rgba(15,15,18,0.92);
-            border: 1px solid rgba(255,182,193,0.15);
-            border-radius: 14px;
-            padding: 7px 14px;
-            font-size: 0.65rem;
-            color: var(--text2);
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateY(8px) scale(0.92);
-            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-        .buddy-speech::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 22px;
-            width: 8px;
-            height: 8px;
-            background: rgba(15,15,18,0.92);
-            border-right: 1px solid rgba(255,182,193,0.15);
-            border-bottom: 1px solid rgba(255,182,193,0.15);
-            transform: rotate(45deg);
-        }
-        .buddy-speech.show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        .buddy-sparkle {
-            position: absolute;
-            font-size: 0.5rem;
-            opacity: 0;
-            pointer-events: none;
-            animation: sparklePop 3s ease-in-out infinite;
-            color: #ffb6c1;
-            text-shadow: 0 0 10px rgba(255,182,193,0.3);
-        }
-        .buddy-sparkle:nth-child(2) { top: -4px; right: -2px; animation-delay: 0.2s; }
-        .buddy-sparkle:nth-child(3) { bottom: 10px; left: -6px; animation-delay: 0.6s; }
-        .buddy-sparkle:nth-child(4) { top: 20px; left: -8px; animation-delay: 1.0s; }
-        .buddy-sparkle:nth-child(5) { bottom: 24px; right: -4px; animation-delay: 1.4s; }
-        @keyframes sparklePop {
-            0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
-            50% { opacity: 0.7; transform: scale(1.1) rotate(25deg); }
-        }
-
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
         .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; position: relative; }
@@ -446,10 +460,10 @@
             .volume-slider-container { width: 32px; height: 90px; padding: 10px 6px; bottom: 56px; }
             .volume-slider-vertical { margin: 0 -14px; min-height: 40px; }
             .scroll-top { width: 40px; height: 40px; font-size: 0.9rem; }
-            .buddy-container { bottom: 20px; left: 20px; }
-            .buddy { width: 60px; height: 60px; }
-            .buddy-speech { font-size: 0.55rem; left: -5px; bottom: 62px; padding: 5px 10px; }
-            .buddy-speech::after { left: 18px; }
+            .logo-img-wrapper { width: 34px; height: 34px; }
+            .logo-img-wrapper .logo-icon { font-size: 1.1rem; }
+            .logo-text { font-size: 0.85rem; }
+            .logo-sub { font-size: 0.45rem; }
         }
     </style>
 </head>
@@ -463,59 +477,6 @@
     
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
-    
-    <!-- CUTE CAT BUDDY - Free Widget Style -->
-    <div class="buddy-container" id="buddy-container">
-        <div class="buddy" id="buddy">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <!-- Body -->
-                <ellipse cx="60" cy="78" rx="30" ry="24" fill="rgba(255,200,210,0.15)" stroke="rgba(255,182,193,0.25)" stroke-width="2"/>
-                <!-- Head -->
-                <circle cx="60" cy="44" r="26" fill="rgba(255,200,210,0.2)" stroke="rgba(255,182,193,0.25)" stroke-width="2"/>
-                <!-- Ears -->
-                <path d="M38 26 L30 10 L46 22 Z" fill="rgba(255,182,193,0.25)" stroke="rgba(255,182,193,0.3)" stroke-width="1.5"/>
-                <path d="M82 26 L90 10 L74 22 Z" fill="rgba(255,182,193,0.25)" stroke="rgba(255,182,193,0.3)" stroke-width="1.5"/>
-                <!-- Inner ears -->
-                <path d="M39 25 L33 14 L45 22 Z" fill="rgba(255,150,150,0.15)"/>
-                <path d="M81 25 L87 14 L75 22 Z" fill="rgba(255,150,150,0.15)"/>
-                <!-- Big cute eyes -->
-                <circle cx="48" cy="42" r="7" fill="#2a1a1a" opacity="0.7"/>
-                <circle cx="72" cy="42" r="7" fill="#2a1a1a" opacity="0.7"/>
-                <circle cx="50" cy="40" r="3.5" fill="#fff"/>
-                <circle cx="74" cy="40" r="3.5" fill="#fff"/>
-                <circle cx="46" cy="44" r="1.5" fill="#fff" opacity="0.5"/>
-                <circle cx="70" cy="44" r="1.5" fill="#fff" opacity="0.5"/>
-                <!-- Nose -->
-                <path d="M57 50 L63 50 L60 53 Z" fill="#f08080" opacity="0.8"/>
-                <!-- Mouth -->
-                <path d="M55 54 Q60 59 65 54" stroke="#f08080" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.7"/>
-                <!-- Blush -->
-                <ellipse cx="40" cy="50" rx="6" ry="4" fill="rgba(255,150,150,0.2)"/>
-                <ellipse cx="80" cy="50" rx="6" ry="4" fill="rgba(255,150,150,0.2)"/>
-                <!-- Whiskers -->
-                <line x1="28" y1="46" x2="40" y2="48" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <line x1="28" y1="51" x2="40" y2="52" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <line x1="28" y1="56" x2="40" y2="55" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <line x1="92" y1="46" x2="80" y2="48" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <line x1="92" y1="51" x2="80" y2="52" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <line x1="92" y1="56" x2="80" y2="55" stroke="rgba(255,182,193,0.2)" stroke-width="1.2"/>
-                <!-- Paws -->
-                <ellipse cx="42" cy="92" rx="8" ry="5" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.2)" stroke-width="1.5"/>
-                <ellipse cx="78" cy="92" rx="8" ry="5" fill="rgba(255,182,193,0.15)" stroke="rgba(255,182,193,0.2)" stroke-width="1.5"/>
-                <!-- Tail -->
-                <path d="M88 75 Q104 68 100 52 Q98 46 102 42" stroke="rgba(255,182,193,0.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
-                <!-- Heart on chest -->
-                <path d="M56 70 Q56 65 58 68 Q60 65 60 70 Q58 73 56 70Z" fill="rgba(240,128,128,0.2)"/>
-                <path d="M64 70 Q64 65 66 68 Q68 65 68 70 Q66 73 64 70Z" fill="rgba(240,128,128,0.2)"/>
-            </svg>
-            <span class="buddy-sparkle">✦</span>
-            <span class="buddy-sparkle">✧</span>
-            <span class="buddy-sparkle">✿</span>
-            <span class="buddy-sparkle">✦</span>
-            <span class="buddy-sparkle">✧</span>
-        </div>
-        <div class="buddy-speech" id="buddy-speech">✦ meow! ✦</div>
-    </div>
     
     <!-- Sound Controls - Bottom Right -->
     <div class="sound-controls">
@@ -549,7 +510,18 @@
     
     <header>
         <div class="HE">
-            <a href="index.html" class="logo-container"><img src="cat.png" alt="EchoDream" class="logo-img"><span>EchoDream.Studio</span></a>
+            <a href="index.html" class="logo-container">
+                <div class="logo-img-wrapper">
+                    <span class="logo-icon">✦</span>
+                    <div class="logo-glow"></div>
+                    <span class="logo-sparkle">✧</span>
+                    <span class="logo-sparkle">✧</span>
+                </div>
+                <div>
+                    <span class="logo-text">Echo<span class="highlight">Dream</span><span class="dot">.</span>Studio</span>
+                    <span class="logo-sub">✦ game dev ✦</span>
+                </div>
+            </a>
             <nav class="nav-links" id="main-nav">
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -803,7 +775,7 @@
         }
 
         // ============================================================
-        // VOLUME SLIDER - FIXED
+        // VOLUME SLIDER
         // ============================================================
         const volumeSlider = document.getElementById('volume-slider');
         const volumeDisplay = document.getElementById('volume-display');
@@ -999,44 +971,6 @@
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // ============================================================
-        // CUTE BUDDY - Cat with speech
-        // ============================================================
-        const buddy = document.getElementById('buddy');
-        const buddySpeech = document.getElementById('buddy-speech');
-        const buddyMessages = [
-            '✦ meow! ✦',
-            '✿ purr~ ✿',
-            '✦ i believe in you! ✦',
-            '✧ stay creative! ✧',
-            '✦ make something awesome! ✦',
-            '✿ dream big! ✿',
-            '✦ happy coding! ✦',
-            '✧ you\'re amazing! ✧',
-            '✦ nyan~ ✦',
-            '✿ keep going! ✿'
-        ];
-        let speechTimeout;
-
-        buddy.addEventListener('click', function() {
-            const msg = buddyMessages[Math.floor(Math.random() * buddyMessages.length)];
-            buddySpeech.textContent = msg;
-            buddySpeech.classList.add('show');
-            clearTimeout(speechTimeout);
-            speechTimeout = setTimeout(() => {
-                buddySpeech.classList.remove('show');
-            }, 2500);
-        });
-
-        setTimeout(() => {
-            const msg = buddyMessages[Math.floor(Math.random() * buddyMessages.length)];
-            buddySpeech.textContent = msg;
-            buddySpeech.classList.add('show');
-            setTimeout(() => {
-                buddySpeech.classList.remove('show');
-            }, 3000);
-        }, 3000);
 
         // ============================================================
         // SKILLS DATA

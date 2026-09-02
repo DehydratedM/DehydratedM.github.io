@@ -220,15 +220,83 @@
         .contact-info::before, .contact-form::before { content: '✿'; position: absolute; top: -8px; right: 15px; font-size: 2rem; opacity: 0.05; color: var(--accent); }
         .contact-info h2, .contact-form h2 { font-size: 1.3rem; margin-bottom: 20px; text-shadow: 0 0 10px rgba(240,128,128,0.4); }
         .contact-info h2::after, .contact-form h2::after { content: ' ✿'; color: var(--accent); opacity: 0.5; }
-        .contact-method { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s ease; cursor: none; }
+        
+        /* ============================================================
+           CUTER CONTACT METHODS - No emojis, just pretty text
+           ============================================================ */
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s ease;
+            cursor: none;
+            position: relative;
+        }
         .contact-method:hover { padding-left: 10px; color: var(--accent); }
         .contact-method:last-child { border-bottom: none; }
-        .contact-icon { width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-        .contact-label { color: #808080; font-size: 0.75rem; text-transform: uppercase; }
-        .contact-value { font-weight: 500; }
+        
+        .contact-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,182,193,0.08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: var(--accent);
+            border: 1px solid rgba(255,182,193,0.1);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .contact-method:hover .contact-icon {
+            background: rgba(255,182,193,0.15);
+            border-color: rgba(255,182,193,0.25);
+            transform: scale(1.05);
+        }
+        .contact-icon-text {
+            font-size: 0.7rem;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+        }
+        
+        .contact-label { 
+            color: #808080; 
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+        .contact-value { 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        .contact-method:hover .contact-value {
+            color: var(--accent);
+        }
+        
+        .contact-method .method-sparkle {
+            position: absolute;
+            right: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 0.6rem;
+            color: var(--accent);
+        }
+        .contact-method:hover .method-sparkle {
+            opacity: 0.5;
+            transform: translateX(-5px);
+        }
         
         .form-group { margin-bottom: 15px; }
         .form-label { display: block; color: var(--text2); font-size: 0.85rem; margin-bottom: 5px; }
+        .form-label::after { content: ' ✧'; opacity: 0.3; color: var(--accent); }
         .form-input, .form-textarea { width: 100%; padding: 10px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 0.9rem; transition: all 0.3s ease; cursor: none; }
         .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 10px rgba(240,128,128,0.3); }
         .form-textarea { min-height: 120px; resize: vertical; }
@@ -494,6 +562,7 @@
             .volume-slider-container { width: 32px; height: 90px; padding: 10px 6px; bottom: 56px; }
             .volume-slider-vertical { margin: 0 -14px; min-height: 40px; }
             .floating-deco { display: none; }
+            .contact-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -508,7 +577,7 @@
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- Sound Controls - Bottom Right (Matches PORTFOLIO) -->
+    <!-- Sound Controls - Bottom Right -->
     <div class="sound-controls">
         <!-- Scroll to Top Button - ABOVE sound controls -->
         <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
@@ -575,16 +644,28 @@
                 <div class="contact-info">
                     <h2>Contact Information</h2>
                     <a href="mailto:echodream.contact@gmail.com" class="contact-method">
-                        <div class="contact-icon">✉️</div>
-                        <div><div class="contact-label">Email</div><div class="contact-value">echodream.contact@gmail.com</div></div>
+                        <div class="contact-icon"><span class="contact-icon-text">✉</span></div>
+                        <div>
+                            <div class="contact-label">Email</div>
+                            <div class="contact-value">echodream.contact@gmail.com</div>
+                        </div>
+                        <span class="method-sparkle">✦</span>
                     </a>
                     <a href="https://dimdesk.itch.io" target="_blank" class="contact-method">
-                        <div class="contact-icon">🎮</div>
-                        <div><div class="contact-label">Itch.io</div><div class="contact-value">Play our games</div></div>
+                        <div class="contact-icon"><span class="contact-icon-text">✦</span></div>
+                        <div>
+                            <div class="contact-label">Itch.io</div>
+                            <div class="contact-value">Play our games ✧</div>
+                        </div>
+                        <span class="method-sparkle">✦</span>
                     </a>
                     <a href="https://www.patreon.com/c/DIMDESK" target="_blank" class="contact-method">
-                        <div class="contact-icon">⭐</div>
-                        <div><div class="contact-label">Patreon</div><div class="contact-value">Support development</div></div>
+                        <div class="contact-icon"><span class="contact-icon-text">✧</span></div>
+                        <div>
+                            <div class="contact-label">Patreon</div>
+                            <div class="contact-value">Support development ✿</div>
+                        </div>
+                        <span class="method-sparkle">✦</span>
                     </a>
                 </div>
                 <div class="contact-form">
@@ -593,7 +674,7 @@
                         <div class="form-group"><label class="form-label">Name</label><input type="text" id="form-name" class="form-input" required></div>
                         <div class="form-group"><label class="form-label">Email</label><input type="email" id="form-email" class="form-input" required></div>
                         <div class="form-group"><label class="form-label">Message</label><textarea id="form-message" class="form-textarea" required></textarea></div>
-                        <button type="submit" class="form-submit">Send Message</button>
+                        <button type="submit" class="form-submit">Send Message ✧</button>
                         <div id="form-status" class="form-status"></div>
                     </form>
                 </div>
@@ -1248,7 +1329,7 @@
             .then(data => {
                 if (data.success) {
                     statusEl.className = 'form-status success';
-                    statusEl.textContent = 'Thank you! Your message has been sent successfully.';
+                    statusEl.textContent = 'Thank you! Your message has been sent successfully. ✧';
                     this.reset();
                 } else {
                     throw new Error('Failed to send');
@@ -1260,7 +1341,7 @@
                 window.location.href = mailtoLink;
                 
                 statusEl.className = 'form-status success';
-                statusEl.textContent = 'Opening email client... Your message is ready to send.';
+                statusEl.textContent = 'Opening email client... Your message is ready to send. ✿';
                 setTimeout(() => {
                     this.reset();
                 }, 3000);

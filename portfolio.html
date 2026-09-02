@@ -94,6 +94,17 @@
         .skill-progress { margin-top: 12px; height: 3px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; }
         .skill-progress-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); transition: width 1s ease; }
         
+        /* Timeline Section */
+        .timeline-section { max-width: 800px; margin: 30px auto; padding: 0 20px; }
+        .timeline-title { text-align: center; font-size: 1.5rem; margin-bottom: 25px; text-shadow: 0 0 10px rgba(240,128,128,0.4); }
+        .timeline { position: relative; padding-left: 30px; }
+        .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), rgba(240,128,128,0.2)); }
+        .timeline-item { position: relative; margin-bottom: 25px; padding-left: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -26px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 15px rgba(240,128,128,0.4); }
+        .timeline-item h3 { font-size: 1rem; margin-bottom: 2px; }
+        .timeline-item .timeline-date { color: var(--accent); font-size: 0.8rem; margin-bottom: 4px; }
+        .timeline-item p { color: var(--text2); font-size: 0.85rem; }
+        
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
         .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; }
@@ -128,6 +139,9 @@
             .nav-links a { display: block; padding: 12px 15px; }
             .skills-header { flex-direction: column; align-items: flex-start; }
             .portfolio-grid { grid-template-columns: 1fr; }
+            .timeline { padding-left: 15px; }
+            .timeline-item { padding-left: 10px; }
+            .timeline-item::before { left: -21px; width: 10px; height: 10px; }
         }
     </style>
 </head>
@@ -177,8 +191,9 @@
             <p>My focus is on crafting memorable experiences through creative game design and artistic expression, with a strong emphasis on player engagement and polished gameplay.</p>
             <div class="about-stats">
                 <div class="stat-item"><div class="stat-number">5+</div><div class="stat-label">Years Experience</div></div>
-                <div class="stat-item"><div class="stat-number">12</div><div class="stat-label">Skills Mastered</div></div>
+                <div class="stat-item"><div class="stat-number">18</div><div class="stat-label">Skills Mastered</div></div>
                 <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Games Released</div></div>
+                <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Projects Completed</div></div>
             </div>
         </div>
         
@@ -197,6 +212,33 @@
                 </div>
             </div>
             <div class="portfolio-grid" id="portfolio-skills"></div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section class="timeline-section">
+            <h2 class="timeline-title">Experience Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Realm Escape: Jungle Adventure</h3>
+                    <div class="timeline-date">2025 — Present</div>
+                    <p>Lead Developer & Artist — Released on Google Play, featuring puzzle-adventure gameplay with hand-drawn art.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Bloom Delivery Adventures</h3>
+                    <div class="timeline-date">2024 — 2025</div>
+                    <p>Game Developer & Designer — Created a cozy delivery game with vibrant 2D art and engaging mechanics.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Independent Game Development</h3>
+                    <div class="timeline-date">2020 — Present</div>
+                    <p>Full-stack game development — Unity, C#, 2D art, animation, sound design, and project management.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Digital Art & Illustration</h3>
+                    <div class="timeline-date">2018 — Present</div>
+                    <p>Character design, concept art, and illustrations for games and personal projects using Photoshop and traditional media.</p>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -569,7 +611,7 @@
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
 
         // ============================================================
-        // SKILLS DATA with Years of Experience
+        // SKILLS DATA with Years of Experience - EXPANDED
         // ============================================================
         const skills = [
             { name: "Unity Engine", desc: "2D game development with C#", tag: "Engine", years: 5, progress: 90 },
@@ -583,7 +625,13 @@
             { name: "After Effects", desc: "Motion graphics, visual effects", tag: "Video", years: 3, progress: 70 },
             { name: "Sound Design", desc: "Audio implementation, mixing", tag: "Audio", years: 4, progress: 72 },
             { name: "FL Studio", desc: "Music composition, sound design", tag: "Audio", years: 5, progress: 75 },
-            { name: "HTML & CSS", desc: "Web development for game promotion", tag: "Web", years: 4, progress: 78 }
+            { name: "HTML & CSS", desc: "Web development for game promotion", tag: "Web", years: 4, progress: 78 },
+            { name: "JavaScript", desc: "Interactive web features & games", tag: "Web", years: 3, progress: 70 },
+            { name: "Blender", desc: "3D modeling for game assets", tag: "Engine", years: 3, progress: 65 },
+            { name: "Visual Studio", desc: "IDE for C# development", tag: "Language", years: 5, progress: 85 },
+            { name: "Git & GitHub", desc: "Version control and collaboration", tag: "Design", years: 4, progress: 72 },
+            { name: "UI/UX Design", desc: "User interface and experience design", tag: "Design", years: 4, progress: 76 },
+            { name: "Pixel Art", desc: "Retro style pixel art creation", tag: "Art", years: 4, progress: 78 }
         ];
 
         function renderSkills(filter = 'all') {

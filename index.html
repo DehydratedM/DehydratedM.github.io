@@ -215,7 +215,7 @@
         .featured-grid, .projects-grid { display: grid; gap: 20px; margin-top: 20px; }
         .featured-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
         .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
-        .featured-card, .project-card { background: var(--bg2); border-radius: 8px; overflow: hidden; border: 1px solid rgba(240,128,128,0.2); transition: all 0.3s ease; cursor: none; display: flex; flex-direction: column; }
+        .featured-card, .project-card { background: var(--bg2); border-radius: 8px; overflow: hidden; border: 1px solid rgba(240,128,128,0.2); transition: all 0.3s ease; cursor: none; display: flex; flex-direction: column; position: relative; }
         .featured-card:hover, .project-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 30px rgba(240,128,128,0.3); }
         
         /* ============================================================
@@ -334,12 +334,146 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
-        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
+        /* ============================================================
+           SOUND CONTROLS - Bottom Right with Volume Slider
+           ============================================================ */
+        .sound-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        .sound-toggle, .shuffle-toggle { 
+            width: 55px; 
+            height: 55px; 
+            border-radius: 50%; 
+            background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); 
+            border: 2px solid #ffb6c1; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: none; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); 
+        }
+        .sound-toggle:hover, .shuffle-toggle:hover { 
+            background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); 
+            transform: scale(1.1); 
+        }
         .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
-        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(173,216,230,0.4); animation: shuffleGlow 2s ease-in-out infinite; }
-        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
+        .shuffle-toggle.active { 
+            background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); 
+            box-shadow: 0 0 25px rgba(255,182,193,0.6), 0 0 50px rgba(173,216,230,0.4); 
+            animation: shuffleGlow 2s ease-in-out infinite; 
+        }
+        @keyframes shuffleGlow { 
+            0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 
+            50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } 
+        }
+        
+        /* Volume Slider Container */
+        .volume-slider-container {
+            width: 38px;
+            height: 110px;
+            background: rgba(20,20,25,0.92);
+            border-radius: 19px;
+            padding: 14px 8px;
+            border: 1px solid rgba(255,182,193,0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            backdrop-filter: blur(16px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 62px;
+            right: 0;
+            transform: translateY(12px) scale(0.92);
+        }
+        .volume-slider-container.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+        .volume-slider-container .volume-label {
+            font-size: 0.45rem;
+            color: var(--text2);
+            text-align: center;
+            line-height: 1.2;
+            letter-spacing: 0.5px;
+        }
+        .volume-slider-container .volume-label span:last-child {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 2px;
+            text-shadow: 0 0 20px rgba(240,128,128,0.2);
+        }
+        .volume-slider-vertical {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 100%;
+            min-height: 50px;
+            background: transparent;
+            outline: none;
+            cursor: none;
+            writing-mode: bt-lr;
+            transform: rotate(270deg);
+            margin: 0 -18px;
+        }
+        .volume-slider-vertical::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, rgba(255,255,255,0.08), rgba(255,182,193,0.25), var(--accent));
+            border-radius: 4px;
+            box-shadow: inset 0 0 20px rgba(240,128,128,0.05);
+        }
+        .volume-slider-vertical::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fff, var(--accent));
+            cursor: none;
+            box-shadow: 0 0 20px rgba(240,128,128,0.4), 0 0 40px rgba(240,128,128,0.1);
+            transition: all 0.2s ease;
+            margin-top: -6px;
+            border: 2px solid rgba(255,255,255,0.25);
+        }
+        .volume-slider-vertical::-webkit-slider-thumb:hover {
+            transform: scale(1.12);
+            box-shadow: 0 0 30px rgba(240,128,128,0.6);
+        }
+        .volume-slider-vertical::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+        }
+        .volume-slider-vertical::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #fff, var(--accent));
+            cursor: none;
+            border: 2px solid rgba(255,255,255,0.25);
+            box-shadow: 0 0 20px rgba(240,128,128,0.4);
+        }
+        .sound-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: relative;
+        }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -352,6 +486,12 @@
             .logo-img-wrapper { width: 34px; height: 34px; }
             .logo-img-wrapper img { padding: 3px; }
             .logo-text { font-size: 0.85rem; }
+            .volume-slider-container { width: 32px; height: 90px; padding: 10px 6px; bottom: 56px; }
+            .volume-slider-vertical { margin: 0 -14px; min-height: 40px; }
+            .sound-toggle, .shuffle-toggle { width: 44px; height: 44px; }
+            .sound-toggle svg, .shuffle-toggle svg { width: 20px; height: 20px; }
+            .shuffle-toggle { width: 34px; height: 34px; }
+            .shuffle-toggle svg { width: 14px; height: 14px; }
         }
     </style>
 </head>
@@ -364,13 +504,22 @@
     
     <!-- Sound Controls -->
     <div class="sound-controls">
-        <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
-            <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
-        </button>
-        <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
-            <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-        </button>
+        <div class="sound-wrapper" id="sound-wrapper">
+            <div class="volume-slider-container" id="volume-slider-container">
+                <div class="volume-label">
+                    <span>♫</span>
+                    <span id="volume-display">70%</span>
+                </div>
+                <input type="range" class="volume-slider-vertical" id="volume-slider" min="0" max="100" value="70">
+            </div>
+            <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+                <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+            </button>
+            <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
+                <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+            </button>
+        </div>
     </div>
     
     <!-- Background video using YouTube iframe -->
@@ -462,7 +611,6 @@
         let userVolume = 70;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
-        const BGM_VOLUME = 11;
 
         const savedVolume = localStorage.getItem('echodream_volume');
         if (savedVolume !== null) userVolume = parseInt(savedVolume);
@@ -510,6 +658,9 @@
             
             const vol = Math.round(userVolume / 100 * 100);
             event.target.setVolume(vol);
+            
+            document.getElementById('volume-slider').value = userVolume;
+            document.getElementById('volume-display').textContent = userVolume + '%';
             
             try {
                 playlistVideos = event.target.getPlaylist();
@@ -658,6 +809,61 @@
                 }
             }
         }
+
+        // ============================================================
+        // VOLUME SLIDER
+        // ============================================================
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.getElementById('volume-display');
+        const volumeContainer = document.getElementById('volume-slider-container');
+        const soundWrapper = document.getElementById('sound-wrapper');
+        const shuffleBtn = document.getElementById('shuffle-toggle');
+
+        let hoverTimeout;
+
+        soundWrapper.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            volumeContainer.classList.add('visible');
+            shuffleBtn.classList.add('visible');
+        });
+        soundWrapper.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                volumeContainer.classList.remove('visible');
+                shuffleBtn.classList.remove('visible');
+            }, 800);
+        });
+
+        volumeSlider.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            volumeContainer.classList.add('visible');
+            shuffleBtn.classList.add('visible');
+        });
+        volumeSlider.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                volumeContainer.classList.remove('visible');
+                shuffleBtn.classList.remove('visible');
+            }, 800);
+        });
+
+        shuffleBtn.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            shuffleBtn.classList.add('visible');
+        });
+        shuffleBtn.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                shuffleBtn.classList.remove('visible');
+            }, 800);
+        });
+
+        volumeSlider.addEventListener('input', function() {
+            const val = parseInt(this.value);
+            userVolume = val;
+            volumeDisplay.textContent = val + '%';
+            localStorage.setItem('echodream_volume', val);
+            if (youtubePlayer && isPlayerReady) {
+                youtubePlayer.setVolume(Math.round(val / 100 * 100));
+            }
+        });
 
         document.getElementById('sound-toggle').addEventListener('click', function(e) {
             e.stopPropagation();

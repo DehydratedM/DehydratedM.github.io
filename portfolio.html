@@ -75,11 +75,14 @@
         .about-section h2 { text-align: center; margin-bottom: 15px; text-shadow: 0 0 10px rgba(240,128,128,0.4); font-size: 1.5rem; }
         .about-section h2::after { content: ' ✿'; color: var(--accent); opacity: 0.5; }
         .about-section p { color: var(--text2); font-size: 0.95rem; margin-bottom: 12px; line-height: 1.6; }
+        .about-section p:last-of-type::after { content: ' ✦'; color: var(--accent); opacity: 0.4; }
         .about-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
         .stat-item { text-align: center; padding: 8px; border-radius: 8px; transition: all 0.3s ease; }
         .stat-item:hover { background: rgba(240,128,128,0.05); transform: translateY(-2px); }
+        .stat-item:hover .stat-number { animation: heartPulse 0.6s ease; }
         .stat-number { font-size: 1.8rem; font-weight: 700; color: var(--accent); text-shadow: 0 0 20px rgba(240,128,128,0.3); }
         .stat-label { color: var(--text2); font-size: 0.8rem; margin-top: 4px; }
+        @keyframes heartPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
         
         .skills-section { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
         .skills-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
@@ -109,7 +112,30 @@
         .floating-deco:nth-child(2) { top: 30%; right: 3%; animation-delay: -5s; }
         .floating-deco:nth-child(3) { bottom: 20%; left: 8%; animation-delay: -10s; }
         .floating-deco:nth-child(4) { bottom: 40%; right: 5%; animation-delay: -15s; }
+        .floating-deco:nth-child(5) { top: 50%; left: 50%; animation-delay: -7s; font-size: 3rem; }
         @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
+        
+        /* Sound Controls with Volume Slider */
+        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+        .sound-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
+        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
+        .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
+        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
+        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
+        
+        /* Volume Slider */
+        .volume-slider-container { width: 120px; background: rgba(15,15,15,0.95); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,182,193,0.3); box-shadow: 0 5px 20px rgba(0,0,0,0.5); opacity: 0; transform: translateY(10px) scale(0.95); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; }
+        .volume-slider-container.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        .volume-slider-container .volume-label { display: flex; justify-content: space-between; font-size: 0.6rem; color: var(--text2); margin-bottom: 4px; }
+        .volume-slider-container .volume-label span:last-child { color: var(--accent); }
+        .volume-slider { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); outline: none; transition: opacity 0.2s; cursor: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: none; box-shadow: 0 0 10px rgba(240,128,128,0.5); transition: all 0.2s; }
+        .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 20px rgba(240,128,128,0.7); }
+        .volume-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: none; border: none; }
+        .volume-slider::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); }
+        
+        .sound-group { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -129,19 +155,10 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
-        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
-        .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
-        .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
-        @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
-        
-        /* Heartbeat pulse on hover for extra cuteness */
-        .stat-item:hover .stat-number { animation: heartPulse 0.6s ease; }
-        @keyframes heartPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        
-        /* Glow text effect */
-        .glow-text { color: var(--accent); text-shadow: 0 0 20px rgba(240,128,128,0.3); }
+        /* Scroll to top button */
+        .scroll-top { position: fixed; bottom: 100px; right: 25px; width: 45px; height: 45px; border-radius: 50%; background: rgba(240,128,128,0.2); border: 1px solid var(--accent); color: var(--text); font-size: 1.2rem; cursor: none; transition: all 0.3s ease; opacity: 0; transform: translateY(20px); z-index: 9999; }
+        .scroll-top.visible { opacity: 1; transform: translateY(0); }
+        .scroll-top:hover { background: rgba(240,128,128,0.4); transform: scale(1.1); box-shadow: 0 0 20px rgba(240,128,128,0.3); }
         
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
@@ -153,6 +170,8 @@
             .skills-header { flex-direction: column; align-items: flex-start; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .floating-deco { display: none; }
+            .volume-slider-container { width: 100px; }
+            .scroll-top { bottom: 110px; right: 15px; width: 40px; height: 40px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -162,19 +181,32 @@
     <div class="floating-deco">✦</div>
     <div class="floating-deco">❀</div>
     <div class="floating-deco">✧</div>
+    <div class="floating-deco">🌸</div>
     
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- Sound Controls -->
+    <!-- Sound Controls with Volume Slider -->
     <div class="sound-controls">
-        <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
-            <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
-        </button>
-        <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
-            <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-            <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-        </button>
+        <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
+        <div class="sound-group">
+            <div class="sound-wrapper">
+                <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
+                    <svg id="sound-icon-on" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    <svg id="sound-icon-off" viewBox="0 0 24 24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                </button>
+                <div class="volume-slider-container" id="volume-slider-container">
+                    <div class="volume-label">
+                        <span>🔊</span>
+                        <span id="volume-display">70%</span>
+                    </div>
+                    <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
+                </div>
+            </div>
+            <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle Music" style="display:none;">
+                <svg viewBox="0 0 24 24"><path d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"/></svg>
+            </button>
+        </div>
     </div>
     
     <!-- Background video using YouTube iframe -->
@@ -268,9 +300,16 @@
         let playlistVideos = [];
         let currentVideoIndex = 0;
         let clickAudioContext = null;
+        let userVolume = 70;
 
         const PLAYLIST_ID = 'PLUmFF7Wbo1Gw';
         const BGM_VOLUME = 8;
+
+        // Load saved volume
+        const savedVolume = localStorage.getItem('echodream_volume');
+        if (savedVolume !== null) {
+            userVolume = parseInt(savedVolume);
+        }
 
         const savedSoundState = localStorage.getItem('echodream_sound_enabled');
         if (savedSoundState !== null) bgmEnabled = savedSoundState === 'true';
@@ -299,7 +338,7 @@
                     modestbranding: 1,
                     rel: 0,
                     showinfo: 0,
-                    volume: BGM_VOLUME
+                    volume: Math.round(userVolume / 100 * 100)
                 },
                 events: {
                     onReady: onPlayerReady,
@@ -313,7 +352,12 @@
             applySoundState();
             applyShuffleState();
             
-            event.target.setVolume(BGM_VOLUME);
+            const vol = Math.round(userVolume / 100 * 100);
+            event.target.setVolume(vol);
+            
+            // Update slider display
+            document.getElementById('volume-slider').value = userVolume;
+            document.getElementById('volume-display').textContent = userVolume + '%';
             
             try {
                 playlistVideos = event.target.getPlaylist();
@@ -463,6 +507,46 @@
             }
         }
 
+        // Volume slider functionality
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeDisplay = document.getElementById('volume-display');
+        const volumeContainer = document.getElementById('volume-slider-container');
+
+        // Show volume slider on hover over sound toggle
+        let hoverTimeout;
+        document.querySelector('.sound-wrapper').addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            volumeContainer.classList.add('visible');
+        });
+        document.querySelector('.sound-wrapper').addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                volumeContainer.classList.remove('visible');
+            }, 800);
+        });
+
+        // Keep visible when interacting with slider
+        volumeSlider.addEventListener('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            volumeContainer.classList.add('visible');
+        });
+        volumeSlider.addEventListener('mouseleave', function() {
+            hoverTimeout = setTimeout(() => {
+                volumeContainer.classList.remove('visible');
+            }, 800);
+        });
+
+        volumeSlider.addEventListener('input', function() {
+            const val = parseInt(this.value);
+            userVolume = val;
+            volumeDisplay.textContent = val + '%';
+            localStorage.setItem('echodream_volume', val);
+            
+            if (youtubePlayer && isPlayerReady) {
+                const vol = Math.round(val / 100 * 100);
+                youtubePlayer.setVolume(vol);
+            }
+        });
+
         document.getElementById('sound-toggle').addEventListener('click', function(e) {
             e.stopPropagation();
             bgmEnabled = !bgmEnabled;
@@ -472,7 +556,8 @@
             if (youtubePlayer) {
                 if (bgmEnabled && !document.hidden) {
                     youtubePlayer.unMute();
-                    youtubePlayer.setVolume(BGM_VOLUME);
+                    const vol = Math.round(userVolume / 100 * 100);
+                    youtubePlayer.setVolume(vol);
                     youtubePlayer.playVideo();
                 } else {
                     youtubePlayer.pauseVideo();
@@ -515,7 +600,8 @@
                     if (bgmEnabled) {
                         setTimeout(() => {
                             youtubePlayer.unMute();
-                            youtubePlayer.setVolume(BGM_VOLUME);
+                            const vol = Math.round(userVolume / 100 * 100);
+                            youtubePlayer.setVolume(vol);
                             youtubePlayer.playVideo();
                         }, 500);
                     } else {
@@ -601,6 +687,21 @@
         SparkleSystem.init();
 
         document.getElementById('mobile-toggle').addEventListener('click', () => { document.getElementById('main-nav').classList.toggle('active'); });
+
+        // ============================================================
+        // SCROLL TO TOP BUTTON
+        // ============================================================
+        const scrollTopBtn = document.getElementById('scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // ============================================================
         // SKILLS DATA with Years of Experience

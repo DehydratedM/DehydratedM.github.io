@@ -18,8 +18,9 @@
         .cursor-sparkle-ring { position: fixed; pointer-events: none; z-index: 999998; width: 30px; height: 30px; border: 2px solid rgba(255,255,255,0.6); border-radius: 50%; transform: translate(-50%, -50%); animation: cursorRingPulse 2s ease-in-out infinite; box-shadow: 0 0 10px rgba(255,255,255,0.4), inset 0 0 10px rgba(255,255,255,0.2); }
         @keyframes cursorRingPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.3; } }
         
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent), radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent); animation: sparkleTwinkle 2s ease-in-out infinite; }
-        @keyframes sparkleTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.7; } }
+        /* Enhanced background sparkles */
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent), radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 15% 60%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 75% 40%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 45% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 5% 15%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 95% 85%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 55% 45%, rgba(255,255,255,0.2), transparent), radial-gradient(2px 2px at 25% 65%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 65% 15%, rgba(255,255,255,0.2), transparent), radial-gradient(2px 2px at 85% 55%, rgba(255,255,255,0.3), transparent); animation: sparkleTwinkle 3s ease-in-out infinite; }
+        @keyframes sparkleTwinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
         
         .sparkle-particle { position: fixed; pointer-events: none; z-index: 99999; border-radius: 50%; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 40%, transparent 70%); animation: particleFade 0.6s ease-out forwards; box-shadow: 0 0 6px 2px rgba(255,255,255,0.8), 0 0 12px 4px rgba(255,255,255,0.4); }
         @keyframes particleFade { 0% { transform: scale(0); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.8; } 100% { transform: scale(0); opacity: 0; } }
@@ -136,10 +137,9 @@
             position: relative;
             z-index: 1;
         }
-        /* CUTER COLORS - Dream in bubblegum pink, Echo in cotton candy blue, Studio in soft lavender */
-        .logo-text .echo { color: #7ec8e3; } /* Cotton candy blue */
-        .logo-text .dream { color: #f5a0b0; } /* Bubblegum pink - much cuter! */
-        .logo-text .studio { color: #c9a0e8; } /* Soft lavender */
+        .logo-text .echo { color: #7ec8e3; }
+        .logo-text .dream { color: #f5a0b0; }
+        .logo-text .studio { color: #c9a0e8; }
         .logo-text .dot { color: var(--accent); opacity: 0.6; margin: 0 2px; }
         .logo-sparkle {
             position: absolute;
@@ -155,9 +155,52 @@
             50% { opacity: 0.8; transform: scale(1.2) rotate(30deg); }
         }
         
+        /* ============================================================
+           CUTER NAV LINKS
+           ============================================================ */
         .nav-links ul { display: flex; list-style: none; gap: 0.5rem; }
-        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; transition: all 0.3s ease; cursor: none; }
-        .nav-links a:hover, .nav-links a.current-page { color: var(--text); background: rgba(240,128,128,0.1); box-shadow: 0 0 10px rgba(240,128,128,0.2); }
+        .nav-links a { 
+            color: var(--text2); 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 20px; 
+            font-size: 0.85rem; 
+            transition: all 0.3s ease; 
+            cursor: none;
+            position: relative;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        .nav-links a::before {
+            content: '✧ ';
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-links a::after {
+            content: ' ✧';
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .nav-links a:hover::before,
+        .nav-links a:hover::after,
+        .nav-links a.current-page::before,
+        .nav-links a.current-page::after {
+            opacity: 0.4;
+        }
+        .nav-links a:hover, 
+        .nav-links a.current-page { 
+            color: #fff; 
+            background: linear-gradient(135deg, rgba(255,182,193,0.15), rgba(200,180,255,0.15));
+            box-shadow: 0 0 25px rgba(240,128,128,0.15);
+            border: 1px solid rgba(255,182,193,0.15);
+            transform: translateY(-1px);
+        }
+        .nav-links a.current-page {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255,182,193,0.2), rgba(200,180,255,0.2));
+            border-color: rgba(255,182,193,0.25);
+            box-shadow: 0 0 30px rgba(240,128,128,0.2);
+        }
         
         .portfolio-header { text-align: center; margin: 40px auto 20px; padding: 0 20px; }
         .portfolio-header h1 { font-size: 2.5rem; text-shadow: 0 0 20px rgba(240,128,128,0.5); }
@@ -454,19 +497,46 @@
             box-shadow: 0 0 20px rgba(240,128,128,0.4);
         }
 
-        footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
-        .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        /* ============================================================
+           FOOTER WITH SPARKLES
+           ============================================================ */
+        footer { 
+            background: rgba(15,15,15,0.9); 
+            padding: 25px 15px; 
+            margin-top: 40px; 
+            border-top: 1px solid rgba(240,128,128,0.2); 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.15), transparent), radial-gradient(1.5px 1.5px at 30% 60%, rgba(255,255,255,0.1), transparent), radial-gradient(1px 1px at 50% 30%, rgba(255,255,255,0.12), transparent), radial-gradient(2px 2px at 70% 70%, rgba(255,255,255,0.08), transparent), radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.1), transparent);
+            animation: footerSparkle 4s ease-in-out infinite;
+        }
+        @keyframes footerSparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+        .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; position: relative; z-index: 1; }
         .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; cursor: none; position: relative; }
         .socialIcons a:hover { background: rgba(240,128,128,0.2); transform: translateY(-3px) scale(1.05); box-shadow: 0 5px 15px rgba(240,128,128,0.3); }
         .socialIcons a img { width: 20px; height: 20px; object-fit: contain; filter: brightness(0.7); transition: all 0.3s ease; }
         .socialIcons a:hover img { filter: brightness(1); }
         
-        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; }
+        .music-credits { margin-top: 15px; padding: 10px; font-size: 0.7rem; color: #808080; position: relative; z-index: 1; }
         .music-credits a { color: #d4a5b5; text-decoration: none; font-style: italic; transition: all 0.3s ease; cursor: none; }
         .music-credits a:hover { color: #ffb6c1; text-shadow: 0 0 10px rgba(255,182,193,0.5); letter-spacing: 0.5px; }
         .music-credits span { color: #666; font-style: normal; }
         
-        .Oo { color: #808080; font-size: 0.8rem; }
+        .Oo { color: #808080; font-size: 0.8rem; position: relative; z-index: 1; }
         .Oo a { color: #808080; text-decoration: none; }
         .Oo a:hover { color: var(--text); }
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
@@ -962,12 +1032,12 @@
         const customCursor = document.getElementById('custom-cursor');
         const cursorRing = document.getElementById('cursor-ring');
         
-        // Enhanced sparkle trail system - longer lasting
+        // Enhanced sparkle trail system - longer lasting with more white sparkles
         class SparkleTrail {
             constructor() {
                 this.particles = [];
-                this.maxParticles = 25;
-                this.trailInterval = 20; // Faster for more particles
+                this.maxParticles = 35;
+                this.trailInterval = 15;
                 this.lastTrailTime = 0;
                 this.mouseX = 0;
                 this.mouseY = 0;
@@ -988,6 +1058,10 @@
                     if (now - this.lastTrailTime > this.trailInterval) {
                         this.lastTrailTime = now;
                         this.createTrailParticle(e.clientX, e.clientY);
+                        // Sometimes create an extra sparkle for more density
+                        if (Math.random() > 0.6) {
+                            this.createTrailParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+                        }
                     }
                 });
 
@@ -996,7 +1070,7 @@
                 });
 
                 document.addEventListener('click', (e) => {
-                    for (let i = 0; i < 12; i++) {
+                    for (let i = 0; i < 15; i++) {
                         this.createBurstParticle(e.clientX, e.clientY);
                     }
                 });
@@ -1004,9 +1078,12 @@
 
             createTrailParticle(x, y) {
                 const el = document.createElement('div');
-                const size = 2 + Math.random() * 4;
-                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffffff', '#ffe0f0'];
-                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = 1.5 + Math.random() * 4;
+                // More white sparkles
+                const colors = ['#ffffff', '#ffe8f0', '#ffd1dc', '#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3'];
+                // Weight towards white
+                const colorIndex = Math.random() < 0.4 ? 0 : Math.floor(Math.random() * colors.length);
+                const color = colors[colorIndex];
                 
                 el.style.cssText = `
                     position: fixed;
@@ -1019,7 +1096,7 @@
                     left: ${x - size/2}px;
                     top: ${y - size/2}px;
                     opacity: 1;
-                    box-shadow: 0 0 ${size * 3}px ${color}40, 0 0 ${size * 6}px ${color}20;
+                    box-shadow: 0 0 ${size * 4}px ${color}50, 0 0 ${size * 8}px ${color}25;
                     transition: none;
                     will-change: transform, opacity;
                 `;
@@ -1029,7 +1106,7 @@
                 const dx = (Math.random() - 0.5) * 3;
                 const dy = (Math.random() - 0.5) * 3 - 1.5;
                 const startTime = performance.now();
-                const duration = 600 + Math.random() * 400; // Longer duration
+                const duration = 800 + Math.random() * 500;
                 const startScale = 0.2 + Math.random() * 0.3;
                 
                 const animate = (time) => {
@@ -1040,10 +1117,10 @@
                     }
                     
                     const ease = 1 - Math.pow(1 - progress, 2);
-                    const currentX = x + dx * progress * 40;
-                    const currentY = y + dy * progress * 40 - progress * 30;
-                    const scale = startScale * (1 + progress * 0.8);
-                    const opacity = 1 - Math.pow(progress, 1.5);
+                    const currentX = x + dx * progress * 50;
+                    const currentY = y + dy * progress * 50 - progress * 35;
+                    const scale = startScale * (1 + progress * 0.9);
+                    const opacity = 1 - Math.pow(progress, 1.4);
                     
                     el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
                     el.style.opacity = Math.max(0, opacity);
@@ -1056,11 +1133,11 @@
 
             createBurstParticle(x, y) {
                 const el = document.createElement('div');
-                const size = 3 + Math.random() * 6;
-                const colors = ['#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffffff', '#ffe0f0', '#ffc0cb'];
+                const size = 2 + Math.random() * 6;
+                const colors = ['#ffffff', '#ffe8f0', '#ffd1dc', '#ffb6c1', '#f08080', '#ffd1dc', '#e8b4c8', '#c9a0e8', '#7ec8e3', '#ffc0cb'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 const angle = Math.random() * Math.PI * 2;
-                const speed = 2 + Math.random() * 5;
+                const speed = 2 + Math.random() * 6;
                 
                 el.style.cssText = `
                     position: fixed;
@@ -1073,7 +1150,7 @@
                     left: ${x - size/2}px;
                     top: ${y - size/2}px;
                     opacity: 1;
-                    box-shadow: 0 0 ${size * 4}px ${color}60, 0 0 ${size * 8}px ${color}30;
+                    box-shadow: 0 0 ${size * 5}px ${color}60, 0 0 ${size * 10}px ${color}30;
                     transition: none;
                     will-change: transform, opacity;
                 `;
@@ -1083,7 +1160,7 @@
                 const dx = Math.cos(angle) * speed;
                 const dy = Math.sin(angle) * speed;
                 const startTime = performance.now();
-                const duration = 800 + Math.random() * 500;
+                const duration = 900 + Math.random() * 500;
                 
                 const animate = (time) => {
                     const progress = (time - startTime) / duration;
@@ -1093,10 +1170,10 @@
                     }
                     
                     const ease = 1 - Math.pow(1 - progress, 1.5);
-                    const currentX = x + dx * progress * 60;
-                    const currentY = y + dy * progress * 60 - progress * 15;
-                    const scale = 0.3 + progress * 0.7;
-                    const opacity = 1 - Math.pow(progress, 1.3);
+                    const currentX = x + dx * progress * 70;
+                    const currentY = y + dy * progress * 70 - progress * 20;
+                    const scale = 0.3 + progress * 0.8;
+                    const opacity = 1 - Math.pow(progress, 1.2);
                     
                     el.style.transform = `translate(${currentX - x}px, ${currentY - y}px) scale(${scale})`;
                     el.style.opacity = Math.max(0, opacity);
@@ -1112,27 +1189,41 @@
         sparkleTrail.init();
 
         // ============================================================
-        // SPARKLE SYSTEM (background)
+        // SPARKLE SYSTEM (background) - Enhanced with more sparkles
         // ============================================================
         const SparkleSystem = {
-            enabled: true, lastSparkleTime: 0, sparkleInterval: 100, lastMousePosition: null,
+            enabled: true, lastSparkleTime: 0, sparkleInterval: 60, lastMousePosition: null,
             init() {
                 document.addEventListener('mousemove', (e) => this.onMouseMove(e));
                 document.addEventListener('touchmove', (e) => this.onTouchMove(e), { passive: true });
-                setInterval(() => { if (this.enabled && this.lastMousePosition) { this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y); } }, 300);
+                setInterval(() => { if (this.enabled && this.lastMousePosition) { 
+                    this.createSparkle(this.lastMousePosition.x, this.lastMousePosition.y);
+                    // Sometimes create an extra background sparkle
+                    if (Math.random() > 0.5) {
+                        this.createSparkle(this.lastMousePosition.x + (Math.random()-0.5)*80, this.lastMousePosition.y + (Math.random()-0.5)*80);
+                    }
+                } }, 200);
+                // Also create random ambient sparkles
+                setInterval(() => {
+                    if (Math.random() > 0.3) {
+                        const x = Math.random() * window.innerWidth;
+                        const y = Math.random() * window.innerHeight;
+                        this.createSparkle(x, y);
+                    }
+                }, 800);
             },
             onMouseMove(e) { this.lastMousePosition = { x: e.clientX, y: e.clientY }; const now = performance.now(); if (now - this.lastSparkleTime < this.sparkleInterval) return; this.lastSparkleTime = now; const burstCount = 1 + Math.floor(Math.random() * 2); for (let i = 0; i < burstCount; i++) this.createSparkle(e.clientX, e.clientY); },
             createSparkle(x, y) { 
                 const existing = document.querySelectorAll('.sparkle-particle, .sparkle-star, .sparkle-diamond');
-                if (existing.length > 30) return;
+                if (existing.length > 50) return;
                 const type = Math.random(); 
                 if (type < 0.35) this.createParticle(x, y); 
                 else if (type < 0.65) this.createStar(x, y); 
                 else this.createDiamond(x, y); 
             },
-            createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 25; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 500); },
-            createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 25; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 600); },
-            createDiamond(x, y) { const d = document.createElement('div'); d.className = 'sparkle-diamond'; const size = 3 + Math.random() * 2; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 20; d.style.left = (x + Math.cos(angle) * dist) + 'px'; d.style.top = (y + Math.sin(angle) * dist) + 'px'; d.style.width = size + 'px'; d.style.height = size + 'px'; document.body.appendChild(d); setTimeout(() => { if (d.parentNode) d.remove(); }, 400); }
+            createParticle(x, y) { const p = document.createElement('div'); p.className = 'sparkle-particle'; const size = 2 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; p.style.left = (x + Math.cos(angle) * dist) + 'px'; p.style.top = (y + Math.sin(angle) * dist) + 'px'; p.style.width = size + 'px'; p.style.height = size + 'px'; document.body.appendChild(p); setTimeout(() => { if (p.parentNode) p.remove(); }, 500); },
+            createStar(x, y) { const s = document.createElement('div'); s.className = 'sparkle-star'; const size = 3 + Math.random() * 3; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 30; s.style.left = (x + Math.cos(angle) * dist) + 'px'; s.style.top = (y + Math.sin(angle) * dist) + 'px'; s.style.width = size + 'px'; s.style.height = size + 'px'; document.body.appendChild(s); setTimeout(() => { if (s.parentNode) s.remove(); }, 600); },
+            createDiamond(x, y) { const d = document.createElement('div'); d.className = 'sparkle-diamond'; const size = 3 + Math.random() * 2; const angle = Math.random() * Math.PI * 2; const dist = Math.random() * 25; d.style.left = (x + Math.cos(angle) * dist) + 'px'; d.style.top = (y + Math.sin(angle) * dist) + 'px'; d.style.width = size + 'px'; d.style.height = size + 'px'; document.body.appendChild(d); setTimeout(() => { if (d.parentNode) d.remove(); }, 400); }
         };
         SparkleSystem.init();
 

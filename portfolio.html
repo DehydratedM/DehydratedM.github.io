@@ -115,27 +115,34 @@
         .floating-deco:nth-child(5) { top: 50%; left: 50%; animation-delay: -7s; font-size: 3rem; }
         @keyframes float { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
         
-        /* Sound Controls with Volume Slider */
-        .sound-controls { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
-        .sound-wrapper { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .sound-toggle, .shuffle-toggle { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); }
-        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); }
-        .sound-toggle svg, .shuffle-toggle svg { width: 24px; height: 24px; fill: #fff; }
+        /* Sound Controls - Bottom Left */
+        .sound-controls { position: fixed; bottom: 25px; left: 25px; z-index: 10000; display: flex; align-items: center; gap: 12px; }
+        
+        .sound-group { display: flex; align-items: center; gap: 10px; }
+        
+        .sound-toggle, .shuffle-toggle { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,182,193,0.4), rgba(173,216,230,0.3)); border: 2px solid #ffb6c1; display: flex; align-items: center; justify-content: center; cursor: none; transition: all 0.3s ease; box-shadow: 0 0 15px rgba(255,182,193,0.4), 0 0 30px rgba(173,216,230,0.2); backdrop-filter: blur(10px); }
+        .sound-toggle:hover, .shuffle-toggle:hover { background: linear-gradient(135deg, rgba(255,182,193,0.6), rgba(173,216,230,0.5)); transform: scale(1.1); box-shadow: 0 0 25px rgba(255,182,193,0.6); }
+        .sound-toggle svg, .shuffle-toggle svg { width: 22px; height: 22px; fill: #fff; }
         .shuffle-toggle.active { background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(173,216,230,0.6)); box-shadow: 0 0 25px rgba(255,182,193,0.6); animation: shuffleGlow 2s ease-in-out infinite; }
         @keyframes shuffleGlow { 0%, 100% { box-shadow: 0 0 15px rgba(255,182,193,0.4); } 50% { box-shadow: 0 0 30px rgba(255,182,193,0.7); } }
         
-        /* Volume Slider */
-        .volume-slider-container { width: 120px; background: rgba(15,15,15,0.95); border-radius: 12px; padding: 10px 14px; border: 1px solid rgba(255,182,193,0.3); box-shadow: 0 5px 20px rgba(0,0,0,0.5); opacity: 0; transform: translateY(10px) scale(0.95); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; }
-        .volume-slider-container.visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-        .volume-slider-container .volume-label { display: flex; justify-content: space-between; font-size: 0.6rem; color: var(--text2); margin-bottom: 4px; }
-        .volume-slider-container .volume-label span:last-child { color: var(--accent); }
-        .volume-slider { -webkit-appearance: none; width: 100%; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); outline: none; transition: opacity 0.2s; cursor: none; }
-        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: none; box-shadow: 0 0 10px rgba(240,128,128,0.5); transition: all 0.2s; }
+        /* Volume Slider - Appears on hover */
+        .volume-slider-container { width: 110px; background: rgba(15,15,15,0.95); border-radius: 10px; padding: 8px 12px; border: 1px solid rgba(255,182,193,0.3); box-shadow: 0 5px 20px rgba(0,0,0,0.5); opacity: 0; transform: translateX(-10px) scale(0.95); transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); pointer-events: none; backdrop-filter: blur(10px); }
+        .volume-slider-container.visible { opacity: 1; transform: translateX(0) scale(1); pointer-events: auto; }
+        .volume-slider-container .volume-label { display: flex; justify-content: space-between; font-size: 0.55rem; color: var(--text2); margin-bottom: 3px; }
+        .volume-slider-container .volume-label span:last-child { color: var(--accent); font-weight: 600; }
+        .volume-slider { -webkit-appearance: none; width: 100%; height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--accent), #ffb6c1); outline: none; transition: opacity 0.2s; cursor: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: none; box-shadow: 0 0 10px rgba(240,128,128,0.5); transition: all 0.2s; }
         .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); box-shadow: 0 0 20px rgba(240,128,128,0.7); }
-        .volume-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: none; border: none; }
-        .volume-slider::-moz-range-track { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); }
+        .volume-slider::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: none; border: none; }
+        .volume-slider::-moz-range-track { height: 3px; border-radius: 2px; background: rgba(255,255,255,0.1); }
         
-        .sound-group { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .sound-wrapper { display: flex; align-items: center; gap: 8px; }
+        
+        /* Scroll to top button - right of sound */
+        .scroll-top { width: 50px; height: 50px; border-radius: 50%; background: rgba(240,128,128,0.15); border: 1px solid rgba(240,128,128,0.3); color: var(--text); font-size: 1.2rem; cursor: none; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); opacity: 0; transform: translateY(20px) scale(0.8); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(240,128,128,0.1); }
+        .scroll-top.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .scroll-top:hover { background: rgba(240,128,128,0.3); transform: scale(1.1); box-shadow: 0 0 25px rgba(240,128,128,0.3); border-color: var(--accent); }
         
         footer { background: rgba(15,15,15,0.9); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.2); text-align: center; }
         .socialIcons { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
@@ -155,11 +162,6 @@
         .mobile-toggle { display: none; background: none; border: none; cursor: none; width: 40px; height: 40px; }
         .mobile-toggle span { display: block; width: 20px; height: 2px; background: var(--text); margin: 2px 0; }
         
-        /* Scroll to top button */
-        .scroll-top { position: fixed; bottom: 100px; right: 25px; width: 45px; height: 45px; border-radius: 50%; background: rgba(240,128,128,0.2); border: 1px solid var(--accent); color: var(--text); font-size: 1.2rem; cursor: none; transition: all 0.3s ease; opacity: 0; transform: translateY(20px); z-index: 9999; }
-        .scroll-top.visible { opacity: 1; transform: translateY(0); }
-        .scroll-top:hover { background: rgba(240,128,128,0.4); transform: scale(1.1); box-shadow: 0 0 20px rgba(240,128,128,0.3); }
-        
         @media (max-width: 768px) {
             .mobile-toggle { display: flex !important; flex-direction: column; justify-content: center; align-items: center; }
             .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: rgba(15,15,15,0.98); padding: 80px 15px 20px; transition: right 0.3s; z-index: 999; }
@@ -170,8 +172,11 @@
             .skills-header { flex-direction: column; align-items: flex-start; }
             .portfolio-grid { grid-template-columns: 1fr; }
             .floating-deco { display: none; }
-            .volume-slider-container { width: 100px; }
-            .scroll-top { bottom: 110px; right: 15px; width: 40px; height: 40px; font-size: 1rem; }
+            .sound-controls { bottom: 15px; left: 15px; gap: 8px; }
+            .sound-toggle, .shuffle-toggle, .scroll-top { width: 42px; height: 42px; }
+            .sound-toggle svg, .shuffle-toggle svg { width: 18px; height: 18px; }
+            .volume-slider-container { width: 90px; padding: 6px 10px; }
+            .scroll-top { font-size: 1rem; }
         }
     </style>
 </head>
@@ -186,9 +191,12 @@
     <!-- Hidden YouTube Player -->
     <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
     
-    <!-- Sound Controls with Volume Slider -->
+    <!-- Sound Controls - Bottom Left -->
     <div class="sound-controls">
+        <!-- Scroll to top button -->
         <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
+        
+        <!-- Sound controls -->
         <div class="sound-group">
             <div class="sound-wrapper">
                 <button class="sound-toggle" id="sound-toggle" title="Toggle Sound">
@@ -197,7 +205,7 @@
                 </button>
                 <div class="volume-slider-container" id="volume-slider-container">
                     <div class="volume-label">
-                        <span>🔊</span>
+                        <span>♫</span>
                         <span id="volume-display">70%</span>
                     </div>
                     <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="70">
@@ -512,7 +520,7 @@
         const volumeDisplay = document.getElementById('volume-display');
         const volumeContainer = document.getElementById('volume-slider-container');
 
-        // Show volume slider on hover over sound toggle
+        // Show volume slider on hover over sound wrapper
         let hoverTimeout;
         document.querySelector('.sound-wrapper').addEventListener('mouseenter', function() {
             clearTimeout(hoverTimeout);
@@ -521,7 +529,7 @@
         document.querySelector('.sound-wrapper').addEventListener('mouseleave', function() {
             hoverTimeout = setTimeout(() => {
                 volumeContainer.classList.remove('visible');
-            }, 800);
+            }, 1000);
         });
 
         // Keep visible when interacting with slider
@@ -532,7 +540,7 @@
         volumeSlider.addEventListener('mouseleave', function() {
             hoverTimeout = setTimeout(() => {
                 volumeContainer.classList.remove('visible');
-            }, 800);
+            }, 1000);
         });
 
         volumeSlider.addEventListener('input', function() {

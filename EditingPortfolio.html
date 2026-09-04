@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="EchoDream.Studio Portfolio - Skills & Experience with Video Editing Reel">
-    <title>Portfolio | EchoDream.Studio</title>
+    <meta name="description" content="EchoDream.Studio - Video Editing Portfolio & Reel">
+    <title>Video Editing Portfolio | EchoDream.Studio</title>
     <link rel="icon" type="image/png" href="sparkle.png" />
     <style>
         :root {
@@ -17,358 +17,231 @@
             --accent3: #7ec8e3;
             --border: rgba(255,255,255,0.1);
             --card-bg: #141416;
-            --nav-bg: rgba(12,12,14,0.9);
-            --pink-glow: rgba(240,128,128,0.3);
+            --nav-bg: rgba(12,12,14,0.95);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; overflow-x: hidden; cursor: none; }
+        
         .custom-cursor { position: fixed; pointer-events: none; z-index: 999999; width: 22px; height: 22px; transform: translate(-50%, -50%); filter: drop-shadow(0 0 12px rgba(255,255,255,0.9)); }
-        .custom-cursor::before, .custom-cursor::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 50%; box-shadow: 0 0 12px 4px rgba(255,255,255,0.9), 0 0 28px 10px rgba(255,200,220,0.6); }
+        .custom-cursor::before, .custom-cursor::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 50%; box-shadow: 0 0 12px 4px rgba(255,255,255,0.9); }
         .custom-cursor::before { width: 20px; height: 2.5px; }
         .custom-cursor::after { width: 2.5px; height: 20px; }
-        .cursor-sparkle-ring { position: fixed; pointer-events: none; z-index: 999998; width: 38px; height: 38px; border: 2px solid rgba(255,220,240,0.8); border-radius: 50%; transform: translate(-50%, -50%); animation: cursorRingPulse 2.4s ease-in-out infinite; box-shadow: 0 0 18px rgba(255,255,255,0.6), inset 0 0 18px rgba(255,255,255,0.3); }
-        @keyframes cursorRingPulse { 0%,100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; } 50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; } }
-        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(3px 3px at 60% 20%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 80% 60%, rgba(255,255,255,0.3), transparent), radial-gradient(2px 2px at 10% 80%, rgba(255,255,255,0.5), transparent), radial-gradient(3px 3px at 70% 90%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 30% 50%, rgba(255,255,255,0.4), transparent), radial-gradient(2px 2px at 90% 30%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 50% 10%, rgba(255,255,255,0.3), transparent); animation: sparkleTwinkle 3s ease-in-out infinite; }
-        @keyframes sparkleTwinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 0.9; } }
-        .sparkle-particle, .sparkle-star, .sparkle-diamond { position: fixed; pointer-events: none; z-index: 99999; border-radius: 50%; animation: particleFade 0.7s ease-out forwards; box-shadow: 0 0 8px 4px rgba(255,255,255,0.8); }
-        @keyframes particleFade { 0% { transform: scale(0); opacity: 1; } 70% { transform: scale(1.4); opacity: 0.7; } 100% { transform: scale(0); opacity: 0; } }
+
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.5), transparent), radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,0.3), transparent), radial-gradient(3px 3px at 80% 20%, rgba(255,255,255,0.4), transparent); animation: sparkleTwinkle 3s ease-in-out infinite; }
+        @keyframes sparkleTwinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+
         .background-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; pointer-events: none; }
         .background-video iframe { position: absolute; top: 50%; left: 50%; width: 200vw; height: 200vh; transform: translate(-50%, -50%); pointer-events: none; border: none; filter: brightness(0.25); }
-        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.9) 0%, rgba(240,128,128,0.2) 50%, rgba(10,10,10,0.9) 100%); animation: glowPulse 8s ease-in-out infinite; }
-        @keyframes glowPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.8; } }
+        .background-video::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(201,160,232,0.25) 50%, rgba(10,10,10,0.85) 100%); }
 
-        /* ===== UPDATED TOP BAR STYLE ===== */
-        .HE {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 2.5rem;
-            background: var(--nav-bg);
-            border-bottom: 1.5px solid rgba(240,128,128,0.3);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.6), 0 0 18px rgba(240,128,128,0.2);
-            backdrop-filter: blur(12px);
-            transition: all 0.3s;
-        }
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-            color: var(--text);
-            padding: 5px 16px 5px 8px;
-            border-radius: 40px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,182,193,0.2);
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(240,128,128,0.1);
-        }
-        .logo-container:hover {
-            border-color: rgba(255,182,193,0.5);
-            background: rgba(255,255,255,0.08);
-            box-shadow: 0 0 25px rgba(240,128,128,0.25);
-            transform: translateY(-1px);
-        }
-        .logo-img-wrapper {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: linear-gradient(135deg, #2a1a2a, #1a1a2e);
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,182,193,0.4);
-        }
-        .logo-img-wrapper img { width: 100%; height: 100%; object-fit: contain; padding: 4px; filter: drop-shadow(0 0 8px rgba(240,128,128,0.6)); }
-        .logo-text { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px; }
-        .logo-text .echo { color: #7ec8e3; } .logo-text .dream { color: #f5a0b0; } .logo-text .studio { color: #c9a0e8; } .logo-text .dot { color: var(--accent); opacity: 0.7; }
+        .HE { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 2.5rem; background: var(--nav-bg); border-bottom: 1.5px solid rgba(201,160,232,0.4); position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 25px rgba(0,0,0,0.6); backdrop-filter: blur(12px); }
+        .logo-container { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text); padding: 5px 16px 5px 8px; border-radius: 40px; background: rgba(255,255,255,0.04); border: 1px solid rgba(201,160,232,0.3); transition: all 0.3s ease; }
+        .logo-container:hover { border-color: rgba(201,160,232,0.6); box-shadow: 0 0 25px rgba(201,160,232,0.3); }
+        .logo-img-wrapper { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, #2a1a3a, #1a1a2e); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,160,232,0.5); }
+        .logo-img-wrapper img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+        .logo-text .echo { color: #7ec8e3; } .logo-text .dream { color: #f5a0b0; } .logo-text .studio { color: #c9a0e8; }
 
         .nav-links ul { display: flex; list-style: none; gap: 0.8rem; }
-        .nav-links a {
-            color: var(--text2); text-decoration: none; padding: 0.6rem 1.4rem; border-radius: 30px;
-            font-size: 0.9rem; font-weight: 500; letter-spacing: 0.3px; transition: all 0.3s ease;
-            cursor: none; position: relative; border: 1px solid transparent;
-        }
-        .nav-links a::before, .nav-links a::after { content: '✧'; opacity: 0; transition: 0.3s; margin: 0 2px; }
-        .nav-links a:hover::before, .nav-links a:hover::after, .nav-links a.current-page::before, .nav-links a.current-page::after { opacity: 0.6; }
-        .nav-links a:hover, .nav-links a.current-page {
-            color: #fff; background: linear-gradient(145deg, rgba(255,182,193,0.2), rgba(200,180,255,0.2));
-            border-color: rgba(255,182,193,0.3); box-shadow: 0 0 22px rgba(240,128,128,0.3);
-        }
-        .nav-links a.current-page { background: linear-gradient(145deg, rgba(255,182,193,0.3), rgba(200,180,255,0.3)); border-color: rgba(255,182,193,0.5); }
+        .nav-links a { color: var(--text2); text-decoration: none; padding: 0.6rem 1.4rem; border-radius: 30px; font-size: 0.9rem; transition: all 0.3s ease; cursor: none; border: 1px solid transparent; }
+        .nav-links a:hover, .nav-links a.current-page { color: #fff; background: linear-gradient(145deg, rgba(201,160,232,0.3), rgba(255,182,193,0.2)); border-color: rgba(201,160,232,0.4); box-shadow: 0 0 22px rgba(201,160,232,0.3); }
 
-        /* ===== PORTFOLIO HEADER ===== */
-        .portfolio-header { text-align: center; margin: 30px auto 20px; padding: 0 20px; }
-        .portfolio-header h1 { font-size: 2.8rem; text-shadow: 0 0 25px rgba(240,128,128,0.7); letter-spacing: 1px; }
-        .portfolio-header p { color: var(--text2); font-size: 1.2rem; }
+        .editing-hero { text-align: center; padding: 60px 20px 40px; }
+        .editing-hero h1 { font-size: 3rem; background: linear-gradient(135deg, #ffb6c1, #c9a0e8, #7ec8e3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 15px; }
+        .editing-hero .subtitle { font-size: 1.3rem; color: var(--text2); margin-bottom: 10px; }
+        .editing-hero .badge-container { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+        .badge { padding: 10px 25px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; background: rgba(201,160,232,0.2); border: 1px solid #c9a0e8; color: #e6d5ff; box-shadow: 0 0 20px rgba(201,160,232,0.3); }
 
-        .about-section { max-width: 850px; margin: 25px auto; padding: 30px; background: rgba(22,22,26,0.9); border-radius: 18px; border: 1px solid rgba(240,128,128,0.25); box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 30px rgba(240,128,128,0.15); backdrop-filter: blur(5px); }
-        .about-section h2 { text-align: center; margin-bottom: 18px; font-size: 1.8rem; }
-        .about-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 20px; margin-top: 25px; }
+        .stats-bar { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin: 40px auto; max-width: 800px; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; color: #c9a0e8; text-shadow: 0 0 20px rgba(201,160,232,0.5); }
+        .stat-label { color: var(--text2); font-size: 0.85rem; }
 
-        /* ===== VIDEO EDITING REEL SECTION (NEW) ===== */
-        .video-reel-section {
-            max-width: 1200px; margin: 40px auto; padding: 20px;
-            background: rgba(18,18,22,0.85); border-radius: 24px;
-            border: 1px solid rgba(240,128,128,0.3); box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-        }
-        .reel-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 25px; }
-        .reel-title { font-size: 1.9rem; font-weight: 700; background: linear-gradient(135deg, #ffb6c1, #c9a0e8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .reel-sub { color: var(--text2); font-size: 0.95rem; margin-top: 5px; }
-        .premiere-badge {
-            background: linear-gradient(135deg, #2a1a3a, #1a1a2e); border: 1px solid #c9a0e8; color: #e6d5ff;
-            padding: 8px 20px; border-radius: 40px; font-weight: 600; font-size: 0.9rem;
-            box-shadow: 0 0 20px rgba(201,160,232,0.4);
-        }
-        .video-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px;
-        }
-        .video-card {
-            background: #121216; border-radius: 18px; overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: none;
-        }
-        .video-card:hover { transform: translateY(-8px); border-color: rgba(240,128,128,0.6); box-shadow: 0 18px 35px rgba(0,0,0,0.8), 0 0 30px rgba(240,128,128,0.25); }
-        .video-thumb {
-            aspect-ratio: 16/9; background: #0a0a0a; display: flex; align-items: center; justify-content: center;
-            position: relative; color: #fff; font-size: 2.2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: linear-gradient(145deg, #1e1e28, #14141c);
-        }
-        .video-thumb span { opacity: 0.7; filter: drop-shadow(0 0 10px #f08080); }
-        .video-info { padding: 18px; }
-        .video-info h3 { font-size: 1.2rem; margin-bottom: 5px; }
-        .video-info p { color: var(--text2); font-size: 0.85rem; margin-bottom: 12px; }
+        .expertise-section { max-width: 1000px; margin: 40px auto; padding: 30px; background: rgba(22,22,26,0.9); border-radius: 18px; border: 1px solid rgba(201,160,232,0.3); }
+        .expertise-section h2 { text-align: center; margin-bottom: 20px; color: #c9a0e8; }
+        .expertise-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .expertise-item { background: rgba(201,160,232,0.1); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid rgba(201,160,232,0.2); }
+        .expertise-item .icon { font-size: 2rem; margin-bottom: 8px; }
+
+        .video-showcase { max-width: 1200px; margin: 40px auto; padding: 20px; }
+        .showcase-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 25px; }
+        .showcase-header h2 { font-size: 2rem; color: #e6d5ff; }
+        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .video-card { background: var(--card-bg); border-radius: 18px; overflow: hidden; border: 1px solid rgba(201,160,232,0.3); transition: all 0.3s ease; cursor: none; }
+        .video-card:hover { transform: translateY(-8px); border-color: #c9a0e8; box-shadow: 0 18px 35px rgba(0,0,0,0.8), 0 0 30px rgba(201,160,232,0.4); }
+        .video-thumb { aspect-ratio: 16/9; background: linear-gradient(145deg, #2a1a3a, #1a1a2e); display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+        .video-thumb .play-overlay { position: absolute; width: 60px; height: 60px; background: rgba(201,160,232,0.8); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; }
+        .video-info { padding: 20px; }
+        .video-info h3 { font-size: 1.1rem; margin-bottom: 8px; color: #e6d5ff; }
+        .video-info p { color: var(--text2); font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4; }
         .video-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-        .video-tag { background: rgba(240,128,128,0.15); color: #ffb6c1; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; border: 1px solid rgba(240,128,128,0.25); }
-        .premiere-highlight { background: rgba(201,160,232,0.2); color: #d4b3ff; border-color: #c9a0e8; }
+        .video-tag { padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; background: rgba(201,160,232,0.2); color: #d4b3ff; border: 1px solid rgba(201,160,232,0.3); }
+        .video-tag.premiere { background: rgba(240,128,128,0.2); color: #ffb6c1; border-color: rgba(240,128,128,0.4); }
 
-        /* skills section */
-        .skills-section { max-width: 1100px; margin: 30px auto; padding: 0 20px; }
-        .skills-filter { display: flex; gap: 8px; flex-wrap: wrap; }
-        .filter-btn { padding: 6px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text2); cursor: none; transition: 0.3s; }
-        .filter-btn.active, .filter-btn:hover { background: rgba(240,128,128,0.25); border-color: var(--accent); color: #fff; box-shadow: 0 0 18px rgba(240,128,128,0.3); }
-        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; margin-top: 25px; }
-        .skill-card { background: var(--card-bg); border-radius: 16px; padding: 20px; border: 1px solid rgba(240,128,128,0.2); transition: 0.3s; position: relative; overflow: hidden; }
-        .skill-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(240,128,128,0.25); }
-        .skill-card.clicked { animation: cardPop 0.5s; }
-        @keyframes cardPop { 0% { transform: scale(1); } 40% { transform: scale(1.04); } 100% { transform: scale(1); } }
+        .back-btn { display: inline-block; margin: 30px auto; padding: 12px 30px; border-radius: 40px; background: linear-gradient(135deg, rgba(201,160,232,0.3), rgba(255,182,193,0.3)); border: 1px solid rgba(201,160,232,0.5); color: #fff; text-decoration: none; font-weight: 600; transition: all 0.3s; cursor: none; }
+        .back-btn:hover { box-shadow: 0 0 30px rgba(201,160,232,0.5); transform: translateY(-2px); }
 
-        footer { background: rgba(15,15,15,0.95); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(240,128,128,0.3); text-align: center; }
-        .socialIcons a { width: 40px; height: 40px; background: rgba(255,255,255,0.05); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin: 0 5px; transition: 0.3s; cursor: none; }
-        .socialIcons a:hover { background: rgba(240,128,128,0.3); transform: translateY(-3px); }
-        .sound-controls { position: fixed; bottom: 30px; right: 30px; z-index: 10000; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-        .scroll-top, .sound-toggle, .shuffle-toggle { cursor: none; background: rgba(240,128,128,0.2); border: 1px solid rgba(240,128,128,0.4); border-radius: 50%; color: white; transition: 0.3s; }
-        .sound-toggle { width: 52px; height: 52px; }
-        .volume-slider-container { width: 38px; height: 110px; background: rgba(20,20,25,0.95); border-radius: 19px; padding: 14px 8px; opacity: 0; pointer-events: none; transition: 0.35s; position: absolute; bottom: 62px; left: 50%; transform: translateX(-50%); }
-        .volume-slider-container.visible { opacity: 1; pointer-events: auto; }
-        .mobile-toggle { display: none; background: none; border: none; cursor: none; }
+        footer { background: rgba(15,15,15,0.95); padding: 25px 15px; margin-top: 40px; border-top: 1px solid rgba(201,160,232,0.3); text-align: center; color: var(--text2); }
+
         @media (max-width: 768px) {
-            .mobile-toggle { display: flex; flex-direction: column; }
-            .nav-links { position: fixed; top: 0; right: -100%; width: 250px; height: 100vh; background: #0a0a0a; padding: 80px 15px; transition: 0.3s; }
-            .nav-links.active { right: 0; }
-            .nav-links ul { flex-direction: column; }
+            .nav-links { display: none; }
+            .editing-hero h1 { font-size: 2rem; }
+            .stats-bar { gap: 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="floating-deco" style="position:fixed;top:10%;left:5%;opacity:0.03;font-size:3rem;pointer-events:none;">✿</div>
-    <div class="floating-deco" style="position:fixed;bottom:20%;right:8%;opacity:0.03;font-size:2.5rem;pointer-events:none;">✦</div>
-
-    <!-- Hidden YouTube Player -->
-    <div id="youtube-bgm-player" style="position:fixed;bottom:-100px;right:-100px;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;"></div>
-    
-    <div class="sound-controls">
-        <button class="scroll-top" id="scroll-top" title="Scroll to top">↑</button>
-        <div class="sound-group" style="display:flex;align-items:center;gap:8px;">
-            <button class="shuffle-toggle" id="shuffle-toggle" title="Shuffle" style="width:40px;height:40px;border-radius:50%;display:none;">🔀</button>
-            <div class="sound-wrapper" id="sound-wrapper" style="position:relative;">
-                <div class="volume-slider-container" id="volume-slider-container">
-                    <div class="volume-label" style="font-size:0.6rem;text-align:center;color:#fff;">♫<span id="volume-display">70%</span></div>
-                    <input type="range" class="volume-slider-vertical" id="volume-slider" min="0" max="100" value="70" style="writing-mode:vertical-lr;height:70px;transform:rotate(180deg);">
-                </div>
-                <button class="sound-toggle" id="sound-toggle" title="Sound">
-                    <svg id="sound-icon-on" viewBox="0 0 24 24" width="24" height="24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-                    <svg id="sound-icon-off" viewBox="0 0 24 24" width="24" height="24" style="display:none"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3z"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div class="background-video">
-        <iframe src="https://www.youtube.com/embed/P8DQjFX8OB8?autoplay=1&mute=1&controls=0&loop=1&playlist=P8DQjFX8OB8&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    </div>
     <div class="custom-cursor" id="custom-cursor"></div>
-    <div class="cursor-sparkle-ring" id="cursor-ring"></div>
+    <div class="background-video">
+        <iframe src="https://www.youtube.com/embed/P8DQjFX8OB8?autoplay=1&mute=1&controls=0&loop=1&playlist=P8DQjFX8OB8&rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
 
     <header>
         <div class="HE">
             <a href="index.html" class="logo-container">
                 <div class="logo-img-wrapper">
-                    <img src="logostar.png" alt="EchoDream" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=color:#f08080;font-size:1.5rem;>✦</span>'">
+                    <img src="logostar.png" alt="EchoDream">
                 </div>
                 <span class="logo-text">
-                    <span class="echo">Echo</span><span class="dream">Dream</span><span class="dot">.</span><span class="studio">Studio</span>
+                    <span class="echo">Echo</span><span class="dream">Dream</span><span class="studio">.Studio</span>
                 </span>
             </a>
-            <nav class="nav-links" id="main-nav">
+            <nav class="nav-links">
                 <ul>
                     <li><a href="index.html">Home</a></li>
-                    <li><a href="portfolio.html" class="current-page">Portfolio</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="EditingPortfolio.html" class="current-page">Video Editing</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </nav>
-            <button class="mobile-toggle" id="mobile-toggle"><span></span><span></span><span></span></button>
         </div>
     </header>
 
-    <div class="portfolio-header">
-        <h1>✨ Portfolio & Reel ✨</h1>
-        <p>Game Dev, Art & Cinematic Editing — 5+ Years</p>
-    </div>
-
     <main>
-        <div class="about-section">
-            <h2>About Me</h2>
-            <p>Hi, I'm M! Indie developer & multimedia artist. I blend game development with cinematic storytelling. Over 5 years of professional video editing for trailers, devlogs, and social content.</p>
-            <div class="about-stats">
-                <div><div style="font-size:2rem;color:var(--accent);">5+</div><div>Premiere Pro Yrs</div></div>
-                <div><div style="font-size:2rem;color:var(--accent2);">30+</div><div>Edited Videos</div></div>
-                <div><div style="font-size:2rem;color:var(--accent3);">3</div><div>Games Released</div></div>
+        <div class="editing-hero">
+            <h1>🎬 Video Editing Portfolio</h1>
+            <p class="subtitle">Cinematic storytelling through Premiere Pro & After Effects</p>
+            <div class="badge-container">
+                <span class="badge">⭐ Premiere Pro: 5+ Years</span>
+                <span class="badge">🎨 After Effects: 3+ Years</span>
+                <span class="badge">🎯 30+ Projects Delivered</span>
             </div>
         </div>
 
-        <!-- VIDEO EDITING REFERENCE SECTION -->
-        <section class="video-reel-section" id="video-reel">
-            <div class="reel-header">
-                <div>
-                    <h2 class="reel-title">🎬 Video Editing Portfolio</h2>
-                    <p class="reel-sub">Cinematic trailers, devlogs, motion graphics & color grading</p>
-                </div>
-                <div class="premiere-badge">⭐ Premiere Pro: 5+ Years</div>
+        <div class="stats-bar">
+            <div class="stat"><div class="stat-number">5+</div><div class="stat-label">Years Experience</div></div>
+            <div class="stat"><div class="stat-number">30+</div><div class="stat-label">Videos Edited</div></div>
+            <div class="stat"><div class="stat-number">15+</div><div class="stat-label">Happy Clients</div></div>
+            <div class="stat"><div class="stat-number">4K</div><div class="stat-label">Workflow Expert</div></div>
+        </div>
+
+        <div class="expertise-section">
+            <h2>⚡ Core Editing Expertise</h2>
+            <div class="expertise-grid">
+                <div class="expertise-item"><div class="icon">🎞️</div><h3>Cinematic Trailers</h3><p>Dynamic pacing, color grading, sound design</p></div>
+                <div class="expertise-item"><div class="icon">📹</div><h3>Devlogs & Vlogs</h3><p>Engaging storytelling, motion graphics</p></div>
+                <div class="expertise-item"><div class="icon">🎮</div><h3>Gameplay Montages</h3><p>Speed ramps, beat sync, camera effects</p></div>
+                <div class="expertise-item"><div class="icon">📱</div><h3>Social Media Reels</h3><p>Platform-optimized vertical content</p></div>
+                <div class="expertise-item"><div class="icon">🎨</div><h3>Color Grading</h3><p>LUTs, curves, professional color correction</p></div>
+                <div class="expertise-item"><div class="icon">🔊</div><h3>Audio Sync & Mix</h3><p>Multi-track audio, noise reduction, mastering</p></div>
             </div>
-            <div class="video-grid" id="video-grid">
-                <!-- Video cards injected via JS -->
+        </div>
+
+        <div class="video-showcase">
+            <div class="showcase-header">
+                <h2>🎥 Featured Work</h2>
+                <span style="color: var(--text2);">Hover to preview</span>
             </div>
-            <div style="text-align:center;margin-top:25px;color:var(--text2);">
-                <p>⚡ <strong>Premiere Pro expertise:</strong> advanced keyframing, multicam editing, LUTs, audio sync, motion graphics integration, and 4K workflow.</p>
-                <p style="font-size:0.85rem;">Employers: I deliver polished content from raw footage to final render — proven in 30+ projects.</p>
-            </div>
-        </section>
-        
-        <section class="skills-section">
-            <div class="skills-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:25px;">
-                <h2 style="font-size:1.8rem;">Skills & Tech</h2>
-                <div class="skills-filter">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="Engine">Engine</button>
-                    <button class="filter-btn" data-filter="Language">Language</button>
-                    <button class="filter-btn" data-filter="Art">Art</button>
-                    <button class="filter-btn" data-filter="Video">Video</button>
-                    <button class="filter-btn" data-filter="Audio">Audio</button>
-                    <button class="filter-btn" data-filter="Web">Web</button>
-                </div>
-            </div>
-            <div class="portfolio-grid" id="portfolio-skills"></div>
-        </section>
+            <div class="video-grid" id="videoGrid"></div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="portfolio.html" class="back-btn">← Back to Full Portfolio</a>
+        </div>
     </main>
 
     <footer>
-        <div class="socialIcons">
-            <a href="#" title="Bluesky">🦋</a>
-            <a href="#" title="YouTube">▶️</a>
-            <a href="#" title="Patreon">🎁</a>
-            <a href="#" title="Itch.io">🎮</a>
-        </div>
-        <div class="music-credits">♪ Music by <a href="#">ᴅᴀɴɪ.ʜᴢ</a> & <a href="#">shushubobo</a></div>
-        <div class="Oo">Contact: <a href="mailto:echodream.contact@gmail.com">echodream.contact@gmail.com</a> | © 2025 EchoDream.Studio ✿</div>
+        <p>© 2025 EchoDream.Studio ✿ | Contact: <a href="mailto:echodream.contact@gmail.com" style="color:#c9a0e8;">echodream.contact@gmail.com</a></p>
     </footer>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // YouTube BGM (same as before but simplified for portfolio)
-        let youtubePlayer = null, bgmEnabled = true, shuffleEnabled = false, isPlayerReady = false, playlistVideos=[], currentVideoIndex=0, userVolume=70;
-        const savedVolume = localStorage.getItem('echodream_volume'); if (savedVolume) userVolume = parseInt(savedVolume);
-        const savedSound = localStorage.getItem('echodream_sound_enabled'); if (savedSound) bgmEnabled = savedSound === 'true';
-        function onYouTubeIframeAPIReady() {
-            youtubePlayer = new YT.Player('youtube-bgm-player', { height: '1', width: '1', playerVars: { autoplay:0, controls:0, listType:'playlist', list:'PLUmFF7Wbo1Gw', loop:1 }, events: { onReady: onPlayerReady, onStateChange: onPlayerStateChange } });
-        }
-        function onPlayerReady(event) { isPlayerReady = true; event.target.setVolume(userVolume); if(bgmEnabled) event.target.unMute(); else event.target.mute(); document.getElementById('volume-slider').value = userVolume; document.getElementById('volume-display').textContent = userVolume+'%'; }
-        function onPlayerStateChange(event) { if(event.data === YT.PlayerState.ENDED && bgmEnabled) { if(shuffleEnabled) playRandomVideo(); else event.target.nextVideo(); } }
-        function playRandomVideo(){ if(youtubePlayer && playlistVideos.length>1){ let idx=Math.floor(Math.random()*playlistVideos.length); youtubePlayer.playVideoAt(idx);} }
-        function toggleSound(){ bgmEnabled=!bgmEnabled; localStorage.setItem('echodream_sound_enabled',bgmEnabled); if(youtubePlayer){ if(bgmEnabled){youtubePlayer.unMute(); youtubePlayer.playVideo();} else {youtubePlayer.mute(); youtubePlayer.pauseVideo();}} }
-        document.getElementById('sound-toggle').addEventListener('click', toggleSound);
-        document.getElementById('shuffle-toggle').addEventListener('click', function(){ shuffleEnabled=!shuffleEnabled; if(shuffleEnabled) playRandomVideo(); this.style.background = shuffleEnabled ? 'rgba(255,182,193,0.6)' : 'rgba(240,128,128,0.2)'; });
-        document.getElementById('volume-slider').addEventListener('input', function(e){ userVolume=parseInt(e.target.value); document.getElementById('volume-display').textContent=userVolume+'%'; if(youtubePlayer) youtubePlayer.setVolume(userVolume); localStorage.setItem('echodream_volume',userVolume); });
-        window.addEventListener('scroll', ()=>{ document.getElementById('scroll-top').style.opacity = window.scrollY>300 ? '1':'0'; });
-        document.getElementById('scroll-top').addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
-        // sound icon toggle
-        document.querySelector('.sound-toggle').addEventListener('click', ()=>{ document.getElementById('sound-icon-on').style.display = bgmEnabled?'block':'none'; document.getElementById('sound-icon-off').style.display = bgmEnabled?'none':'block'; });
-        // volume container hover
-        const soundWrapper = document.getElementById('sound-wrapper');
-        soundWrapper.addEventListener('mouseenter', ()=> document.getElementById('volume-slider-container').classList.add('visible'));
-        soundWrapper.addEventListener('mouseleave', ()=> setTimeout(()=>document.getElementById('volume-slider-container').classList.remove('visible'),600));
+        // Custom cursor
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
 
-        // Custom cursor & sparkles
-        const cursor = document.getElementById('custom-cursor'); const ring = document.getElementById('cursor-ring');
-        document.addEventListener('mousemove', (e)=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; ring.style.left=e.clientX+'px'; ring.style.top=e.clientY+'px'; });
-        // Mobile nav
-        document.getElementById('mobile-toggle').addEventListener('click', ()=> document.getElementById('main-nav').classList.toggle('active'));
-
-        // VIDEO EDITING REFERENCE DATA (with Premiere Pro focus)
-        const videoRefs = [
-            { title: "Indie Game Trailer — 'Echoes of the Abyss'", desc: "Cinematic cut, color grading, dynamic pacing. Premiere Pro + After Effects.", tags: ["Premiere Pro","After Effects","Color Grade"], highlight: true },
-            { title: "Devlog Series: Behind the Scenes", desc: "Episode edits with motion graphics, transitions, and sound design.", tags: ["Premiere Pro","Motion Graphics","Sound Design"], highlight: true },
-            { title: "Animated Short: Dreamscapes", desc: "Full 2D animation editing, synced to original soundtrack.", tags: ["Premiere Pro","2D Animation","Storyboard"], highlight: false },
-            { title: "Social Media Reel Pack", desc: "15+ platform-optimized clips for Instagram/TikTok/YouTube Shorts.", tags: ["Premiere Pro","Social Media","Fast Edits"], highlight: true },
-            { title: "Gameplay Montage — 60fps", desc: "High-energy montage with speed ramps, camera shake, and beat sync.", tags: ["Premiere Pro","Speed Ramps","Color LUTs"], highlight: false },
-            { title: "Kickstarter Campaign Video", desc: "Persuasive edit with call-to-action, testimonials, and motion text.", tags: ["Premiere Pro","Marketing","Motion Text"], highlight: true }
+        // Video editing portfolio data
+        const editingVideos = [
+            {
+                title: "Indie Game Trailer — 'Echoes of the Abyss'",
+                desc: "Full cinematic trailer with dramatic pacing, color grading, and sound design. 2.4M views on YouTube.",
+                tags: ["Premiere Pro", "After Effects", "Color Grade", "Sound Design"],
+                premiere: true
+            },
+            {
+                title: "Devlog Series: Behind the Scenes",
+                desc: "12-episode devlog series with motion graphics, transitions, and engaging storytelling.",
+                tags: ["Premiere Pro", "Motion Graphics", "Devlog"],
+                premiere: true
+            },
+            {
+                title: "Gameplay Montage — 60fps",
+                desc: "High-energy montage with speed ramps, camera shake, and beat-synced cuts.",
+                tags: ["Premiere Pro", "Speed Ramps", "Beat Sync"],
+                premiere: true
+            },
+            {
+                title: "Animated Short: Dreamscapes",
+                desc: "Full 2D animation editing synced to original orchestral soundtrack.",
+                tags: ["Premiere Pro", "2D Animation", "Storytelling"],
+                premiere: false
+            },
+            {
+                title: "Social Media Reel Pack",
+                desc: "15+ platform-optimized clips for Instagram, TikTok, and YouTube Shorts.",
+                tags: ["Premiere Pro", "Social Media", "Vertical Video"],
+                premiere: true
+            },
+            {
+                title: "Kickstarter Campaign Video",
+                desc: "Persuasive edit with call-to-action, testimonials, and motion text overlays.",
+                tags: ["Premiere Pro", "Marketing", "Motion Text"],
+                premiere: true
+            },
+            {
+                title: "Let's Play Highlights",
+                desc: "Comedy-focused edits with meme timing, zooms, and overlay graphics.",
+                tags: ["Premiere Pro", "Comedy", "Overlays"],
+                premiere: false
+            },
+            {
+                title: "Music Video Collab",
+                desc: "Rhythm-based editing for indie artist, synced to original track.",
+                tags: ["Premiere Pro", "Music Video", "Rhythm"],
+                premiere: false
+            }
         ];
 
-        function renderVideoRefs() {
-            const grid = document.getElementById('video-grid');
-            grid.innerHTML = videoRefs.map(v => `
+        function renderVideos() {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = editingVideos.map(v => `
                 <div class="video-card">
-                    <div class="video-thumb"><span>🎞️</span></div>
+                    <div class="video-thumb">
+                        <span>🎬</span>
+                        <div class="play-overlay">▶</div>
+                    </div>
                     <div class="video-info">
                         <h3>${v.title}</h3>
                         <p>${v.desc}</p>
                         <div class="video-tags">
-                            ${v.tags.map(t => `<span class="video-tag ${v.highlight && t==='Premiere Pro' ? 'premiere-highlight':''}">${t}</span>`).join('')}
+                            ${v.tags.map(t => `<span class="video-tag ${t === 'Premiere Pro' ? 'premiere' : ''}">${t}</span>`).join('')}
                         </div>
                     </div>
                 </div>
             `).join('');
         }
-        renderVideoRefs();
-
-        // Skills Data (Premiere Pro 5+ years added)
-        const skills = [
-            { name: "Unity Engine", desc: "2D game development with C#", tag: "Engine", years: 5, progress: 90 },
-            { name: "C# Programming", desc: "Game logic, systems architecture", tag: "Language", years: 5, progress: 88 },
-            { name: "2D Art & Animation", desc: "Sprites, UI, visual effects", tag: "Art", years: 6, progress: 85 },
-            { name: "Game Design", desc: "Mechanics, level design, balancing", tag: "Design", years: 5, progress: 82 },
-            { name: "Photoshop", desc: "Asset creation, illustrations, UI", tag: "Art", years: 7, progress: 85 },
-            { name: "Premiere Pro", desc: "Cinematic editing, color grading, multicam", tag: "Video", years: 5, progress: 92 },
-            { name: "After Effects", desc: "Motion graphics, VFX, compositing", tag: "Video", years: 3, progress: 75 },
-            { name: "Sound Design", desc: "Audio implementation, mixing", tag: "Audio", years: 4, progress: 72 },
-            { name: "HTML & CSS", desc: "Web development for game promotion", tag: "Web", years: 4, progress: 78 },
-            { name: "JavaScript", desc: "Interactive web features", tag: "Web", years: 3, progress: 70 },
-            { name: "Blender", desc: "3D modeling for game assets", tag: "Engine", years: 1, progress: 50 },
-            { name: "Git & GitHub", desc: "Version control & collaboration", tag: "Design", years: 2, progress: 65 }
-        ];
-
-        function renderSkills(filter='all') {
-            const filtered = filter==='all' ? skills : skills.filter(s=>s.tag===filter);
-            document.getElementById('portfolio-skills').innerHTML = filtered.map(s=>`
-                <div class="skill-card" data-tag="${s.tag}">
-                    <div style="display:flex;justify-content:space-between;"><h3>${s.name}</h3><span style="color:#f08080;">${s.years}+ yrs</span></div>
-                    <p style="color:#b0b0b0;">${s.desc}</p>
-                    <span style="background:rgba(240,128,128,0.15);padding:2px 10px;border-radius:20px;font-size:0.7rem;">${s.tag}</span>
-                    <div style="height:4px;background:#222;border-radius:2px;margin-top:10px;"><div style="height:100%;width:${s.progress}%;background:linear-gradient(90deg,#f08080,#c9a0e8);"></div></div>
-                </div>
-            `).join('');
-            document.querySelectorAll('.skill-card').forEach(card=>card.addEventListener('click',function(){this.classList.add('clicked');setTimeout(()=>this.classList.remove('clicked'),500);}));
-        }
-        renderSkills();
-        document.querySelectorAll('.filter-btn').forEach(btn=>btn.addEventListener('click',function(){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));this.classList.add('active');renderSkills(this.dataset.filter);}));
+        renderVideos();
     </script>
 </body>
 </html>
